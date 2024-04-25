@@ -8,6 +8,8 @@ import BottomNav from '@/nav/BottomNav';
 import MainPage from '@/pages/MainPage';
 import ChatPage from '@/pages/ChatPage';
 import MyPage from '@/pages/MyPage';
+import PlaySchedulePage from '@/pages/PlaySchedulePage';
+import PlayerCardPage from '@/pages/PlayerCardPage';
 
 const router = createBrowserRouter([
     // {
@@ -46,6 +48,14 @@ const router = createBrowserRouter([
             {
                 path: '/mypage',
                 element: <MyPage />,
+            },
+            {
+                path: '/mypage/playschedule',
+                element: <PlaySchedulePage />,
+            },
+            {
+                path: '/mypage/playercard',
+                element: <PlayerCardPage />,
             },
         ],
     },
