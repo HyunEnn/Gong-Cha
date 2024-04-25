@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+const { VITE_BASE_URL } = import.meta.env;
+
 // api axios instance
 function serverAxios() {
     const instance = axios.create({
-        baseURL: process.env.REACT_APP_BASE_URL,
+        baseURL: VITE_BASE_URL,
         withCredentials: true,
         headers: {
             'Content-Type': 'application/json;charset=utf-8',

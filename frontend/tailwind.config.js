@@ -95,6 +95,7 @@ module.exports = {
             fontFamily: {
                 pretendardRegular: ['Pretendard-Regular'], // Adds a new `font-display` class
                 pretendardBold: ['Pretendard-Bold'],
+                pretendardBlack: ['Pretendard-Black', 'sans-serif'],
             },
             borderRadius: {
                 lg: 'var(--radius)',

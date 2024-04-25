@@ -44,7 +44,7 @@ const router = createBrowserRouter([
                 element: <ChatPage />,
             },
             {
-                path: '/my',
+                path: '/mypage',
                 element: <MyPage />,
             },
         ],
