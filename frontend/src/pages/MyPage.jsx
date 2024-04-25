@@ -24,7 +24,7 @@ function MyPage() {
         setTimeout(() => {
             setIsActive(false);
             navigate(page);
-        }, 300);
+        }, 180);
     };
     const handleProfileClick = () => {
         handleNagivate(0);
@@ -62,7 +62,7 @@ function MyPage() {
                 </CardForm>
             </>
             <>
-                <div className="absolute flex left-[calc(1.13125rem)] top-[calc(14.5rem)] w-[calc(19.75rem)] rounded transform transition duration-300 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handlePlayScheduleClick()}>
+                <div className="absolute flex left-[calc(1.13125rem)] top-[calc(14.5rem)] w-[calc(19.75rem)] rounded transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-92" onClick={() => handlePlayScheduleClick()}>
                     <CardForm className="flex justify-center h-full w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] bg-stone-100">
                         <CardContent className="p-0 pt-[calc(0.05rem)]">
                             <img src={playScheduleIcon} alt="현재 진행중인 경기" />
@@ -71,7 +71,7 @@ function MyPage() {
                     <span className="relative left-[calc(0.8125rem)] pt-[calc(0.1rem)] font-pretendardBlack">현재 진행중인 경기</span>
                     <img className="absolute right-0 inline" src={rArrowIcon} alt="들어가기" />
                 </div>
-                <div className="absolute flex left-[calc(1.13125rem)] top-[calc(17.3125rem)] w-[calc(19.75rem)] rounded transform transition duration-300 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handlePlayHistoryClick()}>
+                <div className="absolute flex left-[calc(1.13125rem)] top-[calc(17.3125rem)] w-[calc(19.75rem)] rounded transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handlePlayHistoryClick()}>
                     <CardForm className="flex justify-center h-full w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] bg-stone-100">
                         <CardContent className="p-0 pt-[calc(0.125rem)] pl-[calc(0.05rem)]">
                             <img src={playHistoryIcon} alt="경기내역" />
@@ -80,7 +80,7 @@ function MyPage() {
                     <span className="relative left-[calc(0.8125rem)] pt-[calc(0.1rem)] font-pretendardBlack">경기내역</span>
                     <img className="absolute right-0 inline" src={rArrowIcon} alt="들어가기" />
                 </div>
-                <div className="absolute flex left-[calc(1.13125rem)] top-[calc(20.125rem)] w-[calc(19.75rem)] rounded transform transition duration-300 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handlePlayerCardClick()}>
+                <div className="absolute flex left-[calc(1.13125rem)] top-[calc(20.125rem)] w-[calc(19.75rem)] rounded transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handlePlayerCardClick()}>
                     <CardForm className="flex justify-center h-full w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] bg-stone-100">
                         <CardContent className="p-0 pt-[calc(0.125rem)]">
                             <img src={playerCardIcon} alt="내 선수카드" />
@@ -89,7 +89,7 @@ function MyPage() {
                     <span className="relative left-[calc(0.8125rem)] pt-[calc(0.1rem)] font-pretendardBlack">내 선수카드</span>
                     <img className="absolute right-0 inline" src={rArrowIcon} alt="들어가기" />
                 </div>
-                <div className="absolute flex left-[calc(1.13125rem)] top-[calc(22.9375rem)] w-[calc(19.75rem)] rounded transform transition duration-300 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handleAlarmClick()}>
+                <div className="absolute flex left-[calc(1.13125rem)] top-[calc(22.9375rem)] w-[calc(19.75rem)] rounded transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handleAlarmClick()}>
                     <CardForm className="flex justify-center h-full w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] bg-stone-100">
                         <CardContent className="p-0 pt-[calc(0.125rem)]">
                             <img src={alarmIcon} alt="알림함" />

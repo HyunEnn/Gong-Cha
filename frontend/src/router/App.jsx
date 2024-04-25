@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
-
+import MyPageWithTransition from '@/lib/MyPageWithTransition';
 import ErrorPage from '@/pages/ErrorPage';
 import Test from '@/pages/Test';
 import OnBoardPage from '@/pages/OnBoardPage';
@@ -47,15 +47,21 @@ const router = createBrowserRouter([
             },
             {
                 path: '/mypage',
-                element: <MyPage />,
-            },
-            {
-                path: '/mypage/playschedule',
-                element: <PlaySchedulePage />,
-            },
-            {
-                path: '/mypage/playercard',
-                element: <PlayerCardPage />,
+                element: <MyPageWithTransition />,
+                children: [
+                    {
+                        index: true,
+                        element: <MyPage />
+                    },
+                    {
+                        path: 'playschedule',
+                        element: <PlaySchedulePage />,
+                    },
+                    {
+                        path: 'playercard',
+                        element: <PlayerCardPage />,
+                    },
+                ],
             },
         ],
     },
