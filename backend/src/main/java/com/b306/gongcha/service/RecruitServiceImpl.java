@@ -3,7 +3,11 @@ package com.b306.gongcha.service;
 import com.b306.gongcha.dto.RecruitRequestDto;
 import com.b306.gongcha.dto.RecruitResponseDto;
 import com.b306.gongcha.entity.Recruit;
+import com.b306.gongcha.entity.User;
+import com.b306.gongcha.entity.UserRecruit;
 import com.b306.gongcha.repository.RecruitRepository;
+import com.b306.gongcha.repository.UserRecruitRepository;
+import com.b306.gongcha.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +21,9 @@ import java.util.List;
 public class RecruitServiceImpl implements RecruitService {
 
     private final RecruitRepository recruitRepository;
+    private final UserRecruitRepository userRecruitRepository;
+    private final UserRepository userRepository;
+
     @Override
     public List<RecruitResponseDto> getAllRecruits() {
         List<RecruitResponseDto> recruitResponseDtoList = new ArrayList<>();
@@ -47,7 +54,7 @@ public class RecruitServiceImpl implements RecruitService {
     @Override
     public void updateRecruit(Long recruitId, RecruitRequestDto recruitRequestDto) {
         Recruit recruit = recruitRepository.findById(recruitId).orElse(null);
-        if(recruit!=null) {
+        if(recruit != null) {
             Recruit updateRecruit = recruit.toBuilder()
                     .date(recruitRequestDto.getDate())
                     .address(recruitRequestDto.getAddress())
@@ -70,5 +77,56 @@ public class RecruitServiceImpl implements RecruitService {
         }
     }
 
+    @Override
+    public void requestRecruit(Long recruitId, Long userId) {
+        Recruit recruit = recruitRepository.findById(recruitId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
+        if(recruit!=null && user != null) {
+            UserRecruit userRecruit = UserRecruit.builder()
+                    .user(user)
+                    .recruit(recruit)
+                    .recruit_permit("신청")
+                    .build();
+            userRecruitRepository.save(userRecruit);
+        }
+    }
+
+    @Override
+    public List<UserRecruit> getUserRecruitByUser(Long userId) {
+        List<UserRecruit> userRecruitList = userRecruitRepository.findAllByUserId(userId);
+        return userRecruitList;
+    }
+    @Override
+    public List<UserRecruit> getUserRecruitByRecruit(Long recruitId) {
+        List<UserRecruit> userRecruitList = userRecruitRepository.findAllByRecruitId(recruitId);
+        return userRecruitList;
+    }
+    @Override
+    public UserRecruit getUserRecruit(Long recruitId, Long userId) {
+        UserRecruit userRecruit = userRecruitRepository.findByRecruitIdAndUserId(recruitId, userId).orElse(null);
+        return userRecruit;
+    }
+
+    @Override
+    public void acceptRecruit(Long recruitId, Long userId) {
+        UserRecruit userRecruit = userRecruitRepository.findByRecruitIdAndUserId(recruitId, userId).orElse(null);
+        if(userRecruit != null) {
+            UserRecruit updateRecruit = userRecruit.toBuilder()
+                    .recruit_permit("승인")
+                    .build();
+            userRecruitRepository.save(updateRecruit);
+        }
+    }
+
+    @Override
+    public void rejectRecruit(Long recruitId, Long userId) {
+        UserRecruit userRecruit = userRecruitRepository.findByRecruitIdAndUserId(recruitId, userId).orElse(null);
+        if(userRecruit != null) {
+            UserRecruit updateRecruit = userRecruit.toBuilder()
+                    .recruit_permit("거절")
+                    .build();
+            userRecruitRepository.save(updateRecruit);
+        }
+    }
 
 }
