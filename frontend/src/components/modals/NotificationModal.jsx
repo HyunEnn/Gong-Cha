@@ -1,16 +1,46 @@
-function NotificationModal({ isOpen, onClose }) {
+function NotificationModal({ isOpen, onClose, type, data }) {
     if (!isOpen) return null;
   
-    // Functions to handle Accept (수락하기) and Reject (거절하기) actions
     const handleAccept = () => {
-      console.log("Accepted");
+      console.log(`${type} Accepted`, data);
       onClose();
     };
   
     const handleReject = () => {
-      console.log("Rejected");
+      console.log(`${type} Rejected`, data);
       onClose();
     };
+  
+    const renderModalContent = () => {
+      switch (type) {
+        case 'player':
+          return {
+            title: '선수 요청',
+            body: '선수 카드',
+            // Define additional styling or content specific to the player modal
+          };
+        case 'team':
+          return {
+            title: '팀 요청',
+            body: '팀 요청 내용',
+            // Define additional styling or content specific to the team modal
+          };
+        case 'match':
+          return {
+            title: '매칭 요청',
+            body: '매칭 내용',
+            // Define additional styling or content specific to the match modal
+          };
+        default:
+          return {
+            title: 'Unknown',
+            body: 'No content available.',
+            // Default modal content
+          };
+      }
+    };
+  
+    const { title, body } = renderModalContent();
   
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto outline-none focus:outline-none">
@@ -20,13 +50,14 @@ function NotificationModal({ isOpen, onClose }) {
   
           {/* Modal content */}
           <div className="relative z-50 w-full bg-white rounded-lg shadow-lg outline-none focus:outline-none">
-            
+            {/* Modal title */}
+            <div className="flex items-center justify-center p-5 border-b border-solid border-gray-300 rounded-t">
+              <h3 className="text-3xl font-semibold">{title}</h3>
+            </div>
   
             {/* Modal body */}
             <div className="relative p-6 flex-auto">
-              <p className="my-4 text-gray-600 text-lg leading-relaxed">
-                선수수락/팀수락/매칭수락 내용
-              </p>
+              <p className="my-4 text-gray-600 text-lg leading-relaxed">{body}</p>
             </div>
   
             {/* Modal footer */}
@@ -41,7 +72,7 @@ function NotificationModal({ isOpen, onClose }) {
               </button>
               {/* Reject button */}
               <button
-                className="text-white bg-gray-300 border border-solid hover:bg-gray-500 hover:text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-2 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                className="text-white bg-gray-300 border border-solid  hover:bg-gray-500 hover:text-white active:bg-gray-600 font-bold uppercase text-sm px-6 py-2 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
                 onClick={handleReject}
               >
