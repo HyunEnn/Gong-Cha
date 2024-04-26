@@ -8,6 +8,7 @@ import BottomNav from '@/nav/BottomNav';
 import MainPage from '@/pages/MainPage';
 import ChatPage from '@/pages/ChatPage';
 import MyPage from '@/pages/MyPage';
+import AlarmPage from '@/pages/AlarmPage';
 
 const router = createBrowserRouter([
     // {
@@ -30,6 +31,8 @@ const router = createBrowserRouter([
         path: '/login',
         element: <LoginPage />,
     },
+
+
     {
         path: '/',
         element: <BottomNav />,
@@ -47,6 +50,11 @@ const router = createBrowserRouter([
                 path: '/my',
                 element: <MyPage />,
             },
+            {
+                path: '/alarm',
+                element: <AlarmPage />,
+            }
+ 
         ],
     },
 ]);
