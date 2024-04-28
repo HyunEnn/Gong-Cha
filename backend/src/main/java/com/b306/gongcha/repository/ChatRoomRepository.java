@@ -1,8 +1,11 @@
 package com.b306.gongcha.repository;
 
 import com.b306.gongcha.entity.ChatRoom;
+import com.b306.gongcha.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ChatRoomRepository extends JpaRepository<ChatRoom, String> {
+import java.util.Optional;
 
+public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
+    Optional<ChatRoom> findBySenderAndReceiver(User sender, User receiver);
 }
