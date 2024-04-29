@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
-import MyPageWithTransition from '@/lib/MyPageWithTransition';
+import MyPageWithTransition from '@/components/MyPageWithTransition';
 import ErrorPage from '@/pages/ErrorPage';
 import Test from '@/pages/Test';
 import OnBoardPage from '@/pages/OnBoardPage';

@@ -2,10 +2,10 @@ import { serverAxios } from '@/apis/util/commons';
 
 const server = serverAxios();
 
-const url = '/mypage';
+const url = '/playschedule';
 
-async function getProfileInfo(key, success, fail) {
+async function getPlaySchedule(key, success, fail) {
     await server.get(`${url}/somelink/${key}`).then(success).catch(fail);
 }
 
-export { getProfileInfo };
+export { getPlaySchedule };
