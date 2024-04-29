@@ -32,6 +32,9 @@ function PlaySchedulePage() {
     const [slideIndex, setSlideIndex] = useState(0);
     const conditionIcons = [condition0Icon, condition1Icon, condition2Icon, condition3Icon];
     const [selectedPlayer, setSelectedPlayer] = useState(null);
+    const [startY, setStartY] = useState(0);
+    const [dragging, setDragging] = useState(false);
+    const [translateY, setTranslateY] = useState(0);
 
     useEffect(() => {
         setPlayScheduleData(    // dummy data
@@ -125,6 +128,7 @@ function PlaySchedulePage() {
         if (player) {
             setSelectedPlayer(player);
             setShowDetailModal(true);
+            setTranslateY(0);
         }
     };
 
@@ -132,8 +136,29 @@ function PlaySchedulePage() {
         setSelectedPlayer(null);
     };
 
+    const handleTouchStart = (e) => {
+        setStartY(e.touches[0].clientY);
+        setDragging(true);
+    };
+
+    const handleTouchMove = (e) => {
+        if (!dragging) return;
+        const currentY = e.touches[0].clientY;
+        const moveY = currentY - startY;
+        setTranslateY(moveY);
+
+        if (moveY > 200) {
+            handleClosePlayerCard();
+        }
+    };
+
+    const handleTouchEnd = () => {
+        setDragging(false);
+        setTranslateY(0);
+    };
+
     const handleMap = () => {
-        window.alert("엄");
+        window.alert("단");
     };
 
     // condition value
@@ -158,10 +183,18 @@ function PlaySchedulePage() {
         return (
             <Modal show={!!selectedPlayer} onClose={handleClosePlayerCard}>
                 <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center" onClick={handleClosePlayerCard}>
-                    <div className="absolute top-3 bg-white rounded-lg shadow-lg max-w-md mx-auto" onClick={e => e.stopPropagation()}>
-                        <PlayerCard player={selectedPlayer} onClose={handleClosePlayerCard} />
+                    <div className="absolute top-3 bg-white rounded-lg shadow-lg max-w-md mx-auto" onClick={e => e.stopPropagation()}
+                         onTouchStart={handleTouchStart}
+                         onTouchMove={handleTouchMove}
+                         onTouchEnd={handleTouchEnd}
+                         style={{ transform: `translateY(${translateY}px)` }}>
+                        {/* 닫기 바 */}
+                        <div className="relative w-full h-4 bg-gray-300 rounded-full cursor-pointer">
+                            <div className="absolute mt-[calc(12rem)] transform -translate-x-1/2 -translate-y-1/2 w-24 h-1 bg-gray-500 rounded"></div>
+                        </div>
+                        {/* PlayerCard */}
+                        <PlayerCard player={selectedPlayer}/>
                     </div>
-                    <button onClick={handleClosePlayerCard} className="absolute top-3 right-3 text-xl font-bold text-white">&times;</button>
                 </div>
             </Modal>
         );
