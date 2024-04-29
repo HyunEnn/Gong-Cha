@@ -6,10 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -27,8 +24,6 @@ public class ChatRoom {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
     private User receiver;  // 받는 사람
-
-    private String lastMessage;  // 마지막 메세지
 
     @CreatedDate
     private LocalDateTime createAt;
