@@ -1,12 +1,21 @@
+import { useNavigate } from 'react-router-dom';
 import { useFindPlayerBoardStore } from '@/stores/findPlayerBoardStore';
 
 function FindPlayerBoard() {
+    const navigate = useNavigate();
     const { dummyFindPlayerList } = useFindPlayerBoardStore();
+    const handleOpenFindPlayerDetail = () => {
+        navigate('/findplayer/detail');
+    };
     return (
         <>
             {/* dummy를 real로 변경 필요 */}
             {dummyFindPlayerList.map((value, index) => (
-                <div key={index} className="grid grid-cols-5 gap-4 mt-4 text-center border border-solid rounded-lg">
+                <div
+                    key={index}
+                    className="grid grid-cols-5 gap-4 mt-4 text-center border border-solid rounded-lg"
+                    onClick={() => handleOpenFindPlayerDetail()}
+                >
                     <div className="flex flex-col justify-center pl-2 text-xl font-pretendardBold">{value.time}</div>
                     <div className="flex flex-col justify-center col-span-3">
                         <div className="font-pretendardBold">{value.place}</div>

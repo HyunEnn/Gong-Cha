@@ -8,6 +8,11 @@ import BottomNav from '@/nav/BottomNav';
 import MainPage from '@/pages/MainPage';
 import ChatPage from '@/pages/ChatPage';
 import MyPage from '@/pages/MyPage';
+import FindPlayerBoardPage from '@/pages/FindPlayerBoardPage';
+import FindPlayerInputPage from '@/pages/FindPlayerInputPage';
+import FindPlayerDetailPage from '@/pages/FindPlayerDetailPage';
+import FindTeamBoardPage from '@/pages/FindTeamBoardPage';
+import FindMatchBoardPage from '@/pages/FindMatchBoardPage';
 
 const router = createBrowserRouter([
     // {
@@ -46,6 +51,26 @@ const router = createBrowserRouter([
             {
                 path: '/my',
                 element: <MyPage />,
+            },
+            {
+                path: '/findplayer/board',
+                element: <FindPlayerBoardPage />,
+            },
+            {
+                path: '/findplayer/input',
+                element: <FindPlayerInputPage />,
+            },
+            {
+                path: '/findplayer/detail',
+                element: <FindPlayerDetailPage />,
+            },
+            {
+                path: '/findteam/board',
+                element: <FindTeamBoardPage />,
+            },
+            {
+                path: '/findmatch/board',
+                element: <FindMatchBoardPage />,
             },
         ],
     },
