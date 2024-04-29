@@ -1,12 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import lArrowIcon from '@/assets/icons/lArrow.svg';
 import PlayerCard from '@/components/PlayerCard';
+import { myPageDummyData } from '@/data/dummyData'; // dummy data
 
 function PlayerCardPage() {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('currentSeason');
+    const [profileData, setProfileData] = useState({});
 
+    useEffect(() => {
+        setProfileData({    // dummy data
+            name: myPageDummyData.name,
+            profileImage: myPageDummyData.profileImage
+        });
+        /* axios for db connection
+        getProfileInfo(
+            key,
+            (success) => {
+                setProfileData({
+                    ...profileData,
+                });
+            },
+            (fail) => {
+                
+            }
+        );
+        return () => {
+            
+        };
+        */
+    }, []);
+    
     const handleBackClick = () => {
         navigate(-1);
     };
@@ -31,7 +56,7 @@ function PlayerCardPage() {
                 ))}
             </div>
             <div className="absolute left-0 top-[calc(10.6875rem)] border-[calc(.01875rem)] w-full z-0"></div>
-            {activeTab === 'currentSeason' ? <PlayerCard season="currentSeason"/> : <PlayerCard season="lastSeason"/>}
+            {activeTab === 'currentSeason' ? <PlayerCard season="currentSeason" player={profileData}/> : <PlayerCard season="lastSeason"  player={profileData}/>}
         </>
     );
 }

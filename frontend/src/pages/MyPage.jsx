@@ -66,17 +66,20 @@ function MyPage() {
     };
     const handleAlarmClick = () => {
         handleNagivate(0);
+        <PlayerCard season="currentSeason"/>
     };
 
     return (
         <>
             <>
+                {/* page title */}
                 <div className="page-title">마이페이지</div>
             </>
             <>
-                <CardForm className="absolute flex flex-col justify-center h-full left-[calc(1.13125rem)] top-[calc(7.625rem)] w-[calc(19.875rem)] h-[calc(4.375rem)] rounded-[15px]" onClick={() => handleProfileClick()}>
+                {/* profile content */}
+                <CardForm className="absolute flex flex-col justify-center left-[calc(1.13125rem)] top-[calc(7.625rem)] w-[calc(19.875rem)] h-[calc(4.375rem)] rounded-[15px] border-stone-70" onClick={() => handleProfileClick()}>
                     <CardContent className="flex items-center left-[calc(5.875rem)] pt-[calc(1.5rem)] p-0">
-                        <img className="relative left-[calc(0.875rem)]" src={profileData.profileImage} alt="프로필 사진" width={30} height={30}/>
+                        <img className="relative left-[calc(0.875rem)] rounded-full border-[calc(0.01rem)]" src={profileData.profileImage} alt="프로필 사진" width={30} height={30}/>
                         <CardTitle className="relative left-[calc(1.875rem)] text-[calc(1.0rem)]">{profileData.name}</CardTitle>
                     </CardContent>
                     <CardFooter className="absolute bottom-0 right-0 justify-end items-end p-2 pr-3">
@@ -88,37 +91,41 @@ function MyPage() {
                 </CardForm>
             </>
             <>
+                {/* PlaySchedule content*/}
                 <div className="absolute flex left-[calc(1.13125rem)] top-[calc(14.5rem)] w-[calc(19.75rem)] rounded transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-92" onClick={() => handlePlayScheduleClick()}>
-                    <CardForm className="flex justify-center w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] bg-stone-100">
-                        <CardContent className="p-0 pt-[calc(0.05rem)]">
+                    <CardForm className="flex justify-center w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] border-gray-50 bg-stone-50">
+                        <CardContent className="p-[calc(0.125rem)]">
                             <img src={playScheduleIcon} alt="현재 진행중인 경기" />
                         </CardContent>
                     </CardForm>
                     <span className="relative left-[calc(0.8125rem)] pt-[calc(0.1rem)] font-pretendardBlack">현재 진행중인 경기</span>
                     <img className="absolute right-0 inline" src={rArrowIcon} alt="들어가기" />
                 </div>
+                {/* PlayHistory content*/}
                 <div className="absolute flex left-[calc(1.13125rem)] top-[calc(17.3125rem)] w-[calc(19.75rem)] rounded transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handlePlayHistoryClick()}>
-                    <CardForm className="flex justify-center w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] bg-stone-100">
-                        <CardContent className="p-0 pt-[calc(0.125rem)] pl-[calc(0.05rem)]">
-                            <img src={playHistoryIcon} alt="경기내역" />
+                    <CardForm className="flex justify-center w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] border-gray-50 bg-stone-50">
+                        <CardContent className="p-[calc(0.125rem)] pl-[calc(0.15rem)]">
+                            <img className="w-full h-full" src={playHistoryIcon} alt="경기내역" />
                         </CardContent>
                     </CardForm>
                     <span className="relative left-[calc(0.8125rem)] pt-[calc(0.1rem)] font-pretendardBlack">경기내역</span>
                     <img className="absolute right-0 inline" src={rArrowIcon} alt="들어가기" />
                 </div>
+                {/* PlayerCard content*/}
                 <div className="absolute flex left-[calc(1.13125rem)] top-[calc(20.125rem)] w-[calc(19.75rem)] rounded transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handlePlayerCardClick()}>
-                    <CardForm className="flex justify-center w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] bg-stone-100">
-                        <CardContent className="p-0 pt-[calc(0.125rem)]">
-                            <img src={playerCardIcon} alt="내 선수카드" />
+                    <CardForm className="flex justify-center w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] border-gray-50 bg-stone-50">
+                        <CardContent className="p-[calc(0.125rem)]">
+                            <img className="w-full h-full rounded-[calc(0.2rem)]" src={playerCardIcon} alt="내 선수카드" />
                         </CardContent>
                     </CardForm>
                     <span className="relative left-[calc(0.8125rem)] pt-[calc(0.1rem)] font-pretendardBlack">내 선수카드</span>
                     <img className="absolute right-0 inline" src={rArrowIcon} alt="들어가기" />
                 </div>
+                {/* Alarm content*/}
                 <div className="absolute flex left-[calc(1.13125rem)] top-[calc(22.9375rem)] w-[calc(19.75rem)] rounded transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handleAlarmClick()}>
-                    <CardForm className="flex justify-center w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] bg-stone-100">
-                        <CardContent className="p-0 pt-[calc(0.125rem)]">
-                            <img src={alarmIcon} alt="알림함" />
+                    <CardForm className="flex justify-center w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] border-gray-50 bg-stone-50">
+                        <CardContent className="p-[calc(0.125rem)]">
+                            <img className="w-full h-full" src={alarmIcon} alt="알림함" />
                         </CardContent>
                     </CardForm>
                     <span className="relative left-[calc(0.8125rem)] pt-[calc(0.1rem)] font-pretendardBlack">알림함</span>

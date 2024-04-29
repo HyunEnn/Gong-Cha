@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getPlaySchedule } from '@/apis/api/playschedule';
+import Slider from "react-slick";
+import { getPlayScheduleList } from '@/apis/api/mypage';
 import Modal from '@/components/Modal';
+import PlayerCard from '@/components/PlayerCard';
 import {
     CardForm,
     CardContent,
@@ -10,28 +12,40 @@ import {
     CardTitle,
     CardHeader,
 } from "@/components/CardForm"
+import defaultFieldImage from '@/assets/images/defaultField.png';
 import lArrowIcon from '@/assets/icons/lArrow.svg';
 import rArrowIcon from '@/assets/icons/rArrow.svg';
+import condition0Icon from '@/assets/icons/gender.svg';
+import condition1Icon from '@/assets/icons/level.svg';
+import condition2Icon from '@/assets/icons/inoutside.svg';
+import condition3Icon from '@/assets/icons/people.svg';
 import emptyGhostIcon from '@/assets/icons/emptyGhost.svg';
 import playGroundIcon from '@/assets/icons/playground.svg';
 import { playScheduleDummyData } from '@/data/dummyData'; // dummy data
 
 function PlaySchedulePage() {
     const navigate = useNavigate();
+    const [playScheduleList, setPlayScheduleList] = useState([]);
     const [playScheduleData, setPlayScheduleData] = useState([]);
     const [showDetailModal, setShowDetailModal] = useState(false);
     const [detailKey, setDetailKey] = useState({ state: '', key: '' });
+    const [slideIndex, setSlideIndex] = useState(0);
+    const conditionIcons = [condition0Icon, condition1Icon, condition2Icon, condition3Icon];
+    const [selectedPlayer, setSelectedPlayer] = useState(null);
 
     useEffect(() => {
         setPlayScheduleData(    // dummy data
             playScheduleDummyData,
         );
+    }, []);
+    
+    useEffect(() => {
         /* axios for db connection
-        getPlaySchedule(
+        getPlayScheduleList(
             key,
             (success) => {
-                setPlayScheduleData({
-                    ...playScheduleData,
+                setPlayScheduleList({
+                    ...success,
                 });
             },
             (fail) => {
@@ -52,25 +66,123 @@ function PlaySchedulePage() {
         /*
         if (state === "matching_active") {
             console.log("엄 " + key);
+            getFunc1(
+                key,
+                (success) => {
+                    playScheduleData({
+                        ...success,
+                    });
+                },
+                (fail) => {
+            });
         } else if (state === "matching_inactive") {
-            console.log("둔 " + key);
+            getFunc2(
+                key,
+                (success) => {
+                    playScheduleData({
+                        ...success,
+                    });
+                },
+                (fail) => {
+            });
         } else if (state === "recruitment_active") {
-            console.log("딕 " + key);
+            getFunc3(
+                key,
+                (success) => {
+                    playScheduleData({
+                        ...success,
+                    });
+                },
+                (fail) => {
+            });
         } else {
-            console.log("띡 " + key);
+            getFunc4(
+                key,
+                (success) => {
+                    playScheduleData({
+                        ...success,
+                    });
+                },
+                (fail) => {
+            });
         }
         */
         setDetailKey({ state, key });
         setShowDetailModal(true);
+        setSlideIndex(0);
     };
 
     const closeModal = () => {
         setShowDetailModal(false);
     };
-    
+
     const handleOutsideClick = () => {
         closeModal();
     };
+
+    const handlePlayerClick = (userId) => {
+        const player = playScheduleData[detailKey.key].players.find(p => p.userId === userId);
+        if (player) {
+            setSelectedPlayer(player);
+            setShowDetailModal(true);
+        }
+    };
+
+    const handleClosePlayerCard = () => {
+        setSelectedPlayer(null);
+    };
+
+    const handleMap = () => {
+        window.alert("엄");
+    };
+
+    // condition value
+    const hasMultipleImages = detailKey.key !== null && playScheduleData[detailKey.key] && playScheduleData[detailKey.key].images.length > 1;
+
+    const settings = {
+        dots: hasMultipleImages,
+        infinite: hasMultipleImages,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        beforeChange: (current, next) => setSlideIndex(next),
+        autoplay: hasMultipleImages,
+        autoplaySpeed: 2000,
+        pauseOnHover: true
+    };
+
+    // PlayerCard modal rendering
+    const renderPlayerCardModal = () => {
+        if (!selectedPlayer) return null;
+
+        return (
+            <Modal show={!!selectedPlayer} onClose={handleClosePlayerCard}>
+                <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center" onClick={handleClosePlayerCard}>
+                    <div className="absolute top-3 bg-white rounded-lg shadow-lg max-w-md mx-auto" onClick={e => e.stopPropagation()}>
+                        <PlayerCard player={selectedPlayer} onClose={handleClosePlayerCard} />
+                    </div>
+                    <button onClick={handleClosePlayerCard} className="absolute top-3 right-3 text-xl font-bold text-white">&times;</button>
+                </div>
+            </Modal>
+        );
+    };
+
+    function formatScheduleDateTime(dateStr) {
+        const [datePart, dayOfWeek] = dateStr.split(' ');
+    
+        const [year, month, day] = datePart.split('.').map(num => parseInt(num, 10));
+        const date = new Date(year, month - 1, day);
+    
+        const localeDate = date.toLocaleDateString('ko-KR', {
+            month: 'long',
+            day: 'numeric'
+        });
+    
+        const daysOfWeek = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+        const dayOfWeekFull = daysOfWeek[date.getDay()];
+    
+        return `${localeDate} ${dayOfWeekFull}`;
+    }
 
     return (
         <>
@@ -97,7 +209,7 @@ function PlaySchedulePage() {
                     ) : (
                     <div className="absolute flex flex-col justify-center left-[calc(1.13125rem)] top-[calc(13.5rem)] w-[calc(18.125rem)] h-[calc(4.375rem)]">
                         {playScheduleData.map((data, index) => (
-                            <CardForm key={index} className="absolute flex flex-col justify-center left-[calc(1.13125rem)] w-[calc(18.125rem)] h-[calc(4.375rem)] rounded-[15px]" style={{ top: `calc(${index * 6.4375}rem)`}} onClick={() => handlePlayScheduleClick(data.state, data.key)}>
+                            <CardForm key={index} className="absolute flex flex-col justify-center left-[calc(1.13125rem)] w-[calc(18.125rem)] h-[calc(4.375rem)] rounded-[15px] border-stone-70" style={{ top: `calc(${index * 6.4375}rem)`}} onClick={() => handlePlayScheduleClick(data.state, data.key)}>
                                 <CardHeader className="absolute flex items-center left-1/2 transform -translate-x-1/2 p-0 top-[calc(0.1875rem)] w-[calc(4.9375rem)] text-[calc(0.625rem)] text-gray-400">
                                     {data.date}
                                 </CardHeader>
@@ -137,33 +249,98 @@ function PlaySchedulePage() {
                             )
                         )}
                     </div>
-                )}          
+                    )
+                }          
                 {showDetailModal && (
                     <Modal show={showDetailModal} onClose={closeModal}>
-                        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center" onClick={handleOutsideClick}>
+                        {/* Modal content */}
+                        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center " onClick={handleOutsideClick}>
                             <div
-                                className="bg-stone-100 w-[calc(22.5rem)] h-[calc(31.25rem)] flex flex-col items-center justify-start relative overflow-y-auto p-4" 
+                                className="relative flex flex-col items-center justify-start bg-stone-100 w-[calc(20.5rem)] h-[calc(31.25rem)] rounded-xl overflow-x-hidden overflow-y-auto" 
                                 onClick={e => e.stopPropagation()}
                             >
+                                {/* close button */}
                                 <button
                                     onClick={closeModal} 
-                                    className="self-start mt-2 ml-2 w-5 h-5 bg-[#FF5F51] rounded-full shadow-sm font-bold text-white flex items-center justify-center"
+                                    className="self-start mt-2 mb-2 ml-2 w-5 h-5 bg-[#FF5F51] rounded-full shadow-sm font-bold text-white flex items-center justify-center"
                                 >
-                                    ×
+                                    &times;
                                 </button>
-                                <div className="w-full min-h-[300px] bg-red-700 my-4 p-4">
-                                    {/* Red box content */}
-                                    <p className="text-white text-center">빨간 박스 내용</p>
+                                {/* image content */}
+                                <div className="w-full min-h-[11.25rem] bg-white">
+                                    {playScheduleData[detailKey.key].images.length === 0 ? (
+                                        <>
+                                            <img className="inline w-full h-[calc(9.875rem)]" src={defaultFieldImage} alt={`기본 이미지`}/>
+                                            <div className="absolute flex right-5 items-center justify-center h-[calc(1.5rem)] top-40 text-white/50 text-[calc(0.5rem)]">
+                                                <strong>기본 제공되는 이미지 입니다</strong>
+                                            </div>
+                                        </>
+                                        ) : (
+                                        <>
+                                            <Slider {...settings}>
+                                                {playScheduleData[detailKey.key].images.map((image, index) => (
+                                                    <div key={index} className="w-full h-[calc(9.375rem)]">
+                                                        <img className="inline w-full h-auto" src={image} alt={`구장사진${index}`}/>
+                                                    </div>
+                                                ))}
+                                            </Slider>
+                                            <div className="absolute flex right-5 items-center justify-center w-[calc(4.03rem)] h-[calc(1.5rem)] top-40 rounded-full bg-black/30 text-white text-sm">
+                                                <strong>{`${slideIndex + 1}`}</strong>
+                                                &nbsp;|&nbsp;
+                                                <p className="text-gray-200">{`${playScheduleData[detailKey.key].images.length}`}</p>
+                                            </div>
+                                        </>
+                                        )
+                                    }
                                 </div>
-                                <div className="w-full flex flex-col items-center justify-center bg-blue-700 my-4 p-4 text-white">
-                                    <p>장소: {playScheduleData[detailKey.key - 1].place}</p>
-                                    <p>날짜: {playScheduleData[detailKey.key - 1].date} {playScheduleData[detailKey.key - 1].time}</p>
-                                    {playScheduleData[detailKey.key - 1].tags.map((tag, index) => (
-                                        <p key={index}>{tag}</p>
-                                    ))}
-                                    <p>글쓴이</p>
+                                {/* detail content */}
+                                <div className="flex flex-col w-full min-h-[22.5rem] p-4 bg-white text-black">
+                                    {/* place and time content */}
+                                    <div className="border-b-[calc(0.05rem)] mb-5">
+                                        <p className="font-pretendardBold text-base">{formatScheduleDateTime(playScheduleData[detailKey.key].date)} {playScheduleData[detailKey.key].time}</p>
+                                        <p className="text-[calc(1.65625rem)]">{playScheduleData[detailKey.key].place}</p>
+                                        <div className="text-[calc(.75rem)] mb-5">
+                                            {playScheduleData[detailKey.key].location}
+                                            &nbsp;
+                                            <span className="text-gray-600 text-[calc(0.5rem)] underline" onClick={() => handleMap()}>지도로 보기➚</span>
+                                        </div>
+                                        
+                                    </div>
+                                    {/* required content */}
+                                    <div className="grid grid-cols-2 gap-4 border-b-[calc(0.05rem)] mb-5">
+                                        <h3 className="col-span-2 text-lg font-pretendardBold mb-2">모집조건</h3>
+                                        {playScheduleData[detailKey.key].tags.map((tag, index) => (
+                                            <div key={index} className="flex items-center">
+                                                <img src={conditionIcons[index]} alt={`condition${index}`} width={20} height={20}/>
+                                                <p className="ml-3 text-[#282B33]">{tag}</p>
+                                            </div>
+                                        ))}
+                                        <div className="col-span-2 mb-5"></div>
+                                    </div>
+                                    {/* writer content */}
+                                    <div className="flex flex-col items-start">
+                                        <div className="flex items-center">
+                                            <img src={playScheduleData[detailKey.key].writer.profileImage} alt="프로필 사진" width={20} height={20}/>
+                                            <p className="ml-2 text-[calc(.8rem)]">{playScheduleData[detailKey.key].writer.name} 작성자가 진행해요</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <img className="w-full mb-4" src={playGroundIcon} alt="경기장" />
+                                {/* team info content */}
+                                <div className="flex flex-col items-start justify-center mt-4 bg-white relative">
+                                    <img className="w-full mb-4" src={playGroundIcon} alt="경기장 배경" />
+                                    <div className="flex justify-center w-full absolute bottom-1.5/2">
+                                        {
+                                            playScheduleData[detailKey.key].players.map((player, index) => (
+                                                <div key={index} className="flex flex-col items-center mx-2" onClick={() => handlePlayerClick(player.userId)}>
+                                                    <img className="rounded-full border-[calc(0.15rem)] border-stone-10 border-b-blue-300 object-cover object-center" src={player.profileImage} alt="프로필 사진" width={50} height={50}/>
+                                                    <p className="font-pretendardBold text-white text-[calc(0.7rem)]">{player.name}</p>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                    {/* test */}
+                                    {renderPlayerCardModal()}
+                                </div>
                             </div>
                         </div>
                     </Modal>
