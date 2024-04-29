@@ -16,21 +16,25 @@ public class UserRecruit {
     @Column(name = "recruit_rel_id")
     private Long id;
 
-    // Enum으로 변경? - "신청"(게시글에 신청한 상태), "승인"(신청 수락), "거절"(신청 거절 - 거절 알림, 재신청 방지)
-    private String recruit_permit;
+    private Boolean recruit_permit;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "writer_user_id")
+    private User writerUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "recruit_id")
     private Recruit recruit;
 
     @Builder(toBuilder = true)
-    public UserRecruit(Long id, String recruit_permit, User user, Recruit recruit) {
+    public UserRecruit(Long id, Boolean recruit_permit, User writerUser, User user, Recruit recruit) {
         this.id = id;
         this.recruit_permit = recruit_permit;
+        this.writerUser = writerUser;
         this.user = user;
         this.recruit = recruit;
     }

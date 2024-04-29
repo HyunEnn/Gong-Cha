@@ -1,9 +1,6 @@
 package com.b306.gongcha.dto;
 
-import com.b306.gongcha.entity.Difficulty;
-import com.b306.gongcha.entity.Gender;
-import com.b306.gongcha.entity.Indoor;
-import com.b306.gongcha.entity.Recruit;
+import com.b306.gongcha.entity.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -22,11 +19,13 @@ public class RecruitRequestDto {
     private Gender gender;
     private Indoor indoor;
     private Difficulty difficulty;
+    private Status status;
     private int currentPlayers;
     private int allPlayers;
+    private Long writerId;
 
     @Builder(toBuilder = true)
-    public RecruitRequestDto(String date, String address, String field, String info, Gender gender, Indoor indoor, Difficulty difficulty, int currentPlayers, int allPlayers) {
+    public RecruitRequestDto(String date, String address, String field, String info, Gender gender, Indoor indoor, Difficulty difficulty, Status status, int currentPlayers, int allPlayers, Long writerId) {
         this.date = date;
         this.address = address;
         this.field = field;
@@ -34,21 +33,24 @@ public class RecruitRequestDto {
         this.gender = gender;
         this.indoor = indoor;
         this.difficulty = difficulty;
+        this.status = status;
         this.currentPlayers = currentPlayers;
         this.allPlayers = allPlayers;
+        this.writerId = writerId;
     }
 
     public Recruit toRecruit() {
         Recruit recruit = Recruit.builder()
-                .date(this.getDate())
-                .address(this.getAddress())
-                .field(this.getField())
-                .info(this.getInfo())
-                .gender(this.getGender())
-                .indoor(this.getIndoor())
-                .difficulty(this.getDifficulty())
-                .currentPlayers(this.getCurrentPlayers())
-                .allPlayers(this.getAllPlayers())
+                .date(date)
+                .address(address)
+                .field(field)
+                .info(info)
+                .gender(gender)
+                .indoor(indoor)
+                .difficulty(difficulty)
+                .status(status)
+                .currentPlayers(currentPlayers)
+                .allPlayers(allPlayers)
                 .build();
         return recruit;
     }

@@ -16,8 +16,11 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
+    private String nickname;
+
     @Builder(toBuilder = true)
-    public User(Long id) {
+    public User(Long id, String nickname) {
         this.id = id;
+        this.nickname = nickname;
     }
 }

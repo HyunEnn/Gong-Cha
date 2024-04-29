@@ -48,7 +48,17 @@ public class RecruitServiceImpl implements RecruitService {
     @Override
     public void createRecruit(RecruitRequestDto recruitRequestDto) {
         Recruit recruit = recruitRequestDto.toRecruit();
-        recruitRepository.save(recruit);
+        Recruit savedRecruit = recruitRepository.save(recruit); // 저장된 게시글 id 조회
+        User writer = userRepository.findById(recruitRequestDto.getWriterId()).orElse(null); // 작성자 id 조회
+        // 신청자가 null인 상태로 신청
+        UserRecruit userRecruit = UserRecruit.builder()
+                .writerUser(writer)
+                .recruit_permit(false)
+                .recruit(savedRecruit)
+                .build();
+        userRecruitRepository.save(userRecruit);
+//        requestRecruit(savedRecruit.getId(), recruitRequestDto.getWriterId());
+
     }
 
     @Override
@@ -63,6 +73,7 @@ public class RecruitServiceImpl implements RecruitService {
                     .gender(recruitRequestDto.getGender())
                     .indoor(recruitRequestDto.getIndoor())
                     .difficulty(recruitRequestDto.getDifficulty())
+                    .status(recruitRequestDto.getStatus())
                     .currentPlayers(recruitRequestDto.getCurrentPlayers())
                     .allPlayers(recruitRequestDto.getAllPlayers())
                     .build();
@@ -81,11 +92,13 @@ public class RecruitServiceImpl implements RecruitService {
     public void requestRecruit(Long recruitId, Long userId) {
         Recruit recruit = recruitRepository.findById(recruitId).orElse(null);
         User user = userRepository.findById(userId).orElse(null);
-        if(recruit!=null && user != null) {
+        User writer = userRecruitRepository.findByRecruitIdAndUserId(recruitId, null).orElse(null).getWriterUser();
+        if(recruit != null && user != null) {
             UserRecruit userRecruit = UserRecruit.builder()
+                    .writerUser(writer)
                     .user(user)
                     .recruit(recruit)
-                    .recruit_permit("신청")
+                    .recruit_permit(false)
                     .build();
             userRecruitRepository.save(userRecruit);
         }
@@ -112,7 +125,7 @@ public class RecruitServiceImpl implements RecruitService {
         UserRecruit userRecruit = userRecruitRepository.findByRecruitIdAndUserId(recruitId, userId).orElse(null);
         if(userRecruit != null) {
             UserRecruit updateRecruit = userRecruit.toBuilder()
-                    .recruit_permit("승인")
+                    .recruit_permit(true)
                     .build();
             userRecruitRepository.save(updateRecruit);
         }
@@ -122,10 +135,7 @@ public class RecruitServiceImpl implements RecruitService {
     public void rejectRecruit(Long recruitId, Long userId) {
         UserRecruit userRecruit = userRecruitRepository.findByRecruitIdAndUserId(recruitId, userId).orElse(null);
         if(userRecruit != null) {
-            UserRecruit updateRecruit = userRecruit.toBuilder()
-                    .recruit_permit("거절")
-                    .build();
-            userRecruitRepository.save(updateRecruit);
+            userRecruitRepository.deleteById(userRecruit.getId());
         }
     }
 

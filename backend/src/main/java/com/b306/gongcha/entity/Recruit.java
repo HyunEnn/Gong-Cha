@@ -25,6 +25,8 @@ public class Recruit {
     private Indoor indoor;
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     @Column(name = "current_players")
     private int currentPlayers;
     @Column(name = "all_players")
@@ -32,31 +34,33 @@ public class Recruit {
 
     public RecruitResponseDto toRecruitResponseDto() {
         RecruitResponseDto recruitResponseDto = RecruitResponseDto.builder()
-                .date(this.getDate())
-                .address(this.getAddress())
-                .field(this.getField())
-                .info(this.getInfo())
-                .gender(this.getGender())
-                .indoor(this.getIndoor())
-                .difficulty(this.getDifficulty())
-                .currentPlayers(this.getCurrentPlayers())
-                .allPlayers(this.getAllPlayers())
+                .id(id)
+                .date(date)
+                .address(address)
+                .field(field)
+                .info(info)
+                .gender(gender)
+                .indoor(indoor)
+                .difficulty(difficulty)
+                .status(status)
+                .currentPlayers(currentPlayers)
+                .allPlayers(allPlayers)
                 .build();
         return recruitResponseDto;
     }
 
     @Builder(toBuilder = true)
-    public Recruit(Long id, String address, String field, Gender gender, Indoor indoor, Difficulty difficulty, String date, int currentPlayers, int allPlayers, String info) {
+    public Recruit(Long id, String date, String address, String field, String info, Gender gender, Indoor indoor, Difficulty difficulty, Status status, int currentPlayers, int allPlayers) {
         this.id = id;
+        this.date = date;
         this.address = address;
         this.field = field;
+        this.info = info;
         this.gender = gender;
         this.indoor = indoor;
         this.difficulty = difficulty;
-        this.date = date;
+        this.status = status;
         this.currentPlayers = currentPlayers;
         this.allPlayers = allPlayers;
-        this.info = info;
     }
-
 }

@@ -88,21 +88,22 @@ public class RecruitController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // 선수 구인 게시글 번호로 해당 게시글 신청 목록 조회
     @GetMapping("/request/{recruitId}")
     public ResponseEntity<List<UserRecruit>> getUserRecruitList(@PathVariable Long recruitId) {
         List<UserRecruit> userRecruitList = recruitService.getUserRecruitByRecruit(recruitId);
         return new ResponseEntity<>(userRecruitList, HttpStatus.OK);
     }
 
+    // 선수 구인 게시글 번호와 신청 선수 번호로 개별 신청 조회
     @GetMapping("/request/{recruitId}/{userId}")
     public ResponseEntity<UserRecruit> getUserRecruit(@PathVariable Long recruitId, @PathVariable Long userId) {
         UserRecruit userRecruit = recruitService.getUserRecruit(recruitId, userId);
         return new ResponseEntity<>(userRecruit, HttpStatus.OK);
     }
 
-    // 선수 구인 게시글 구인 신청 승인 - 경로 중복 오류: accept, reject 등 표시 필요 or accept 또는 reject 입력을 받아서 저장
-    // 승인 시 신청 선수 정보를 신청한 게시글의 팀에 추가
-    @PatchMapping("/{recruitId}/accept/{userId}") // 변경 예정 - API 컨벤션: API에 행위가 들어가면 안됨
+    // 선수 구인 게시글 구인 신청 승인
+    @PatchMapping("/{recruitId}/{userId}")
     public ResponseEntity<Void> acceptRecruit(@PathVariable Long recruitId, @PathVariable Long userId) {
         if(recruitService.getRecruit(recruitId) != null) {
             recruitService.acceptRecruit(recruitId, userId);
@@ -112,8 +113,7 @@ public class RecruitController {
     }
 
     // 선수 구인 게시글 구인 신청 거절
-    // 신청 정보 삭제 or 거절 상태?
-    @PatchMapping("/{recruitId}/reject/{userId}") // 변경 예정 - API 컨벤션: API에 행위가 들어가면 안됨
+    @DeleteMapping("/{recruitId}/{userId}")
     public ResponseEntity<Void> rejectRecruit(@PathVariable Long recruitId, @PathVariable Long userId) {
         if(recruitService.getRecruit(recruitId) != null) {
             recruitService.rejectRecruit(recruitId, userId);
