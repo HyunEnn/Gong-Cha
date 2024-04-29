@@ -16,17 +16,20 @@ public class User {
     private long id;
 
     private String name;
+    private String nickname;
     private String userInfo;
     private String email;
-    private Enum role;
+    private Role role;
     private String provider;
     private String gender;
     private int mannerScore;
     private int yellowCard;
 
     @Builder
-    public User(String name, String userInfo, String email, Enum role, String provider, String gender, int mannerScore, int yellowCard) {
+    public User(Long id, String name, String nickname, String userInfo, String email, Role role, String provider, String gender, int mannerScore, int yellowCard) {
+        this.id = id;
         this.name = name;
+        this.nickname = nickname;
         this.userInfo = userInfo;
         this.email = email;
         this.role = role;

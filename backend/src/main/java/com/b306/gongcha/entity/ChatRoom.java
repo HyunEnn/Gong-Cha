@@ -29,7 +29,7 @@ public class ChatRoom {
     private LocalDateTime createAt;
 
     @Builder
-    public ChatRoom(User sender, User receiver) {
+    public ChatRoom(Long id, User sender, User receiver) {
         this.sender = sender;
         this.receiver = receiver;
         this.createAt = LocalDateTime.now();
