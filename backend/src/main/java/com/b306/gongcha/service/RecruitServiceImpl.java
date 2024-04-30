@@ -138,6 +138,9 @@ public class RecruitServiceImpl implements RecruitService {
 
         UserRecruit userRecruit = userRecruitRepository.findByRecruitIdAndUserId(recruitId, userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST));
         userRecruit.acceptRecruit();
+        // 승인 시 현재 유저 수 1 증가
+        Recruit recruit = recruitRepository.findById(recruitId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOARD));
+        recruit.updateCurrentPlayers();
         return userRecruit;
     }
 

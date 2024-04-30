@@ -32,6 +32,10 @@ public class Recruit {
     @Column(name = "all_players")
     private int allPlayers;
 
+    public void updateCurrentPlayers() {
+        this.currentPlayers++;
+    }
+
     public void updateRecruit(RecruitRequest recruitRequest) {
 
         this.date = recruitRequest.getDate();
