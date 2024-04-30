@@ -19,14 +19,14 @@ public class User {
     private String nickname;
     private String userInfo;
     private String email;
-    private Role role;
+    private UserRole role;
     private String provider;
     private String gender;
     private int mannerScore;
     private int yellowCard;
 
     @Builder
-    public User(Long id, String name, String nickname, String userInfo, String email, Role role, String provider, String gender, int mannerScore, int yellowCard) {
+    public User(Long id, String name, String nickname, String userInfo, String email, UserRole role, String provider, String gender, int mannerScore, int yellowCard) {
         this.id = id;
         this.name = name;
         this.nickname = nickname;

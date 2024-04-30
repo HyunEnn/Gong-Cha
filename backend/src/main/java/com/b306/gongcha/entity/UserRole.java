@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Role {
+public enum UserRole {
     /*
         USER: 회원
         BLOCK: 회원정지

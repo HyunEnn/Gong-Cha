@@ -89,6 +89,7 @@ public class RecruitServiceImpl implements RecruitService {
     }
 
     @Override
+    @Transactional
     public void requestRecruit(Long recruitId, Long userId) {
         Recruit recruit = recruitRepository.findById(recruitId).orElse(null);
         User user = userRepository.findById(userId).orElse(null);
