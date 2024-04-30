@@ -1,7 +1,7 @@
 package com.b306.gongcha.entity;
 
-import com.b306.gongcha.dto.RecruitRequestDto;
-import com.b306.gongcha.dto.RecruitResponseDto;
+import com.b306.gongcha.dto.request.RecruitRequest;
+import com.b306.gongcha.dto.response.RecruitResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,8 +32,23 @@ public class Recruit {
     @Column(name = "all_players")
     private int allPlayers;
 
-    public RecruitResponseDto toRecruitResponseDto() {
-        RecruitResponseDto recruitResponseDto = RecruitResponseDto.builder()
+    public void updateRecruit(RecruitRequest recruitRequest) {
+
+        this.date = recruitRequest.getDate();
+        this.address = recruitRequest.getAddress();
+        this.field = recruitRequest.getField();
+        this.info = recruitRequest.getInfo();
+        this.gender = recruitRequest.getGender();
+        this.indoor = recruitRequest.getIndoor();
+        this.difficulty = recruitRequest.getDifficulty();
+        this.status = recruitRequest.getStatus();
+        this.currentPlayers = recruitRequest.getCurrentPlayers();
+        this.allPlayers = recruitRequest.getAllPlayers();
+    }
+
+    public RecruitResponse toRecruitResponse() {
+
+        RecruitResponse recruitResponse = RecruitResponse.builder()
                 .id(id)
                 .date(date)
                 .address(address)
@@ -46,11 +61,12 @@ public class Recruit {
                 .currentPlayers(currentPlayers)
                 .allPlayers(allPlayers)
                 .build();
-        return recruitResponseDto;
+        return recruitResponse;
     }
 
     @Builder(toBuilder = true)
     public Recruit(Long id, String date, String address, String field, String info, Gender gender, Indoor indoor, Difficulty difficulty, Status status, int currentPlayers, int allPlayers) {
+
         this.id = id;
         this.date = date;
         this.address = address;

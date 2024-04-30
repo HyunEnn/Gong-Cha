@@ -20,6 +20,7 @@ public class User {
 
     @Builder(toBuilder = true)
     public User(Long id, String nickname) {
+
         this.id = id;
         this.nickname = nickname;
     }

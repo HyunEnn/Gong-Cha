@@ -1,4 +1,4 @@
-package com.b306.gongcha.dto;
+package com.b306.gongcha.dto.response;
 
 import com.b306.gongcha.entity.Difficulty;
 import com.b306.gongcha.entity.Gender;
@@ -9,7 +9,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
-public class RecruitResponseDto {
+public class RecruitResponse {
 
     private Long id;
     private String date;
@@ -24,7 +24,7 @@ public class RecruitResponseDto {
     private int allPlayers;
 
     @Builder(toBuilder = true)
-    public RecruitResponseDto(Long id, String date, String address, String field, String info, Gender gender, Indoor indoor, Difficulty difficulty, Status status, int currentPlayers, int allPlayers) {
+    public RecruitResponse(Long id, String date, String address, String field, String info, Gender gender, Indoor indoor, Difficulty difficulty, Status status, int currentPlayers, int allPlayers) {
         this.id = id;
         this.date = date;
         this.address = address;

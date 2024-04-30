@@ -1,5 +1,6 @@
 package com.b306.gongcha.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -20,18 +21,27 @@ public class UserRecruit {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_user_id")
+    @JsonIgnore
     private User writerUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruit_id")
+    @JsonIgnore
     private Recruit recruit;
+
+    public void acceptRecruit() {
+
+        this.recruit_permit = true;
+    }
 
     @Builder(toBuilder = true)
     public UserRecruit(Long id, Boolean recruit_permit, User writerUser, User user, Recruit recruit) {
+
         this.id = id;
         this.recruit_permit = recruit_permit;
         this.writerUser = writerUser;

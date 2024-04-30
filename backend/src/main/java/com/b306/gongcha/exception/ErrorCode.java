@@ -25,7 +25,13 @@ public enum ErrorCode {
     EMPTY_FILE(HttpStatus.BAD_REQUEST, "파일이 없습니다."),
     NOT_VALID_EXTENSION(HttpStatus.BAD_REQUEST, "유효하지 않은 확장자입니다."),
     FILE_INPUT_FAIL(HttpStatus.BAD_REQUEST, "파일 입력에 실패했습니다."),
-    JSON_PARSING_FAIL(HttpStatus.BAD_REQUEST, "JSON 파싱에 실패했습니다.");
+    JSON_PARSING_FAIL(HttpStatus.BAD_REQUEST, "JSON 파싱에 실패했습니다."),
+
+    NOT_FOUND_USER(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다."),
+    NOT_FOUND_BOARD(HttpStatus.NOT_FOUND, "해당 게시글을 찾을 수 없습니다."),
+    NOT_FOUND_REQUEST(HttpStatus.NOT_FOUND, "해당 신청 내역을 찾을 수 없습니다."),
+    BOARD_REQUEST_FAIL(HttpStatus.BAD_REQUEST, "신청에 실패하였습니다."),
+    BOARD_REQUEST_DUPLICATE(HttpStatus.BAD_REQUEST, "이미 신청이 완료되었습니다.");
 
     private final HttpStatus httpStatus;
     private final String detail;
