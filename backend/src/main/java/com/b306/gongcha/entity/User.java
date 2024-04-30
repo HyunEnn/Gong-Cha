@@ -1,13 +1,12 @@
 package com.b306.gongcha.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
@@ -16,11 +15,18 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    private String nickname;
+    private String name;
+    private String userInfo;
+    private String email;
+    private String role;
+    private String provider;
 
-    @Builder(toBuilder = true)
-    public User(Long id, String nickname) {
-        this.id = id;
-        this.nickname = nickname;
+    // 편의 메서드
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateEmail(String email) {
+        this.email = email;
     }
 }
