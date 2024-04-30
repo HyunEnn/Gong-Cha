@@ -14,9 +14,9 @@ function BottomNav() {
 
     return (
         <div className="flex flex-col items-center justify-between min-h-screen ">
-            <div className="mx-4 overflow-x-hidden overflow-y-auto h-[calc(100vh-96px)]">
-                <Outlet />
-            </div>
+        <div className="mx-4 overflow-x-hidden overflow-y-auto h-[calc(100vh-96px)] min-w-[calc(360px)]">
+            <Outlet />
+        </div>
             <footer className="fixed bottom-0 flex items-center justify-center w-full bg-white border-black shadow-inner shadow-brand-400/10 min-h-24">
                 <div className="flex flex-row items-center w-full justify-evenly">
                     <Link to="/main">

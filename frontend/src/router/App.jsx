@@ -10,6 +10,7 @@ import ChatPage from '@/pages/ChatPage';
 import MyPage from '@/pages/MyPage';
 import PlaySchedulePage from '@/pages/PlaySchedulePage';
 import PlayerCardPage from '@/pages/PlayerCardPage';
+import AlarmPage from '@/pages/AlarmPage';
 
 const router = createBrowserRouter([
     // {
@@ -32,6 +33,8 @@ const router = createBrowserRouter([
         path: '/login',
         element: <LoginPage />,
     },
+
+
     {
         path: '/',
         element: <BottomNav />,
@@ -63,6 +66,11 @@ const router = createBrowserRouter([
                     },
                 ],
             },
+            {
+                path: '/alarm',
+                element: <AlarmPage />,
+            }
+ 
         ],
     },
 ]);
