@@ -2,14 +2,13 @@ package com.b306.gongcha.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class UserRecruit {
 
     @Id
@@ -39,13 +38,4 @@ public class UserRecruit {
         this.recruit_permit = true;
     }
 
-    @Builder(toBuilder = true)
-    public UserRecruit(Long id, Boolean recruit_permit, User writerUser, User user, Recruit recruit) {
-
-        this.id = id;
-        this.recruit_permit = recruit_permit;
-        this.writerUser = writerUser;
-        this.user = user;
-        this.recruit = recruit;
-    }
 }

@@ -7,7 +7,9 @@ import com.b306.gongcha.entity.Status;
 import lombok.*;
 
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @ToString
 public class RecruitResponse {
 
@@ -23,18 +25,4 @@ public class RecruitResponse {
     private int currentPlayers;
     private int allPlayers;
 
-    @Builder(toBuilder = true)
-    public RecruitResponse(Long id, String date, String address, String field, String info, Gender gender, Indoor indoor, Difficulty difficulty, Status status, int currentPlayers, int allPlayers) {
-        this.id = id;
-        this.date = date;
-        this.address = address;
-        this.field = field;
-        this.info = info;
-        this.gender = gender;
-        this.indoor = indoor;
-        this.difficulty = difficulty;
-        this.status = status;
-        this.currentPlayers = currentPlayers;
-        this.allPlayers = allPlayers;
-    }
 }
