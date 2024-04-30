@@ -33,10 +33,10 @@ function BottomNav() {
                             alt="채팅 아이콘"
                         />
                     </Link>
-                    <Link to="/my">
+                    <Link to="/mypage">
                         <img
-                            className={`p-3 ${isActive('/my')}`}
-                            src={location.pathname === '/my' ? myIconColored : myIcon}
+                            className={`p-3 ${isActive('/mypage')}`}
+                            src={location.pathname === '/mypage' ? myIconColored : myIcon}
                             alt="마이페이지 아이콘"
                         />
                     </Link>

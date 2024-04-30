@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
-
+import MyPageWithTransition from '@/components/MyPageWithTransition';
 import ErrorPage from '@/pages/ErrorPage';
 import Test from '@/pages/Test';
 import OnBoardPage from '@/pages/OnBoardPage';
@@ -13,6 +13,9 @@ import FindPlayerInputPage from '@/pages/FindPlayerInputPage';
 import FindPlayerDetailPage from '@/pages/FindPlayerDetailPage';
 import FindTeamBoardPage from '@/pages/FindTeamBoardPage';
 import FindMatchBoardPage from '@/pages/FindMatchBoardPage';
+import PlaySchedulePage from '@/pages/PlaySchedulePage';
+import PlayerCardPage from '@/pages/PlayerCardPage';
+import AlarmPage from '@/pages/AlarmPage';
 
 const router = createBrowserRouter([
     // {
@@ -35,6 +38,8 @@ const router = createBrowserRouter([
         path: '/login',
         element: <LoginPage />,
     },
+
+
     {
         path: '/',
         element: <BottomNav />,
@@ -49,9 +54,28 @@ const router = createBrowserRouter([
                 element: <ChatPage />,
             },
             {
-                path: '/my',
-                element: <MyPage />,
+                path: '/mypage',
+                element: <MyPageWithTransition />,
+                children: [
+                    {
+                        index: true,
+                        element: <MyPage />
+                    },
+                    {
+                        path: 'playschedule',
+                        element: <PlaySchedulePage />,
+                    },
+                    {
+                        path: 'playercard',
+                        element: <PlayerCardPage />,
+                    },
+                ],
             },
+            {
+                path: '/alarm',
+                element: <AlarmPage />,
+            }
+ 
             {
                 path: '/findplayer/board',
                 element: <FindPlayerBoardPage />,

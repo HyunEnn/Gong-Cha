@@ -96,6 +96,7 @@ module.exports = {
                 pretendardRegular: ['Pretendard-Regular'], // Adds a new `font-display` class
                 pretendardBold: ['Pretendard-Bold'],
                 ygJalnan: ['yg-jalnan'],
+                pretendardBlack: ['Pretendard-Black', 'sans-serif'],
             },
             borderRadius: {
                 lg: 'var(--radius)',
@@ -115,6 +116,10 @@ module.exports = {
             animation: {
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out',
+            },
+            scale: {
+                92: '.92',
+                98: '.98',
             },
         },
     },
