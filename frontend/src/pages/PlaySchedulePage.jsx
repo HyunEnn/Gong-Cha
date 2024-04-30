@@ -13,6 +13,7 @@ import {
     CardHeader,
 } from "@/components/CardForm"
 import defaultFieldImage from '@/assets/images/defaultField.png';
+import defaultProfileImage from '@/assets/images/defaultProfileImage.png';
 import lArrowIcon from '@/assets/icons/lArrow.svg';
 import rArrowIcon from '@/assets/icons/rArrow.svg';
 import condition0Icon from '@/assets/icons/gender.svg';
@@ -353,7 +354,7 @@ function PlaySchedulePage() {
                                     {/* writer content */}
                                     <div className="flex flex-col items-start">
                                         <div className="flex items-center">
-                                            <img src={playScheduleData[detailKey.key].writer.profileImage} alt="프로필 사진" width={20} height={20}/>
+                                            <img src={defaultProfileImage} alt="작성자 기본 사진" width={20} height={20}/>
                                             <p className="ml-2 text-[calc(.8rem)]">{playScheduleData[detailKey.key].writer.name} 작성자가 진행해요</p>
                                         </div>
                                     </div>
