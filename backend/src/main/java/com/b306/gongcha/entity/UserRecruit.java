@@ -18,19 +18,16 @@ public class UserRecruit {
 
     private Boolean recruit_permit;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "writer_user_id")
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY) // EAGER로 변경 시, 선수 구인 게시글 신청 시(requestRecruit) 오류 해결
+    @JoinColumn(name = "writer_user_id") // JoinColumn - 해당 오류와는 관계 없는 것으로 보임
     private User writerUser;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) // EAGER로 변경 시, 선수 구인 게시글 신청 승인 시(acceptRecruit) 오류 해결
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) // EAGER로 변경 시, 선수 구인 게시글 신청 승인 시(acceptRecruit) 오류 해결
     @JoinColumn(name = "recruit_id")
-    @JsonIgnore
     private Recruit recruit;
 
     public void acceptRecruit() {
