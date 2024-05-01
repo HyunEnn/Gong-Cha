@@ -2,6 +2,7 @@ package com.b306.gongcha.service;
 
 import com.b306.gongcha.dto.request.RecruitRequest;
 import com.b306.gongcha.dto.response.RecruitResponse;
+import com.b306.gongcha.dto.response.UserRecruitResponse;
 import com.b306.gongcha.entity.Recruit;
 import com.b306.gongcha.entity.User;
 import com.b306.gongcha.entity.UserRecruit;
@@ -11,8 +12,6 @@ import com.b306.gongcha.repository.RecruitRepository;
 import com.b306.gongcha.repository.UserRecruitRepository;
 import com.b306.gongcha.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,14 +31,10 @@ public class RecruitServiceImpl implements RecruitService {
     @Override
     public List<RecruitResponse> getAllRecruits() {
 
-        // 람다식으로 변경 필요
         List<RecruitResponse> recruitResponseList = new ArrayList<>();
         List<Recruit> recruitList = recruitRepository.findAll();
         // 전체 리스트 조회 후 RecruitResponse List 형태로 반환
-        for(Recruit r : recruitList) {
-            RecruitResponse recruitResponse = r.toRecruitResponse();
-            recruitResponseList.add(recruitResponse);
-        }
+        recruitList.forEach(r -> recruitResponseList.add(r.toRecruitResponse()));
         return recruitResponseList;
     }
 
@@ -107,7 +102,7 @@ public class RecruitServiceImpl implements RecruitService {
 
     // 선수 구인 게시글 구인 신청
     @Override
-    public UserRecruit requestRecruit(Long recruitId, Long userId) {
+    public UserRecruitResponse requestRecruit(Long recruitId, Long userId) {
 
         // 게시글 정보, 신청자 정보, 작성자 정보 받아오기
         Recruit recruit = recruitRepository.findById(recruitId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOARD));
@@ -126,41 +121,46 @@ public class RecruitServiceImpl implements RecruitService {
                 .recruit(recruit)
                 .recruit_permit(false)
                 .build();
-        userRecruitRepository.save(userRecruit);
-        return userRecruit;
+        return userRecruitRepository.save(userRecruit).toUserRecruitResponse();
     }
 
     // 신청자 번호로 해당 유저의 신청 내역 조회
     @Override
-    public List<UserRecruit> getUserRecruitByUser(Long userId) {
+    public List<UserRecruitResponse> getUserRecruitByUser(Long userId) {
 
-        return userRecruitRepository.findAllByUserId(userId);
+        List<UserRecruitResponse> userRecruitResponseList = new ArrayList<>();
+        List<UserRecruit> userRecruitList = userRecruitRepository.findAllByUserId(userId);
+        userRecruitList.forEach(ur -> userRecruitResponseList.add(ur.toUserRecruitResponse()));
+        return userRecruitResponseList;
     }
 
     // 게시글 번호로 해당 게시글이 받은 신청 내역 조회
     @Override
-    public List<UserRecruit> getUserRecruitByRecruit(Long recruitId) {
+    public List<UserRecruitResponse> getUserRecruitByRecruit(Long recruitId) {
 
-        return userRecruitRepository.findAllByRecruitId(recruitId);
+        List<UserRecruitResponse> userRecruitResponseList = new ArrayList<>();
+        List<UserRecruit> userRecruitList = userRecruitRepository.findAllByRecruitId(recruitId);
+        userRecruitList.forEach(ur -> userRecruitResponseList.add(ur.toUserRecruitResponse()));
+        return userRecruitResponseList;
     }
 
     // 게시글 번호와 신청자 번호로 해당 게시글에 신청한 유저 내역 조회 - 신청 여부 반환을 위해 Boolean return 하도록 바꿀 예정
     @Override
-    public UserRecruit getUserRecruit(Long recruitId, Long userId) {
+    public UserRecruitResponse getUserRecruit(Long recruitId, Long userId) {
 
-        return userRecruitRepository.findByRecruitIdAndUserId(recruitId, userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST));
+        return userRecruitRepository.findByRecruitIdAndUserId(recruitId, userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST)).toUserRecruitResponse();
     }
 
     // 선수 구인 게시글 구인 신청 승인
     @Override
-    public UserRecruit acceptRecruit(Long recruitId, Long userId) {
+    public UserRecruitResponse acceptRecruit(Long recruitId, Long userId) {
 
         UserRecruit userRecruit = userRecruitRepository.findByRecruitIdAndUserId(recruitId, userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST));
         userRecruit.acceptRecruit();
         // 승인 시 현재 유저 수 1 증가
         Recruit recruit = recruitRepository.findById(recruitId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOARD));
         recruit.updateCurrentPlayers();
-        return userRecruit;
+        return userRecruit.toUserRecruitResponse();
     }
 
     // 선수 구인 게시글 구인 신청 거절

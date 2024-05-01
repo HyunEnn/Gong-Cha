@@ -1,5 +1,7 @@
 package com.b306.gongcha.entity;
 
+import com.b306.gongcha.dto.response.RecruitResponse;
+import com.b306.gongcha.dto.response.UserRecruitResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,6 +35,17 @@ public class UserRecruit {
     public void acceptRecruit() {
 
         this.recruit_permit = true;
+    }
+
+    public UserRecruitResponse toUserRecruitResponse() {
+
+        UserRecruitResponse userRecruitResponse = UserRecruitResponse.builder()
+                .id(id)
+                .recruit_permit(recruit_permit)
+                .writerNickname(writerUser.getNickname())
+                .userNickname(user.getNickname())
+                .build();
+        return userRecruitResponse;
     }
 
 }
