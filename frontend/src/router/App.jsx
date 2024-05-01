@@ -8,6 +8,11 @@ import BottomNav from '@/nav/BottomNav';
 import MainPage from '@/pages/MainPage';
 import ChatPage from '@/pages/ChatPage';
 import MyPage from '@/pages/MyPage';
+import FindPlayerBoardPage from '@/pages/FindPlayerBoardPage';
+import FindPlayerInputPage from '@/pages/FindPlayerInputPage';
+import FindPlayerDetailPage from '@/pages/FindPlayerDetailPage';
+import FindTeamBoardPage from '@/pages/FindTeamBoardPage';
+import FindMatchBoardPage from '@/pages/FindMatchBoardPage';
 import PlaySchedulePage from '@/pages/PlaySchedulePage';
 import PlayerCardPage from '@/pages/PlayerCardPage';
 import AlarmPage from '@/pages/AlarmPage';
@@ -34,7 +39,6 @@ const router = createBrowserRouter([
         element: <LoginPage />,
     },
 
-
     {
         path: '/',
         element: <BottomNav />,
@@ -54,7 +58,7 @@ const router = createBrowserRouter([
                 children: [
                     {
                         index: true,
-                        element: <MyPage />
+                        element: <MyPage />,
                     },
                     {
                         path: 'playschedule',
@@ -69,8 +73,27 @@ const router = createBrowserRouter([
             {
                 path: '/alarm',
                 element: <AlarmPage />,
-            }
- 
+            },
+            {
+                path: '/findplayer/board',
+                element: <FindPlayerBoardPage />,
+            },
+            {
+                path: '/findplayer/input',
+                element: <FindPlayerInputPage />,
+            },
+            {
+                path: '/findplayer/detail',
+                element: <FindPlayerDetailPage />,
+            },
+            {
+                path: '/findteam/board',
+                element: <FindTeamBoardPage />,
+            },
+            {
+                path: '/findmatch/board',
+                element: <FindMatchBoardPage />,
+            },
         ],
     },
 ]);
