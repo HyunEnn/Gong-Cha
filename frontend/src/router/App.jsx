@@ -39,7 +39,6 @@ const router = createBrowserRouter([
         element: <LoginPage />,
     },
 
-
     {
         path: '/',
         element: <BottomNav />,
@@ -59,7 +58,7 @@ const router = createBrowserRouter([
                 children: [
                     {
                         index: true,
-                        element: <MyPage />
+                        element: <MyPage />,
                     },
                     {
                         path: 'playschedule',
@@ -74,8 +73,7 @@ const router = createBrowserRouter([
             {
                 path: '/alarm',
                 element: <AlarmPage />,
-            }
- 
+            },
             {
                 path: '/findplayer/board',
                 element: <FindPlayerBoardPage />,
