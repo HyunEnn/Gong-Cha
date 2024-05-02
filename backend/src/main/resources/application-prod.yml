@@ -1,0 +1,20 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    source:
+      username: ${PROD_MYSQL_USERNAME}
+      password: ${PROD_MYSQL_PASSWORD}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: ${PROD_MYSQL_URI}:3306/perfume?useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: info
+        type:
+          descriptor:
+            sql: trace
