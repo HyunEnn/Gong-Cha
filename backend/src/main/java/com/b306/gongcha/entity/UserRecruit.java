@@ -22,16 +22,15 @@ public class UserRecruit {
 
     private Boolean recruit_permit;
 
-    @ManyToOne(fetch = FetchType.LAZY) // EAGER로 변경 시, 선수 구인 게시글 신청 시(requestRecruit) 오류 해결
-    @JoinColumn(name = "writer_user_id") // JoinColumn - 해당 오류와는 관계 없는 것으로 보임
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "writer_user_id")
     private User writerUser;
 
-    @ManyToOne(fetch = FetchType.LAZY) // EAGER로 변경 시, 선수 구인 게시글 신청 승인 시(acceptRecruit) 오류 해결
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY) // EAGER로 변경 시, 선수 구인 게시글 신청 승인 시(acceptRecruit) 오류 해결
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruit_id")
     private Recruit recruit;
 
