@@ -44,8 +44,8 @@ public class UserRecruit {
         UserRecruitResponse userRecruitResponse = UserRecruitResponse.builder()
                 .id(id)
                 .recruit_permit(recruit_permit)
-                .writerNickname(writerUser.getNickname())
-                .userNickname(user.getNickname())
+                .writerNickname(writerUser.getName())
+                .userNickname(user.getName())
                 .build();
         return userRecruitResponse;
     }

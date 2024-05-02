@@ -76,10 +76,10 @@ public class SecurityConfig {
 
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/my").permitAll()
-                        .requestMatchers("/reissue").permitAll()
-                        .anyRequest().authenticated());
+                .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/my").permitAll()
+                .requestMatchers("/reissue").permitAll()
+                .anyRequest().authenticated());
 
         //세션 설정 : STATELESS
         http.sessionManagement((session) -> session
