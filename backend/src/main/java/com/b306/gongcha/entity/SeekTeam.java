@@ -5,6 +5,9 @@ import com.b306.gongcha.dto.response.SeekTeamResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
@@ -33,6 +36,9 @@ public class SeekTeam {
 
     @Enumerated(EnumType.STRING)
     private Status status; // 모집 상태 정보
+
+    @OneToMany(mappedBy = "seekTeam", cascade = CascadeType.REMOVE)
+    private List<UserSeekTeam> userSeekTeamList = new ArrayList<>();
 
     public void updateSeekTeam(SeekTeamRequest seekTeamRequest) {
 
