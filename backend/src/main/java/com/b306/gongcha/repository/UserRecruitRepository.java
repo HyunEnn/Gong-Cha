@@ -10,4 +10,5 @@ public interface UserRecruitRepository extends JpaRepository<UserRecruit, Long> 
     List<UserRecruit> findAllByRecruitId(Long recruitId);
     List<UserRecruit> findAllByUserId(Long userId);
     Optional<UserRecruit> findByRecruitIdAndUserId(Long recruitId, Long userId);
+    void deleteAllByRecruitId(Long recruitId);
 }

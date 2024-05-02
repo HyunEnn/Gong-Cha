@@ -1,14 +1,18 @@
 package com.b306.gongcha.entity;
 
+import com.b306.gongcha.dto.response.RecruitResponse;
+import com.b306.gongcha.dto.response.UserRecruitResponse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class UserRecruit {
 
     @Id
@@ -26,16 +30,24 @@ public class UserRecruit {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruit_id")
     private Recruit recruit;
 
-    @Builder(toBuilder = true)
-    public UserRecruit(Long id, Boolean recruit_permit, User writerUser, User user, Recruit recruit) {
-        this.id = id;
-        this.recruit_permit = recruit_permit;
-        this.writerUser = writerUser;
-        this.user = user;
-        this.recruit = recruit;
+    public void acceptRecruit() {
+
+        this.recruit_permit = true;
     }
+
+    public UserRecruitResponse toUserRecruitResponse() {
+
+        UserRecruitResponse userRecruitResponse = UserRecruitResponse.builder()
+                .id(id)
+                .recruit_permit(recruit_permit)
+                .writerNickname(writerUser.getNickname())
+                .userNickname(user.getNickname())
+                .build();
+        return userRecruitResponse;
+    }
+
 }
