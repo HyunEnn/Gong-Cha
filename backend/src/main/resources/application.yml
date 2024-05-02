@@ -11,11 +11,11 @@ spring:
       host: localhost
       port: ${REDIS_PORT}
 
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/gongcha?serverTimezone=Asia/Seoul
-    username: ${MYSQL_ID}
-    password: ${MYSQL_PASSWORD}
+  # datasource:
+  #   driver-class-name: com.mysql.cj.jdbc.Driver
+  #   url: jdbc:mysql://localhost:3306/gongcha?serverTimezone=Asia/Seoul
+  #   username: ${MYSQL_ID}
+  #   password: ${MYSQL_PASSWORD}
 
   jpa:
     show-sql: true
