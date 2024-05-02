@@ -15,7 +15,6 @@ const ReportModal = ({ onClose }) => {
     };
 
     const handleSubmit = () => {
-        // 여기에 모달을 닫고, 신고 내용을 처리하는 로직을 추가하세요.
         onClose();
     };
 

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 import Modal from '@/components/Modal';
 import ReportModal from '@/components/ReportModal';
+import EvaluationModal from '@/components/EvaluationModal';
 import PlayerCard from '@/components/PlayerCard';
 import {
     CardForm,
@@ -17,6 +18,7 @@ import rArrowIcon from '@/assets/icons/rArrow.svg';
 import reportIcon from '@/assets/icons/report.svg';
 import emptyGhostIcon from '@/assets/icons/emptyGhost.svg';
 import playGroundIcon from '@/assets/icons/playground.svg';
+import evaluationIcon from '@/assets/images/evaluation.png';
 import { playHistoryDummyData } from '@/data/dummyData'; // dummy data
 
 function PlayHistoryPage() {
@@ -28,6 +30,8 @@ function PlayHistoryPage() {
     const [startY, setStartY] = useState(0);
     const [dragging, setDragging] = useState(false);
     const [translateY, setTranslateY] = useState(0);
+    const [showReportModal, setShowReportModal] = useState(false);
+    const [showEvaluationModal, setShowEvaluationModal] = useState(false);
 
     useEffect(() => {
         setPlayHistoryData(    // dummy data
@@ -150,6 +154,22 @@ function PlayHistoryPage() {
         setTranslateY(0);
     };
 
+    const openReportModal = () => {
+        setShowReportModal(true);
+    };
+
+    const closeReportModal = () => {
+        setShowReportModal(false);
+    };
+
+    const openEvaluationModal = () => {
+        setShowEvaluationModal(true);
+    };
+
+    const closeEvaluationModal = () => {
+        setShowEvaluationModal(false);
+    };
+
     // PlayerCard modal rendering
     const renderPlayerCardModal = () => {
         if (!selectedPlayer) return null;
@@ -174,33 +194,6 @@ function PlayHistoryPage() {
         );
     };
 
-    function formatScheduleDateTime(dateStr) {
-        const [datePart, dayOfWeek] = dateStr.split(' ');
-    
-        const [year, month, day] = datePart.split('.').map(num => parseInt(num, 10));
-        const date = new Date(year, month - 1, day);
-    
-        const localeDate = date.toLocaleDateString('ko-KR', {
-            month: 'long',
-            day: 'numeric'
-        });
-    
-        const daysOfWeek = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
-        const dayOfWeekFull = daysOfWeek[date.getDay()];
-    
-        return `${localeDate} ${dayOfWeekFull}`;
-    }
-    const [showReportModal, setShowReportModal] = useState(false); // 신고 모달 표시 상태
-
-    // ReportModal 열기 함수
-    const openReportModal = () => {
-        setShowReportModal(true);
-    };
-
-    // ReportModal 닫기 함수
-    const closeReportModal = () => {
-        setShowReportModal(false);
-    };
     return (
         <>
             <>
@@ -304,6 +297,11 @@ function PlayHistoryPage() {
                                     {/* test */}
                                     {renderPlayerCardModal()}
                                 </div>
+                                {/* evaluationIcon */}
+                                <img className="absolute top-0 right-0 mt-[calc(3rem)] mr-5" src={evaluationIcon} alt="평가 아이콘" width={30} height={30} onClick={openEvaluationModal}/>
+                                {showEvaluationModal && (
+                                    <EvaluationModal onClose={closeEvaluationModal} />
+                                )}
                             </div>
                         </div>
                     </Modal>
