@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 import Modal from '@/components/Modal';
+import ReportModal from '@/components/ReportModal';
 import PlayerCard from '@/components/PlayerCard';
 import {
     CardForm,
@@ -11,14 +12,9 @@ import {
     CardTitle,
     CardHeader,
 } from "@/components/CardForm"
-import defaultFieldImage from '@/assets/images/defaultField.png';
-import defaultProfileImage from '@/assets/images/defaultProfileImage.png';
 import lArrowIcon from '@/assets/icons/lArrow.svg';
 import rArrowIcon from '@/assets/icons/rArrow.svg';
-import condition0Icon from '@/assets/icons/gender.svg';
-import condition1Icon from '@/assets/icons/level.svg';
-import condition2Icon from '@/assets/icons/inoutside.svg';
-import condition3Icon from '@/assets/icons/people.svg';
+import reportIcon from '@/assets/icons/report.svg';
 import emptyGhostIcon from '@/assets/icons/emptyGhost.svg';
 import playGroundIcon from '@/assets/icons/playground.svg';
 import { playHistoryDummyData } from '@/data/dummyData'; // dummy data
@@ -194,7 +190,17 @@ function PlayHistoryPage() {
     
         return `${localeDate} ${dayOfWeekFull}`;
     }
+    const [showReportModal, setShowReportModal] = useState(false); // 신고 모달 표시 상태
 
+    // ReportModal 열기 함수
+    const openReportModal = () => {
+        setShowReportModal(true);
+    };
+
+    // ReportModal 닫기 함수
+    const closeReportModal = () => {
+        setShowReportModal(false);
+    };
     return (
         <>
             <>
@@ -277,11 +283,15 @@ function PlayHistoryPage() {
                                                                 </div>
                                                             )}
                                                             {team.players.map((player, playerIndex) => (
-                                                                <div key={playerIndex} className="flex flex-col items-center justify-center mx-2" onClick={() => handlePlayerClick(player)}>
+                                                                <div key={playerIndex} className="flex flex-col items-center justify-center mx-2 relative" onClick={() => handlePlayerClick(player)}>
                                                                     <img className="rounded-full border-[calc(0.15rem)] border-stone-10 border-b-blue-300 object-cover object-center mb-1" src={player.profileImage} alt="프로필 사진" width={30} height={30}/>
-                                                                    <p className="font-pretendardBold text-white text-[calc(0.7rem)]">{player.name}</p>
+                                                                    <p className="font-pretendardBold text-white text-[calc(0.7rem)]" style={{ alignSelf: 'flex-start' }}>{player.name}</p>
+                                                                    <img className="absolute top-0 right-0 mt-1 mr-1" src={reportIcon} alt="리포트 아이콘" width={10} height={10} style={{ top: '-8px', right: '-10px' }} onClick={openReportModal}/>
                                                                 </div>
                                                             ))}
+                                                            {showReportModal && (
+                                                                <ReportModal onClose={closeReportModal} />
+                                                            )}
                                                             {/* <div className="flex flex-col items-center justify-center mx-2 font-pretendardBold text-gray-800 text-lg">
                                                                 {team.writer.name} FC
                                                             </div> */}
