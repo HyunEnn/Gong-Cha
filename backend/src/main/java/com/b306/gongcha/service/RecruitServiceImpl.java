@@ -90,7 +90,7 @@ public class RecruitServiceImpl implements RecruitService {
 
         if(recruitRepository.findById(recruitId).isPresent()) {
             // 게시글에 대한 신청 정보 삭제 - Cascade 변경 예정
-            userRecruitRepository.deleteAllByRecruitId(recruitId);
+//            userRecruitRepository.deleteAllByRecruitId(recruitId);
             // 게시글 삭제
             recruitRepository.deleteById(recruitId);
         }

@@ -5,6 +5,8 @@ import com.b306.gongcha.dto.response.UserRecruitResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
@@ -29,6 +31,7 @@ public class UserRecruit {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY) // EAGER로 변경 시, 선수 구인 게시글 신청 승인 시(acceptRecruit) 오류 해결
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "recruit_id")
     private Recruit recruit;
 
