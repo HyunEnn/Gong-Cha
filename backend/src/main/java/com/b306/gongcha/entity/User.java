@@ -1,14 +1,13 @@
 package com.b306.gongcha.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -18,9 +17,4 @@ public class User {
 
     private String nickname;
 
-    @Builder(toBuilder = true)
-    public User(Long id, String nickname) {
-        this.id = id;
-        this.nickname = nickname;
-    }
 }

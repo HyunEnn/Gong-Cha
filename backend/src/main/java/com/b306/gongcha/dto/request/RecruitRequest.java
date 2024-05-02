@@ -1,15 +1,14 @@
-package com.b306.gongcha.dto;
+package com.b306.gongcha.dto.request;
 
 import com.b306.gongcha.entity.*;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.*;
 
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @ToString
-public class RecruitRequestDto {
+public class RecruitRequest {
 
 //    private Long id;
     private String date;
@@ -23,21 +22,6 @@ public class RecruitRequestDto {
     private int currentPlayers;
     private int allPlayers;
     private Long writerId;
-
-    @Builder(toBuilder = true)
-    public RecruitRequestDto(String date, String address, String field, String info, Gender gender, Indoor indoor, Difficulty difficulty, Status status, int currentPlayers, int allPlayers, Long writerId) {
-        this.date = date;
-        this.address = address;
-        this.field = field;
-        this.info = info;
-        this.gender = gender;
-        this.indoor = indoor;
-        this.difficulty = difficulty;
-        this.status = status;
-        this.currentPlayers = currentPlayers;
-        this.allPlayers = allPlayers;
-        this.writerId = writerId;
-    }
 
     public Recruit toRecruit() {
         Recruit recruit = Recruit.builder()
