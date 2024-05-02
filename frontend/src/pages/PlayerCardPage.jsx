@@ -11,8 +11,7 @@ function PlayerCardPage() {
 
     useEffect(() => {
         setProfileData({    // dummy data
-            name: myPageDummyData.name,
-            profileImage: myPageDummyData.profileImage
+            ...myPageDummyData
         });
         /* axios for db connection
         getProfileInfo(
@@ -42,9 +41,9 @@ function PlayerCardPage() {
                 <img src={lArrowIcon} alt="돌아가기" />
             </div>
             <div className="page-title">내 선수카드</div>
-            <div className="relative grid grid-cols-2 top-[calc(8.4375rem)] p-0 w-[calc(11.0625rem)] h-[calc(1.125rem)] text-xl">
+            <div className="absolute inset-x-0 flex items-center justify-center top-[calc(8.9375rem)] p-0 h-[calc(0.86rem)] text-xl">
                 {['currentSeason', 'lastSeason'].map(season => (
-                    <div key={season} className="flex flex-col items-center justify-center cursor-pointer"
+                    <div key={season} className="flex flex-col items-center justify-center cursor-pointer ml-2"
                          onClick={() => setActiveTab(season)}>
                         <span className={`font-pretendardBold ${activeTab === season ? 'text-gray-700' : 'text-gray-500'}`}>
                             {season === 'currentSeason' ? '이번 시즌' : '지난 시즌'}
@@ -56,7 +55,14 @@ function PlayerCardPage() {
                 ))}
             </div>
             <div className="absolute left-0 top-[calc(10.6875rem)] border-[calc(.01875rem)] w-full z-0"></div>
-            {activeTab === 'currentSeason' ? <PlayerCard season="currentSeason" player={profileData}/> : <PlayerCard season="lastSeason"  player={profileData}/>}
+            {/* test */}
+            <div className="absolute inset-x-0 flex items-center justify-center top-[calc(10.9375rem)] text-gray-500">
+                {activeTab === 'currentSeason' ? <span>SN: currentSeason</span> : <span>SN: lastSeason</span>}
+            </div>
+            <div className="absolute left-1/2 top-0 mt-[calc(11.6875rem)]">
+                {/* PlayerCard */}
+                <PlayerCard player={profileData}/>
+            </div>
         </>
     );
 }

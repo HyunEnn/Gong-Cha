@@ -24,8 +24,7 @@ function MyPage() {
 
     useEffect(() => {
         setProfileData({    // dummy data
-            name: myPageDummyData.name,
-            profileImage: myPageDummyData.profileImage
+            ...myPageDummyData
         });
         /* axios for db connection
         getProfileInfo(
@@ -59,13 +58,13 @@ function MyPage() {
         handleNagivate('playschedule');
     };
     const handlePlayHistoryClick = () => {
-        handleNagivate(0);
+        handleNagivate('playhistory');
     };
     const handlePlayerCardClick = () => {
         handleNagivate('playercard');
     };
     const handleAlarmClick = () => {
-        handleNagivate(0);
+        handleNagivate('/alarm');
         <PlayerCard season="currentSeason"/>
     };
 

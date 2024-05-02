@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import alarmIcon from '@/assets/icons/alarm.svg';
-import useModalStore from '@/store/useModalStore';
+import { useModalStore } from '@/store/useModalStore';
 import NotificationModal from '@/components/modals/NotificationModal';
 // import MatchModal from '@/components/modals/MatchModal';
 // import PlayerModal from '@/components/modals/PlayerModal';

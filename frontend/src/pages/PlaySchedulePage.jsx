@@ -184,14 +184,14 @@ function PlaySchedulePage() {
         return (
             <Modal show={!!selectedPlayer} onClose={handleClosePlayerCard}>
                 <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center" onClick={handleClosePlayerCard}>
-                    <div className="absolute top-3 bg-white rounded-lg shadow-lg max-w-md mx-auto" onClick={e => e.stopPropagation()}
+                    <div className="absolute top-0 bg-white rounded-lg shadow-lg max-w-md mx-auto mt-[calc(11.6875rem)]" onClick={e => e.stopPropagation()}
                          onTouchStart={handleTouchStart}
                          onTouchMove={handleTouchMove}
                          onTouchEnd={handleTouchEnd}
                          style={{ transform: `translateY(${translateY}px)` }}>
                         {/* 닫기 바 */}
-                        <div className="relative w-full h-4 bg-gray-300 rounded-full cursor-pointer">
-                            <div className="absolute mt-[calc(12rem)] transform -translate-x-1/2 -translate-y-1/2 w-24 h-1 bg-gray-500 rounded"></div>
+                        <div className="absolute w-full h-4 cursor-pointer">
+                            <div className="absolute transform -translate-x-1/2 -translate-y-1/2 w-24 h-1 bg-gray-500 rounded"></div>
                         </div>
                         {/* PlayerCard */}
                         <PlayerCard player={selectedPlayer}/>
@@ -225,7 +225,7 @@ function PlaySchedulePage() {
                     <img src={lArrowIcon} alt="돌아가기" />
                 </div>
                 <div className="page-title">현재 진행중인 경기</div>
-                <div className="relative top-[calc(8.9375rem)] p-0 w-[calc(11.0625rem)] h-[calc(1.125rem)] text-sm">
+                <div className="absolute inset-x-0 flex items-center justify-center top-[calc(8.9375rem)] text-sm">
                     <div className="flex flex-col items-center justify-center">
                         <span className="font-pretendardBold">
                             진행중인 경기
