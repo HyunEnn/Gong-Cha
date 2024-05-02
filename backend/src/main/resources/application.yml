@@ -9,7 +9,7 @@ spring:
     refresh-expired: ${REFRESH_EXPIRED}
     redis:
       host: localhost
-      port: 6379
+      port: ${REDIS_PORT}
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
