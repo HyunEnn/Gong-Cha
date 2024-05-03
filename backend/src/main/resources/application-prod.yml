@@ -5,7 +5,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${PROD_MYSQL_URI}/gongcha?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://${PROD_MYSQL_URI}:3306/gongcha?serverTimezone=Asia/Seoul
     username: ${PROD_MYSQL_USERNAME}
     password: ${PROD_MYSQL_PASSWORD}
 
