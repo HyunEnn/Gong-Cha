@@ -44,6 +44,7 @@ public class Recruit {
     private int allPlayers; // 경기 최대 인원
 
     @OneToMany(mappedBy = "recruit", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<UserRecruit> userRecruitList = new ArrayList<>();
 
     public void updateCurrentPlayers() {
