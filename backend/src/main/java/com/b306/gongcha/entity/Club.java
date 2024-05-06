@@ -1,7 +1,13 @@
 package com.b306.gongcha.entity;
 
+import com.b306.gongcha.entity.num.ClubRole;
+import com.b306.gongcha.exception.CustomException;
+import com.b306.gongcha.exception.ErrorCode;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,7 +22,10 @@ public class Club extends BaseEntity {
     private Long id;
 
     private String name;
-    private String master;
+
+    @OneToMany(mappedBy = "club")
+    private List<User> clubUser = new ArrayList<>();
+
 
     @Column(columnDefinition = "TEXT")
     private String desc;
@@ -26,8 +35,20 @@ public class Club extends BaseEntity {
         this.name = name;
     }
 
-    public void changeMaster(String master) {
-        this.master = master;
+    public void addClubUser(User user) {
+        // 추가하려는 유저가 이미 추가되있는 유저일 경우
+        if(clubUser.contains(user)) {
+            throw new CustomException(ErrorCode.ALREADY_EXIST_USER);
+        }
+        clubUser.add(user);
+    }
+
+    public void removeUser(User user) {
+        // 삭제하려는 유저가 이미 없는 경우
+        if(!clubUser.contains(user)) {
+            throw new CustomException(ErrorCode.NOT_FOUND_USER);
+        }
+        clubUser.remove(user);
     }
 
     public void updateLogo(String logo) {
