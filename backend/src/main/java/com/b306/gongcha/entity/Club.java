@@ -1,6 +1,5 @@
 package com.b306.gongcha.entity;
 
-import com.b306.gongcha.entity.num.ClubRole;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
 import jakarta.persistence.*;
