@@ -257,3 +257,25 @@
 .shine {
     animation: shine 3s infinite;
 }
+
+.market-board-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 100%; /* Adjust based on your layout constraints */
+    overflow: hidden; /* Hide overflow and use scroll in inner components if necessary */
+}
+.tab-content {
+    flex-grow: 1;
+    overflow-y: auto; /* Allows scrolling within tab content if overflow */
+}
+
+
+
+@media (max-width: 600px) {
+    .player-list-container {
+        padding: 5px;
+    }
+    .card {
+        padding: 4px;
+    }
+}

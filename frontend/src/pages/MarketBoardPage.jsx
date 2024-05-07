@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import MyTeamInfo from '@/components/MyTeamInfo';
+import PlayerList from '@/components/PlayerList'; 
 
 function MarketBoardPage() {
     const navigate = useNavigate();
@@ -24,7 +25,12 @@ function MarketBoardPage() {
                 </div>
             </div>
             {/* Render component based on activeTab */}
-            {activeTab === 'tab2' && <MyTeamInfo />}
+            <div className="market-board-container"> {/* Main container */}
+                <div className="tab-content"> {/* Content area for the tab */}
+                    {activeTab === 'tab1' && <PlayerList />}
+                    {activeTab === 'tab2' && <MyTeamInfo />}
+                </div>
+        </div>
         </>
     );
 }
