@@ -17,37 +17,7 @@ function SelectCollection() {
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
-                        <SelectLabel>Fruits</SelectLabel>
-                        <SelectItem value="apple">Apple</SelectItem>
-                        <SelectItem value="banana">Banana</SelectItem>
-                        <SelectItem value="blueberry">Blueberry</SelectItem>
-                        <SelectItem value="grapes">Grapes</SelectItem>
-                        <SelectItem value="pineapple">Pineapple</SelectItem>
-                    </SelectGroup>
-                </SelectContent>
-            </Select>
-            <Select>
-                <SelectTrigger className="w-[75px]">
-                    <SelectValue placeholder="성별" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup>
-                        <SelectLabel>Fruits</SelectLabel>
-                        <SelectItem value="apple">Apple</SelectItem>
-                        <SelectItem value="banana">Banana</SelectItem>
-                        <SelectItem value="blueberry">Blueberry</SelectItem>
-                        <SelectItem value="grapes">Grapes</SelectItem>
-                        <SelectItem value="pineapple">Pineapple</SelectItem>
-                    </SelectGroup>
-                </SelectContent>
-            </Select>
-            <Select>
-                <SelectTrigger className="w-[85px]">
-                    <SelectValue placeholder="실내외" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup>
-                        <SelectLabel>Fruits</SelectLabel>
+                        <SelectLabel>지역</SelectLabel>
                         <SelectItem value="apple">Apple</SelectItem>
                         <SelectItem value="banana">Banana</SelectItem>
                         <SelectItem value="blueberry">Blueberry</SelectItem>
@@ -62,12 +32,10 @@ function SelectCollection() {
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
-                        <SelectLabel>Fruits</SelectLabel>
-                        <SelectItem value="apple">Apple</SelectItem>
-                        <SelectItem value="banana">Banana</SelectItem>
-                        <SelectItem value="blueberry">Blueberry</SelectItem>
-                        <SelectItem value="grapes">Grapes</SelectItem>
-                        <SelectItem value="pineapple">Pineapple</SelectItem>
+                        <SelectLabel>난이도</SelectLabel>
+                        <SelectItem value="beginner">초급</SelectItem>
+                        <SelectItem value="intermediate">중급</SelectItem>
+                        <SelectItem value="advanced">고급</SelectItem>
                     </SelectGroup>
                 </SelectContent>
             </Select>

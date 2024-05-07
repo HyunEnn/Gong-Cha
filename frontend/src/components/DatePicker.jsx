@@ -1,5 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { useDateStore } from '@/stores/dateStore';
 
 function DatePicker() {
@@ -9,16 +9,16 @@ function DatePicker() {
         console.log('클릭', event.target);
     };
     return (
-        <>
+        <div className="flex justify-center">
             <Carousel
                 opts={{
                     align: 'start',
                 }}
-                className="w-full max-w-xs mx-auto "
+                className="w-64 max-w-xs mx-auto "
             >
                 <CarouselContent>
                     {dateList.map((value, index) => (
-                        <CarouselItem key={index} className="basis-1/4">
+                        <CarouselItem key={index} className="basis-1/3">
                             <div className="p-1">
                                 <Card>
                                     <CardContent
@@ -40,8 +40,10 @@ function DatePicker() {
                         </CarouselItem>
                     ))}
                 </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
             </Carousel>
-        </>
+        </div>
     );
 }
 

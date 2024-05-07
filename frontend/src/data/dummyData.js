@@ -9,7 +9,7 @@ import fieldImage6 from '@/data/dummyImages/dummyFieldImage6.png';
 const myPageDummyData = {
     userId: 0,
     name: '홍길동',
-    profileImage : profileImage,
+    profileImage: profileImage,
 };
 
 const playScheduleDummyData = [
@@ -26,7 +26,7 @@ const playScheduleDummyData = [
         state: 'matching_active',
         writer: {
             name: '엄둔딕',
-            profileImage : profileImage,
+            profileImage: profileImage,
         },
         players: [],
     },
@@ -43,7 +43,7 @@ const playScheduleDummyData = [
         state: 'matching_inactive',
         writer: {
             name: '엄둔띡',
-            profileImage : profileImage,
+            profileImage: profileImage,
         },
         players: [],
     },
@@ -60,23 +60,23 @@ const playScheduleDummyData = [
         state: 'recruitment_active',
         writer: {
             name: '단둔딕',
-            profileImage : profileImage,
+            profileImage: profileImage,
         },
         players: [
             {
                 userId: 4,
                 name: '당데기',
-                profileImage : profileImage,
+                profileImage: profileImage,
             },
             {
                 userId: 5,
                 name: '둔데기',
-                profileImage : profileImage,
+                profileImage: profileImage,
             },
             {
                 userId: 6,
                 name: '번디기',
-                profileImage : profileImage,
+                profileImage: profileImage,
             },
         ],
     },
@@ -93,37 +93,36 @@ const playScheduleDummyData = [
         state: 'recruitment_inactive',
         writer: {
             name: '딘둔딕',
-            profileImage : profileImage,
+            profileImage: profileImage,
         },
         players: [],
     },
 ];
 
-playScheduleDummyData.forEach(item => {
+playScheduleDummyData.forEach((item) => {
     item.tags.push(`${item.allPlayer}vs${item.allPlayer}`);
-    item.players.push(       
+    item.players.push(
         {
             userId: 0,
             name: '둔디기',
-            profileImage : profileImage,
-        },     
+            profileImage: profileImage,
+        },
         {
             userId: 1,
             name: '엄둔딕',
-            profileImage : profileImage,
+            profileImage: profileImage,
         },
         {
             userId: 2,
             name: '둔디기',
-            profileImage : profileImage,
+            profileImage: profileImage,
         },
         {
             userId: 3,
             name: '번데기',
-            profileImage : profileImage,
-        },
+            profileImage: profileImage,
+        }
     );
 });
 
 export { myPageDummyData, playScheduleDummyData };
-  

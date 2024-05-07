@@ -145,32 +145,32 @@
     min-height: 100vh;
     font-family: sans-serif; /* Use the font that matches your design */
 }
-  
+
 .alarm-header {
     display: flex;
     align-items: center;
     padding: 16px;
     background-color: white; /* Replace with the color from your design */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Adjust as necessary */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adjust as necessary */
 }
-  
+
 .alarm-header img {
     width: 48px; /* Adjust to match your design */
     height: auto;
     margin-right: 16px;
 }
-  
+
 .alarm-header h2 {
     font-size: 24px; /* Adjust to match your design */
     color: white; /* Replace with the color from your design */
 }
-  
+
 .alarm-item {
     background-color: white; /* Replace with your desired item background color */
     padding: 16px;
     margin: 8px 16px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -181,14 +181,14 @@
     text-align: center;
     position: relative; /* Needed for absolute positioning of the pseudo-element */
 }
-  
+
 .gray-bar {
     height: 4px; /* Adjust to your preference for the bar thickness */
     background-color: #cccccc; /* This is a light gray color, adjust as needed */
     width: 70%; /* Adjust width as needed */
     margin: 0 auto; /* This centers the bar */
 }
-  
+
 /* If you prefer a line under the text instead, use a pseudo-element */
 .notification-bar::after {
     content: '';
@@ -198,7 +198,7 @@
     width: 70%; /* Length of the bar */
     margin: 8px auto 0; /* Space above the bar and centering */
 }
-  
+
 .soccer-field {
     position: relative;
     background: url('assets/icons/soccerfield.svg') no-repeat center center;
@@ -208,26 +208,26 @@
     flex-direction: row;
     justify-content: space-between;
 }
-  
+
 .player-card {
     /* Define positions for your players. This will need to be dynamically set based on your requirements. */
     display: flex;
     flex-direction: column;
     width: 50px;
 }
-  
+
 .player-image {
     width: 50px; /* Size as per your design */
     height: 50px; /* Size as per your design */
     border-radius: 50%;
 }
-  
+
 .player-name {
     text-align: center;
     /* margin-top: 5px;
     margin-left: 5px; */
 }
-  
+
 .horizontal-modal {
     transform: rotate(90deg); /* 90도 회전 */
     transform-origin: bottom left; /* 회전 기준점을 왼쪽 하단으로 설정 */
