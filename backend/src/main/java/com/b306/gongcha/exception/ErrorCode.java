@@ -10,6 +10,7 @@ public enum ErrorCode {
 
     NOT_FOUND_ID(HttpStatus.NOT_FOUND, "해당 아이디를 찾을 수 없습니다."),
     NOT_FOUND_AUTHENTICATION(HttpStatus.UNAUTHORIZED, "인증 정보가 없습니다."),
+    NOT_FOUND_CARD(HttpStatus.NOT_FOUND, "해당 선수카드를 찾을 수 없습니다."),
     NOT_EXIST_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "존재하지 않는 리프레시 토큰입니다."),
     BLANK_TOKEN_HEADER(HttpStatus.UNAUTHORIZED, "헤더에 토큰이 없습니다."),
     NOT_FOUND_TOKEN(HttpStatus.NOT_FOUND, "존재하지 않는 토큰입니다."),
