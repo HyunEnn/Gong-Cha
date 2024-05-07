@@ -54,7 +54,10 @@ public class Transfer {
         this.indoor = transferRequest.getIndoor();
         this.difficulty = transferRequest.getDifficulty();
         this.status = transferRequest.getStatus();
-        this.user = transferRequest.getUser();
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public TransferResponse toTransferResponse() {

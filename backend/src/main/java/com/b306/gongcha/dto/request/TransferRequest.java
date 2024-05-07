@@ -20,7 +20,7 @@ public class TransferRequest {
     private Indoor indoor; // 실내, 실외 여부
     private Difficulty difficulty; // 경기 수준
     private Status status; // 모집 상태 정보
-    private User user; // 작성자
+    private Long userId; // 작성자
 
     public Transfer toTransfer() {
         return Transfer.builder()
@@ -33,7 +33,6 @@ public class TransferRequest {
                 .indoor(indoor)
                 .difficulty(difficulty)
                 .status(status)
-                .user(user)
                 .build();
     }
 

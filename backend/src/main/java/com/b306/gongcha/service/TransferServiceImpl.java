@@ -52,6 +52,8 @@ public class TransferServiceImpl implements TransferService{
     public TransferResponse createTransfer(TransferRequest transferRequest) {
 
         Transfer transfer = transferRequest.toTransfer();
+        User user = userRepository.findById(transferRequest.getUserId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));;
+        transfer.setUser(user);
         transferRepository.save(transfer);
         return transfer.toTransferResponse();
     }
