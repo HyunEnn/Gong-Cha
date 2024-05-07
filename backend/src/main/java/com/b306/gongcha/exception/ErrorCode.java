@@ -27,7 +27,9 @@ public enum ErrorCode {
     FILE_INPUT_FAIL(HttpStatus.BAD_REQUEST, "파일 입력에 실패했습니다."),
     JSON_PARSING_FAIL(HttpStatus.BAD_REQUEST, "JSON 파싱에 실패했습니다."),
 
+    ALREADY_EXIST_USER_IN_CLUB(HttpStatus.BAD_REQUEST, "이미 클럽에 들어가 있는 유저입니다."),
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다."),
+    ALREADY_EXIST_USER(HttpStatus.BAD_REQUEST, "이미 존재하는 유저입니다."),
     NOT_FOUND_BOARD(HttpStatus.NOT_FOUND, "해당 게시글을 찾을 수 없습니다."),
     NOT_FOUND_REQUEST(HttpStatus.NOT_FOUND, "해당 신청 내역을 찾을 수 없습니다."),
     BOARD_REQUEST_FAIL(HttpStatus.BAD_REQUEST, "신청에 실패하였습니다."),

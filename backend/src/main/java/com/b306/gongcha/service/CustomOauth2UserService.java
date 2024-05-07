@@ -4,6 +4,7 @@ import com.b306.gongcha.dto.UserDTO;
 import com.b306.gongcha.dto.response.*;
 import com.b306.gongcha.entity.User;
 import com.b306.gongcha.repository.UserRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class CustomOauth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+    private final EntityManager em;
 
     // 리소스 되는 유저 정보
     @Override
@@ -63,11 +65,13 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
             userRepository.save(newUser);
 
             UserDTO userDTO = UserDTO.builder()
+                    .userId(newUser.getId())
                     .userInfo(userInfo)
                     .name(oAuth2Response.getName())
                     .role("ROLE_USER")
                     .build();
 
+            System.out.println("userDTO.getUserId() = " + userDTO.getUserId());
             return new CustomOAuth2User(userDTO);
         }
     }
