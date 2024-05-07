@@ -9,15 +9,7 @@ import lombok.NoArgsConstructor;
 public class ClubMakeRequest {
 
     private String clubName;
-    private String desc;
+    private String description;
     private String logo;
-
-    public Club toEntity() {
-        return Club.builder()
-                .name(clubName)
-                .desc(desc)
-                .logo(logo)
-                .build();
-    }
 
 }

@@ -1,5 +1,6 @@
 package com.b306.gongcha.entity;
 
+import com.b306.gongcha.dto.request.ClubMakeRequest;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
 import jakarta.persistence.*;
@@ -23,11 +24,13 @@ public class Club extends BaseEntity {
     private String name;
 
     @OneToMany(mappedBy = "club")
+    @Builder.Default
     private List<User> clubUser = new ArrayList<>();
 
+    private String master;
 
     @Column(columnDefinition = "TEXT")
-    private String desc;
+    private String description;
     private String logo;
 
     public void updateName(String name) {
@@ -52,6 +55,19 @@ public class Club extends BaseEntity {
 
     public void updateLogo(String logo) {
         this.logo = logo;
+    }
+
+    public void changeMaster(String userName) {
+        this.master = userName;
+    }
+
+
+    public static Club fromRequest(ClubMakeRequest request) {
+        return Club.builder()
+                .name(request.getClubName())
+                .description(request.getDescription())
+                .logo(request.getLogo())
+                .build();
     }
 
 }
