@@ -4,6 +4,8 @@ import emptyGhostIcon from '@/assets/icons/emptyGhost.svg';
 import Modal from '@/components/Modal';
 import PlayerCard from '@/components/PlayerCard';
 import teamBackground from '@/assets/images/FieldBackground.png';
+import squareIcon from '@/assets/images/squareIcon.png';
+import hexagonIcon from '@/assets/images/hexagonIcon.png';
 import { myTeamInfoDummyData } from '@/data/dummyData'; // dummy data
 
 const regions = [
@@ -221,7 +223,7 @@ function MyTeamInfo() {
                     )}
             </div>
             {/* team info */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 top-[30%] w-[85%] h-[calc(100rem)] rounded bg-slate-50">
+            <div className="absolute left-1/2 transform -translate-x-1/2 top-[30%] w-[85%] rounded bg-slate-50">
                 {myTeamInfoData.length === 0 ? (
                     <div className="absolute flex justify-center left-1/2 top-[calc(10rem)] transform -translate-x-1/2 p-0 w-[calc(6rem)] h-[calc(6rem)]">
                         <img src={emptyGhostIcon} alt="나의 팀이 없습니다" />
@@ -248,22 +250,28 @@ function MyTeamInfo() {
                                     종합
                                 </div>
                             </div>
-                            <div className="mt-5 ml-4 space-x-0 bg-gray-400 w-[80%] h-5 flex text-[calc(.5rem)]">
+                            <div className="mt-5 ml-4 space-x-0 bg-gray-400 w-[72%] h-5 flex text-[calc(.5rem)]">
                                 <div className="bg-blue-500 h-full w-1/6">
-                                    <p className="absolute -mt-2 font-pretendardBlack">SHO</p>
+                                    <p className="absolute ml-[calc(.1rem)] mt-[calc(.1rem)] text-white font-pretendardBold text-[calc(.7rem)]">40</p>
+                                    <p className="absolute -mt-[calc(.6rem)] font-pretendardBlack text-blue-500">SHO</p>
                                 </div>
                                 <div className="bg-green-500 h-full w-1/3">
-                                    <p className="absolute -mt-2 font-pretendardBlack">PAS</p>
+                                    <p className="absolute ml-[calc(.1rem)] mt-[calc(.1rem)] text-white font-pretendardBold text-[calc(.7rem)]">90</p>
+                                    <p className="absolute -mt-[calc(.6rem)] font-pretendardBlack text-green-500">PAS</p>
                                 </div>
                                 <div className="bg-red-500 h-full w-1/5">
-                                    <p className="absolute -mt-2 font-pretendardBlack">DRI</p>
+                                    <p className="absolute ml-[calc(.1rem)] mt-[calc(.1rem)] text-white font-pretendardBold text-[calc(.7rem)]">50</p>
+                                    <p className="absolute -mt-[calc(.6rem)] font-pretendardBlack text-red-500">DRI</p>
                                 </div>
                                 <div className="bg-yellow-500 h-full w-1/6">
-                                    <p className="absolute -mt-2 font-pretendardBlack">SPD</p>
+                                    <p className="absolute ml-[calc(.1rem)] mt-[calc(.1rem)] text-white font-pretendardBold text-[calc(.7rem)]">50</p>
+                                    <p className="absolute -mt-[calc(.6rem)] font-pretendardBlack text-yellow-500">SPD</p>
                                 </div>
                                 <div className="">
-                                    <p className="absolute ml-[calc(.8rem)] mt-[calc(.4rem)] font-pretendardBold text-white">max</p>
+                                    <p className="absolute ml-[calc(.7rem)] mt-[calc(.4rem)] font-pretendardBold text-white">max</p>
                                 </div>
+                                <p className="absolute mt-[calc(.1rem)] right-[calc(2.3rem)] font-pretendardBlack text-[calc(.7rem)] text-[#72BBA8]">230</p>
+                                <p className="absolute mt-[calc(.1rem)] right-[calc(.5rem)] font-pretendardBlack text-[calc(.7rem)] text-gray-500">/400</p>
                             </div>
                             <div className="absolute mt-[calc(3rem)]">
                                 <img className="relative w-full rounded-sm shadow-lg" 
@@ -288,7 +296,7 @@ function MyTeamInfo() {
                             </div>
                         </div>
                         {/* player info */}
-                        <div className="mt-[calc(20rem)] space-x-0">
+                        <div className="mt-[calc(18.5rem)] space-x-0">
                             <div className="ml-4 h-full w-1/6 font-pretendardBlack">
                                 전력
                             </div>
@@ -308,6 +316,23 @@ function MyTeamInfo() {
                                                 style={{ width: '4rem', height: '4rem', objectFit: 'contain' }} />
                                             <p className="relative mt-4 ml-2 font-pretendardBlack text-black text-[calc(0.8rem)]">{player.name}</p>
                                             <p className="absolute mt-[calc(2.5rem)] ml-[calc(4.5rem)] font-pretendardRegular text-gray-500 text-[calc(0.5rem)]">경기수</p>
+                                            <div className="absolute hexagon mt-[calc(3.2rem)] ml-[calc(4.85rem)] text-gray-500 text-[calc(0.5rem)]">
+                                                <div className="absolute flex flex-col items-center justify-center -mt-[calc(.07rem)] w-4 h-4 -ml-[calc(.18rem)]">
+                                                    <img className={"absolute opacity-50" + (player.playNum > 4 ? "" : " h-3")}
+                                                        src={(player.playNum > 4 ? hexagonIcon : squareIcon)}
+                                                        alt="경기수 아이콘"
+                                                    />
+                                                    <p className="absolute font-pretendardBlack text-center">
+                                                        {player.playNum}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <p className="absolute mt-[calc(2.5rem)] ml-[calc(6.2rem)] font-pretendardRegular text-gray-500 text-[calc(0.5rem)]">매너점수</p>
+                                            <div className={"absolute flex flex-col items-center mt-[calc(3.3rem)] ml-[calc(6.5rem)] w-4 h-3" + (player.MAN > 59 ? " bg-[#D6D6DA]" : " bg-[#CF946E]") + (player.MAN > 79 ? " bg-[#d6b534]" : "")}>
+                                                <p className="absolute font-pretendardBlack text-gray-500 text-[calc(0.5rem)]">{player.MAN}</p>
+                                            </div>
+                                            <p className="absolute mt-[calc(2.5rem)] ml-[calc(13.2rem)] font-pretendardRegular text-gray-500 text-[calc(0.5rem)]">선수 가치</p>
+                                            <p className="absolute mt-[calc(3.1rem)] ml-[calc(13.8rem)] font-pretendardBlack text-black text-[calc(0.7rem)]">{parseInt((player.SHO + player.PAS + player.DRI + player.PAC) / 4)}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -315,6 +340,7 @@ function MyTeamInfo() {
                         </div>
                     </>
                 )}
+                <div className="mb-[calc(10rem)]"></div>
             </div>
             {/* create team modal */}
             {showModal && (

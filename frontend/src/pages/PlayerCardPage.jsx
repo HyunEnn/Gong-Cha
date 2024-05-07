@@ -49,7 +49,7 @@ function PlayerCardPage() {
                             {season === 'currentSeason' ? '이번 시즌' : '지난 시즌'}
                         </span>
                         {activeTab === season && (
-                            <div className="relative rounded w-full h-[calc(.125rem)] bg-gray-700 top-2 z-10"></div>  // 여백 조절
+                            <div className="relative rounded w-full h-[calc(.125rem)] bg-gray-700 top-2 z-10"></div>
                         )}
                     </div>
                 ))}
