@@ -12,6 +12,8 @@ import FindPlayerBoardPage from '@/pages/FindPlayerBoardPage';
 import FindPlayerInputPage from '@/pages/FindPlayerInputPage';
 import FindPlayerDetailPage from '@/pages/FindPlayerDetailPage';
 import FindMatchBoardPage from '@/pages/FindMatchBoardPage';
+import MarketBoardPage from '@/pages/MarketBoardPage';
+import PlayHistoryPage from '@/pages/PlayHistoryPage';
 import FindMatchInputPage from '@/pages/FindMatchInputPage';
 import FindMatchDetailPage from '@/pages/FindMatchDetailPage';
 import PlaySchedulePage from '@/pages/PlaySchedulePage';
@@ -69,6 +71,10 @@ const router = createBrowserRouter([
                         path: 'playercard',
                         element: <PlayerCardPage />,
                     },
+                    {
+                        path: 'playhistory',
+                        element: <PlayHistoryPage />,
+                    },
                 ],
             },
             {
@@ -90,6 +96,10 @@ const router = createBrowserRouter([
             {
                 path: '/findmatch/board',
                 element: <FindMatchBoardPage />,
+            },
+            {
+                path: '/market/board',
+                element: <MarketBoardPage />,
             },
             {
                 path: '/findmatch/input',

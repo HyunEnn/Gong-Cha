@@ -1,21 +1,43 @@
 import dummySilverLeager from '@/data/dummyImages/dummySilverLeager.png';
+import { useEffect } from 'react';
 
-function PlayerCard({ season, player }) {
+function PlayerCard({ player }) {
+    if (!player || Object.keys(player).length === 0) return null;
+
+    const value = parseInt((player.SHO + player.PAS + player.DRI + player.PAC + player.MAN) / 5);
+
+    useEffect(() => {
+        const cardElement = document.getElementById('playerCard');
+
+        if (cardElement) {
+            cardElement.classList.add('shine');
+        }
+    }, []);
 
     return (
-        <>
-            {player && 
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-[calc(13.0625rem)] h-[calc(20.365rem)] bg-gray-200 rounded-lg shadow-md mt-[calc(11.6875rem)]">
-                    <img className="absolute rounded-t-lg" src={dummySilverLeager} alt="카드" />
-                    {/* 텍스트를 포함하는 div */}
-                    <div className="absolute top-[50%] left-[50%] transform translate-y-[-50%] translate-x-[-50%] z-10">
-                        <h2 className="text-lg font-bold text-center">{season}</h2>
-                        <img className="mx-auto ml-5" src={player.profileImage} alt={player.name} width={500} height={500}/>
-                        <h3 className="text-center mb-8 font-pretendardBlack text-white">{player.name}</h3>
+        <div className="parentWithShadow">
+        <div id="playerCard" className="absolute left-[calc(-7.5rem)] transform -translate-x-1/2 top-[50%] w-[15.625rem] h-[24.360rem]">
+            <img className="absolute rounded-t-lg" src={dummySilverLeager} alt="카드" />
+            <div className="absolute flex flex-col justify-center items-center w-full h-full">
+                <img className="absolute left-20 bottom-[10.5rem] mx-auto max-w-[10rem] max-h-[10rem]" src={player.profileImage} alt={player.name} />
+                <h3 className="absolute mt-20 text-center font-pretendardBlack text-white">{player.name}</h3>
+
+                <div className="absolute flex flex-col justify-center top-[63%]">
+                    <div className="flex">
+                        <p className="text-center font-pretendardBlack text-white">{player.SHO} SHO</p>
+                        <p className="ml-4 text-center font-pretendardBlack text-white">{player.PAS} PAS</p>
+                    </div>
+                    <div className="flex">
+                        <p className="text-center font-pretendardBlack text-white">{player.DRI} DRI</p>
+                        <p className="ml-auto text-center font-pretendardBlack text-white">{player.PAC} SPD</p>
                     </div>
                 </div>
-            }
-        </>
+
+                <p className="absolute left-8 top-16 font-pretendardBlack text-white text-3xl">{value}</p>
+                <p className="absolute left-8 top-26 font-pretendardBlack text-white">{player.MAN}<br></br> MAN</p>
+            </div>
+        </div>
+        </div>
     );
 }
 

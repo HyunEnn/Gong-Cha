@@ -103,6 +103,7 @@ function MainPage() {
                     <span className="font-pretendardBlack">매칭해요</span>
                     <img className="right-0 inline" src={rArrowIcon} alt="들어가기" />
                 </div>
+                <Link to="/market/board">이적 시장</Link>
             </div>
         </div>
     );
