@@ -10,6 +10,7 @@ function MainPage() {
                 <Link to="/findplayer/board">선수 찾기</Link>
                 <Link to="/findteam/board">팀 찾기</Link>
                 <Link to="/findmatch/board">매칭 찾기</Link>
+                <Link to="/market/board">이적 시장</Link>
             </div>
         </>
     );

@@ -13,6 +13,7 @@ import FindPlayerInputPage from '@/pages/FindPlayerInputPage';
 import FindPlayerDetailPage from '@/pages/FindPlayerDetailPage';
 import FindTeamBoardPage from '@/pages/FindTeamBoardPage';
 import FindMatchBoardPage from '@/pages/FindMatchBoardPage';
+import MarketBoardPage from '@/pages/MarketBoardPage';
 import PlayHistoryPage from '@/pages/PlayHistoryPage';
 import PlaySchedulePage from '@/pages/PlaySchedulePage';
 import PlayerCardPage from '@/pages/PlayerCardPage';
@@ -98,6 +99,10 @@ const router = createBrowserRouter([
             {
                 path: '/findmatch/board',
                 element: <FindMatchBoardPage />,
+            },
+            {
+                path: '/market/board',
+                element: <MarketBoardPage />,
             },
         ],
     },

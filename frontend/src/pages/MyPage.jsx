@@ -78,7 +78,10 @@ function MyPage() {
                 {/* profile content */}
                 <CardForm className="absolute flex flex-col justify-center left-[calc(1.13125rem)] top-[calc(7.625rem)] w-[calc(19.875rem)] h-[calc(4.375rem)] rounded-[15px] border-stone-70" onClick={() => handleProfileClick()}>
                     <CardContent className="flex items-center left-[calc(5.875rem)] pt-[calc(1.5rem)] p-0">
-                        <img className="relative left-[calc(0.875rem)] rounded-full border-[calc(0.01rem)]" src={profileData.profileImage} alt="프로필 사진" width={30} height={30}/>
+                        <img className="relative left-[calc(0.875rem)] rounded-full border-[calc(0.01rem)]" 
+                            src={profileData.profileImage} 
+                            alt="프로필 사진" 
+                            style={{ width: '3rem', height: '3rem', objectFit: 'contain' }} />
                         <CardTitle className="relative left-[calc(1.875rem)] text-[calc(1.0rem)]">{profileData.name}</CardTitle>
                     </CardContent>
                     <CardFooter className="absolute bottom-0 right-0 justify-end items-end p-2 pr-3">

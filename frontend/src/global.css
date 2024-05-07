@@ -238,4 +238,22 @@
     left: 0;
     margin-left: -100vh; /* 너비만큼 왼쪽으로 마진을 줘서 화면에 맞게 조정 */
 }
-  
+
+@keyframes shine {
+    0% {
+        filter: brightness(1);
+        transform: scale(1);
+    }
+    50% {
+        filter: brightness(1.5);
+        transform: scale(1);
+    }
+    100% {
+        filter: brightness(1);
+        transform: scale(1);
+    }
+}
+
+.shine {
+    animation: shine 3s infinite;
+}

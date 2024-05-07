@@ -17,7 +17,7 @@ import lArrowIcon from '@/assets/icons/lArrow.svg';
 import rArrowIcon from '@/assets/icons/rArrow.svg';
 import reportIcon from '@/assets/icons/report.svg';
 import emptyGhostIcon from '@/assets/icons/emptyGhost.svg';
-import playGroundIcon from '@/assets/icons/playground.svg';
+import playGroundIcon from '@/assets/images/FieldBackground2.png';
 import evaluationIcon from '@/assets/images/evaluation.png';
 import { playHistoryDummyData } from '@/data/dummyData'; // dummy data
 
@@ -232,9 +232,9 @@ function PlayHistoryPage() {
                                     </div>
                                 </CardContent>
                                 <CardFooter key={uuidv4()} className="absolute flex items-center left-1/2 transform -translate-x-1/2 bottom-2.5 p-0">
-                                    <CardDescription className="flex text-[0.625rem] ml-8">
+                                    <CardDescription className="flex text-[0.625rem] ml-0">
                                         <span className="font-pretendardBold text-[calc(.5rem)] text-gray-400">{data[0].place}</span>
-                                        <span className="mx-2 font-pretendardBold text-[calc(.5rem)] text-gray-400">{data[0].allPlayer}vs{data[0].allPlayer}</span>
+                                        <span className="ml-2 font-pretendardBold text-[calc(.5rem)] text-gray-400">{data[0].allPlayer}vs{data[0].allPlayer}</span>
                                     </CardDescription>
                                 </CardFooter>
                                 <img className="absolute right-1 inline" src={rArrowIcon} alt="들어가기" />
@@ -247,7 +247,7 @@ function PlayHistoryPage() {
                 {showDetailModal && (
                     <Modal show={showDetailModal} onClose={closeModal}>
                         {/* Modal content */}
-                        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center " onClick={handleOutsideClick}>
+                        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center" onClick={handleOutsideClick}>
                             <div
                                 className="relative flex flex-col items-center justify-start bg-stone-100 w-[calc(20.5rem)] h-[calc(31.25rem)] rounded-xl overflow-x-hidden overflow-y-auto" 
                                 onClick={e => e.stopPropagation()}
@@ -260,9 +260,9 @@ function PlayHistoryPage() {
                                     &times;
                                 </button>
                                 {/* team info content */}
-                                <div className="flex flex-col items-start justify-center mt-0 bg-stone-100 relative">
-                                    <div className="mb-0 w-[calc(30rem)]">
-                                        <img className="w-full h-full transform rotate-90" src={playGroundIcon} alt="경기장 배경" />
+                                <div className="flex flex-col items-start justify-center mt-10 bg-stone-200 relative">
+                                    <div className="mb-0 w-[calc(20rem)]">
+                                        <img className="w-full mt-[calc(4rem)] transform inset-0 bg-gradient-to-b from-transparent to-black x-" src={playGroundIcon} alt="경기장 배경" />
                                     </div>
                                     <div className="flex justify-center w-full absolute bottom-1.5/2">
                                         {playHistoryData.map((teamList, index) => (
@@ -276,10 +276,12 @@ function PlayHistoryPage() {
                                                                 </div>
                                                             )}
                                                             {team.players.map((player, playerIndex) => (
-                                                                <div key={playerIndex} className="flex flex-col items-center justify-center mx-2 relative" onClick={() => handlePlayerClick(player)}>
-                                                                    <img className="rounded-full border-[calc(0.15rem)] border-stone-10 border-b-blue-300 object-cover object-center mb-1" src={player.profileImage} alt="프로필 사진" width={30} height={30}/>
+                                                                <div key={playerIndex} className="relative flex flex-col items-center justify-center mx-2" onClick={() => handlePlayerClick(player)}>
+                                                                    <img className="rounded-full border-[calc(0.15rem)] border-stone-10 border-b-blue-300 object-cover object-center mb-1" 
+                                                                        src={player.profileImage} 
+                                                                        alt="프로필 사진"
+                                                                        style={{ width: '2rem', height: '2rem', objectFit: 'contain' }} />
                                                                     <p className="font-pretendardBold text-white text-[calc(0.7rem)]" style={{ alignSelf: 'flex-start' }}>{player.name}</p>
-                                                                    <img className="absolute top-0 right-0 mt-1 mr-1" src={reportIcon} alt="리포트 아이콘" width={10} height={10} style={{ top: '-8px', right: '-10px' }} onClick={openReportModal}/>
                                                                 </div>
                                                             ))}
                                                             {showReportModal && (
@@ -297,8 +299,29 @@ function PlayHistoryPage() {
                                     {/* test */}
                                     {renderPlayerCardModal()}
                                 </div>
-                                {/* evaluationIcon */}
-                                <img className="absolute top-0 right-0 mt-[calc(3rem)] mr-5" src={evaluationIcon} alt="평가 아이콘" width={30} height={30} onClick={openEvaluationModal}/>
+                                {/* evaluation & report Icon */}
+                                {selectedPlayer === null && (
+                                    <div className="absolute top-0 right-0 mt-[calc(4.85rem)] mr-[calc(3rem)]" onClick={openEvaluationModal}>
+                                            <img 
+                                                src={evaluationIcon} 
+                                                alt="평가 아이콘" 
+                                                width={25} 
+                                                height={25} 
+                                                onClick={openEvaluationModal}/>
+                                            <p className="text-center text-[calc(0.3rem)] mt-1 mr-0 font-pretendardBold">평가하기</p>
+                                    </div>
+                                )}
+                                {selectedPlayer === null && (
+                                <div className="absolute top-0 right-0 mt-[calc(5.5rem)] mr-2">
+                                    <img 
+                                        src={reportIcon} 
+                                        alt="리포트 아이콘" 
+                                        width={30} 
+                                        height={30} 
+                                        onClick={openReportModal}/>
+                                    <p className="text-center text-[calc(0.3rem)] mr-2 font-pretendardBold">신고하기</p>
+                                </div>
+                                )}
                                 {showEvaluationModal && (
                                     <EvaluationModal onClose={closeEvaluationModal} />
                                 )}

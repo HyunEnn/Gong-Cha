@@ -1,4 +1,5 @@
-import profileImage from '@/data/dummyImages/dummyProfileImage.png';
+import profileImage from '@/data/dummyImages/dummyProfileImage3.png';
+import profileImage2 from '@/data/dummyImages/dummyProfileImage2.png';
 import fieldImage1 from '@/data/dummyImages/dummyFieldImage1.png';
 import fieldImage2 from '@/data/dummyImages/dummyFieldImage2.png';
 import fieldImage3 from '@/data/dummyImages/dummyFieldImage3.png';
@@ -123,8 +124,8 @@ const playHistoryDummyData = [
     [
         {
             key: 0,
-            place: '서울 그랜드 A구장',
-            location: '서울 송파구 백제 고분로18-3',
+            place: '서울 송파구',
+            location: '서울 송파구',
             images: [fieldImage1],
             date: '2024.03.07 목',
             time: '10:00',
@@ -258,6 +259,89 @@ const playHistoryDummyData = [
     ],
 ]
 
+const myTeamInfoDummyData = 
+    {
+        key: 0,
+        location: '서울 송파구',
+        time: '10:00',
+        currentPlayers: 5,
+        allPlayer: 5,
+        tags: ['친선', ['월','화'], '중급'],
+        writer: {
+            name: '정준수',
+            profileImage : profileImage,
+        },
+        players: [
+            {
+                userId: 0,
+                name: '정준수',
+                profileImage : profileImage,
+                stateus: true,
+                SHO: 95,
+                PAS: 90,
+                DRI: 97,
+                PAC: 90,
+                MAN: 100,
+            },
+            {
+                userId: 1,
+                name: '정진수',
+                profileImage : profileImage2,
+                stateus: true,
+                SHO: 95,
+                PAS: 90,
+                DRI: 97,
+                PAC: 90,
+                MAN: 100,
+            },
+            {
+                userId: 2,
+                name: '당데기',
+                profileImage : profileImage,
+                stateus: true,
+                SHO: 95,
+                PAS: 90,
+                DRI: 97,
+                PAC: 90,
+                MAN: 100,
+            },
+            {
+                userId: 3,
+                name: '둔데기',
+                profileImage : profileImage2,
+                stateus: true,
+                SHO: 95,
+                PAS: 90,
+                DRI: 97,
+                PAC: 90,
+                MAN: 100,
+            },
+            {
+                userId: 4,
+                name: '번디기',
+                profileImage : profileImage,
+                stateus: true,
+                SHO: 92,
+                PAS: 90,
+                DRI: 97,
+                PAC: 90,
+                MAN: 100,
+            },
+            {
+                userId: 5,
+                name: '반디기',
+                profileImage : profileImage2,
+                stateus: false,
+                SHO: 92,
+                PAS: 90,
+                DRI: 97,
+                PAC: 90,
+                MAN: 100,
+            },
+        ],
+    }
+
+
 playScheduleDummyData.forEach(item => {
     item.tags.push(`${item.allPlayer}vs${item.allPlayer}`);
     item.players.push(       
@@ -304,5 +388,5 @@ playScheduleDummyData.forEach(item => {
     );
 });
 
-export { myPageDummyData, playScheduleDummyData, playHistoryDummyData };
+export { myPageDummyData, playScheduleDummyData, playHistoryDummyData, myTeamInfoDummyData };
   
