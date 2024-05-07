@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Lottie from 'react-lottie';
 import { CardForm, CardContent } from '@/components/CardForm';
 
