@@ -351,11 +351,12 @@ const TeamListDummyData =
     [
         {
             key: 0,
-            location: '서울 송파구',
-            time: '10:00',
-            currentPlayers: 5,
-            allPlayer: 5,
-            tags: ['친선', ['월','화'], '중급'],
+            location: '세종',
+            district: '세종특별시',
+            startTime: '06:00',
+            endTime: '10:00',
+            days: ['월', '수'],
+            level: '초급',
             writer: {
                 name: '정준수',
                 profileImage : profileImage,
@@ -437,13 +438,14 @@ const TeamListDummyData =
         },
         {
             key: 1,
-            location: '서울 송파구',
-            time: '10:00',
-            currentPlayers: 5,
-            allPlayer: 5,
-            tags: ['친선', ['월','화'], '중급'],
+            location: '서울',
+            district: '송파구',
+            startTime: '10:00',
+            endTime: '13:00',
+            days: ['월', '수', '목', '금'],
+            level: '상급',
             writer: {
-                name: '정준수',
+                name: '엄둔딕',
                 profileImage : profileImage,
             },
             players: [
@@ -523,13 +525,14 @@ const TeamListDummyData =
         },
         {
             key: 2,
-            location: '서울 송파구',
-            time: '10:00',
-            currentPlayers: 5,
-            allPlayer: 5,
-            tags: ['친선', ['월','화'], '중급'],
+            location: '부산',
+            district: '남구',
+            startTime: '13:00',
+            endTime: '17:00',
+            days: ['월', '수', '금'],
+            level: '초급',
             writer: {
-                name: '정준수',
+                name: '김진수',
                 profileImage : profileImage,
             },
             players: [
