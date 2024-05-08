@@ -47,6 +47,7 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
             userRepository.save(existData);
 
             UserDTO userDTO = UserDTO.builder()
+                    .userId(existData.getId())
                     .name(oAuth2Response.getName())
                     .role(existData.getRole())
                     .userInfo(existData.getUserInfo())

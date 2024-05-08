@@ -81,6 +81,24 @@ public class ClubController {
                 .build(), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "클럽 상세 조회",
+            description = "클럽에 대한 세부 내용 조회"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "클럽 상세 조회가 완료되었습니다."
+    )
+    @GetMapping("/{clubId}")
+    public ResponseEntity<CommonResponse> getClubDetail(@PathVariable Long clubId) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("클럽 상세 조회 성공")
+                .data(clubService.clubDetail(clubId))
+                .build(), HttpStatus.OK);
+
+    }
+
 
     private static Long currentUserId() {
         // SecurityContext에서 Authentication 객체 가져오기
