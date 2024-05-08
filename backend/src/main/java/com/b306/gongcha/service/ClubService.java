@@ -2,6 +2,7 @@ package com.b306.gongcha.service;
 
 import com.b306.gongcha.dto.request.ClubMakeRequest;
 import com.b306.gongcha.dto.response.ClubInfoResponse;
+import com.b306.gongcha.dto.response.ClubUserResponse;
 import com.b306.gongcha.entity.Club;
 import com.b306.gongcha.entity.User;
 import com.b306.gongcha.entity.num.ClubRole;
@@ -81,12 +82,20 @@ public class ClubService {
 
     }
 
-    public ClubInfoResponse clubDetail(String clubName) {
+    public ClubInfoResponse clubDetail(Long clubId) {
 
-        Club club = clubRepository.findByName(clubName)
+        Club club = clubRepository.findById(clubId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
 
         return ClubInfoResponse.fromEntity(club);
+    }
+
+    public List<ClubUserResponse> getClubUsers(Long clubId) {
+
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
+
+        return ClubUserResponse.from(club);
     }
 
 }

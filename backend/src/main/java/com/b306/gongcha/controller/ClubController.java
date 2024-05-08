@@ -7,6 +7,7 @@ import com.b306.gongcha.service.ClubService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -97,6 +98,23 @@ public class ClubController {
                 .data(clubService.clubDetail(clubId))
                 .build(), HttpStatus.OK);
 
+    }
+
+    @Operation(
+            summary = "클럽의 클럽원 조회",
+            description = "클럽의 클럽원들 조회"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "클럽원들이 정상적으로 조회되었습니다."
+    )
+    @GetMapping("/{clubId}/clubUsers")
+    public ResponseEntity<CommonResponse> getClubUsers(@PathVariable Long clubId) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("클럽원 조회 성공")
+                .data(clubService.getClubUsers(clubId))
+                .build(), HttpStatus.OK);
     }
 
 
