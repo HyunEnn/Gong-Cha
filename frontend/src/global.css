@@ -279,3 +279,24 @@
         padding: 4px;
     }
 }
+
+.flex-end {
+    display: flex;
+    justify-content: flex-end; 
+}
+
+.narrow-input {
+    width: 150px;
+}
+
+.player-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid gray;  /* Gray underline */
+    background-color: transparent;
+    border-radius: 8px;
+    margin-bottom: 8px;  /* Adds space between items */
+}
