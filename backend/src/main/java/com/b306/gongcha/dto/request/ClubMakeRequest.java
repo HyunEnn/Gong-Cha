@@ -12,7 +12,6 @@ public class ClubMakeRequest {
 
     private String clubName;
     private String description;
-    private String logo;
     private LocalTime activityStartTime;
     private LocalTime activityEndTime;
     private String skillLevel;

@@ -73,7 +73,6 @@ public class Club extends BaseEntity {
         return Club.builder()
                 .name(request.getClubName())
                 .description(request.getDescription())
-                .logo(request.getLogo())
                 .activityStartTime(request.getActivityStartTime())
                 .activityEndTime(request.getActivityEndTime())
                 .skillLevel(request.getSkillLevel())

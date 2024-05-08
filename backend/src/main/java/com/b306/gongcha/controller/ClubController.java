@@ -3,6 +3,7 @@ package com.b306.gongcha.controller;
 import com.b306.gongcha.dto.request.ClubMakeRequest;
 import com.b306.gongcha.dto.response.CommonResponse;
 import com.b306.gongcha.dto.response.CustomOAuth2User;
+import com.b306.gongcha.global.GetCurrentUserId;
 import com.b306.gongcha.service.ClubService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "Club", description = "Club 관련 API")
 @RestController
@@ -37,8 +39,7 @@ public class ClubController {
     @PostMapping("/create")
     public ResponseEntity<CommonResponse> createClub(@RequestBody ClubMakeRequest request) {
 
-        Long userId = currentUserId();
-        clubService.createClub(userId, request);
+        clubService.createClub(request);
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("클럽 생성 완료")
                 .build(), HttpStatus.OK);
@@ -74,7 +75,7 @@ public class ClubController {
     @DeleteMapping("/delete/{clubId}")
     public ResponseEntity<CommonResponse> deleteClub(@PathVariable Long clubId) {
 
-        Long userId = currentUserId();
+        Long userId = GetCurrentUserId.currentUserId();
         clubService.deleteClub(userId, clubId);
 
         return new ResponseEntity<>(CommonResponse.builder()
@@ -117,19 +118,23 @@ public class ClubController {
                 .build(), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "클럽 로고 변경",
+            description = "클럽 로고에 대한 변경 처리"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "클럽 로고가 정상적으로 변경되었습니다."
+    )
+    @PatchMapping("/{clubId}/logo")
+    public ResponseEntity<CommonResponse> updateLogo(
+            @PathVariable Long clubId,
+            @RequestPart(value = "file", required = false)MultipartFile file) {
 
-    private static Long currentUserId() {
-        // SecurityContext에서 Authentication 객체 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Long userId = null;
-
-        // 사용자의 아이디 번호 가져오기
-        if (authentication != null && authentication.isAuthenticated()) {
-            CustomOAuth2User userDetails = (CustomOAuth2User) authentication.getPrincipal();
-            userId = userDetails.getUserId();
-            System.out.println("userId = " + userId);
-        }
-        return userId;
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("클럽 로고 수정 완료")
+                .data(clubService.updateLogo(clubId, file))
+                .build(), HttpStatus.OK);
     }
 
 }
