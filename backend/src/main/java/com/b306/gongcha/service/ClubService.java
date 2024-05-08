@@ -39,6 +39,9 @@ public class ClubService {
             if(user.getClubRole() == null) {
                 club.addClubUser(user);
 
+                // 유저의 클럽 여부 변경
+                user.changeClub(club);
+
                 // 유저의 권한 ( 마스터 ) 로 설정
                 user.changeRole(ClubRole.MASTER);
 
@@ -58,6 +61,32 @@ public class ClubService {
 
         Page<Club> clubs = clubRepository.findAll(pageable);
         return clubs.map(ClubInfoResponse::fromEntity);
+    }
+
+    public void deleteClub(Long userId, Long clubId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID));
+
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
+        // 유저의 클럽과 역할이 맞는지 체크
+        if(user.getClub() == club && user.getClubRole() == ClubRole.MASTER) {
+            for(User findUser : club.getClubUser()) {
+                findUser.deleteClub();
+            }
+            club.getClubUser().clear();
+            clubRepository.delete(club);
+        }
+
+    }
+
+    public ClubInfoResponse clubDetail(String clubName) {
+
+        Club club = clubRepository.findByName(clubName)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
+
+        return ClubInfoResponse.fromEntity(club);
     }
 
 }

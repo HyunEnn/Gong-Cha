@@ -6,6 +6,7 @@ import com.b306.gongcha.exception.ErrorCode;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,12 @@ public class Club extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
     private String logo;
+
+    private LocalTime activityStartTime;
+    private LocalTime activityEndTime;
+    private String skillLevel;
+    private String region;
+    private String districts;
 
     public void updateName(String name) {
         this.name = name;
@@ -67,7 +74,16 @@ public class Club extends BaseEntity {
                 .name(request.getClubName())
                 .description(request.getDescription())
                 .logo(request.getLogo())
+                .activityStartTime(request.getActivityStartTime())
+                .activityEndTime(request.getActivityEndTime())
+                .skillLevel(request.getSkillLevel())
+                .region(request.getRegion())
+                .districts(request.getDistricts())
                 .build();
+    }
+
+    public List<User> getClubMembers() {
+        return this.clubUser;
     }
 
 }

@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Club", description = "Club 관련 API")
@@ -37,22 +36,13 @@ public class ClubController {
     @PostMapping("/create")
     public ResponseEntity<CommonResponse> createClub(@RequestBody ClubMakeRequest request) {
 
-        // SecurityContext에서 Authentication 객체 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Long userId = null;
-
-        // 사용자의 아이디 번호 가져오기
-        if (authentication != null && authentication.isAuthenticated()) {
-            CustomOAuth2User userDetails = (CustomOAuth2User) authentication.getPrincipal();
-            userId = userDetails.getUserId();
-            System.out.println("userId = " + userId);
-        }
-
+        Long userId = currentUserId();
         clubService.createClub(userId, request);
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("클럽 생성 완료")
                 .build(), HttpStatus.OK);
     }
+
 
     @Operation(
             summary = "클럽 전체 조회",
@@ -70,6 +60,40 @@ public class ClubController {
                 .message("클럽 전체 조회 완료")
                 .data(clubService.getAllClubs(pageable))
                 .build(), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "클럽 삭제",
+            description = "클럽 마스터가 클럽을 삭제"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "클럽 삭제가 정상 처리되었습니다."
+    )
+    @DeleteMapping("/delete/{clubId}")
+    public ResponseEntity<CommonResponse> deleteClub(@PathVariable Long clubId) {
+
+        Long userId = currentUserId();
+        clubService.deleteClub(userId, clubId);
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("삭제가 처리되었습니다.")
+                .build(), HttpStatus.OK);
+    }
+
+
+    private static Long currentUserId() {
+        // SecurityContext에서 Authentication 객체 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = null;
+
+        // 사용자의 아이디 번호 가져오기
+        if (authentication != null && authentication.isAuthenticated()) {
+            CustomOAuth2User userDetails = (CustomOAuth2User) authentication.getPrincipal();
+            userId = userDetails.getUserId();
+            System.out.println("userId = " + userId);
+        }
+        return userId;
     }
 
 }
