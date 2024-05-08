@@ -1,11 +1,11 @@
 package com.b306.gongcha.dto.response;
 
-import com.b306.gongcha.entity.Difficulty;
-import com.b306.gongcha.entity.MatchType;
-import com.b306.gongcha.entity.User;
+import com.b306.gongcha.entity.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder
@@ -18,10 +18,22 @@ public class TeamResponse {
     private MatchType matchType;
     private String region;
     private String district;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private String[] dayOfWeek;
+    private int startTime;
+    private int endTime;
+    private List<DayOfWeekResponse> dayOfWeekList;
     private Difficulty difficulty;
-    private User[] userList;
+    private List<UserTeamResponse> userTeamList;
+
+    public void setDayOfWeekList(List<DayOfWeekResponse> dayOfWeekList) {
+
+        this.dayOfWeekList = dayOfWeekList;
+    }
+
+    public void setUserTeamList(List<UserTeamResponse> userTeamList) {
+
+        this.userTeamList = userTeamList;
+    }
+
+
 
 }

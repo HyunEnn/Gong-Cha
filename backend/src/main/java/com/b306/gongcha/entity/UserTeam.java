@@ -19,6 +19,9 @@ public class UserTeam {
     @Enumerated(EnumType.STRING)
     private Role role; // 소속 역할 - 팀장, 팀원
 
+    @Builder.Default
+    private Boolean permit = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -27,13 +30,18 @@ public class UserTeam {
     @JoinColumn(name = "team_id")
     private Team team;
 
+    public void acceptUser() {
+
+        this.permit = true;
+    }
+
     public UserTeamResponse toUserTeamResponse() {
 
         return UserTeamResponse.builder()
-                .id(id)
                 .role(role)
                 .userName(user.getName())
                 .teamId(team.getId())
+                .permit(permit)
                 .build();
     }
 

@@ -10,9 +10,9 @@ import lombok.*;
 @ToString
 public class UserTeamResponse {
 
-    private Long id;
     private Role role;
     private Long teamId;
     private String userName;
+    private Boolean permit;
 
 }

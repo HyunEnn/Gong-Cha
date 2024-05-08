@@ -28,9 +28,9 @@ public class Team {
     @Column(name = "match_type")
     private MatchType matchType; // 매치 성격 - 내전/친선
     @Column(name = "start_time")
-    private LocalDateTime startTime; // 희망 시간 시작
+    private int startTime; // 희망 시간 시작
     @Column(name = "end_time")
-    private LocalDateTime endTime; // 희망 시간 종료
+    private int endTime; // 희망 시간 종료
     private String region; // 광역시, 도
     private String district; // 일반시, 군, 구
     @Enumerated(EnumType.STRING)
@@ -39,13 +39,15 @@ public class Team {
     @Builder.Default
     private Status status = Status.valueOf("모집중"); // 팀 상태 - 모집중, 모집완료, 매칭중, 매칭완료
 
-//    // 요일 목록
-//    @OneToMany(mappedBy = "dayOfWeek", cascade = CascadeType.REMOVE)
-//    private List<DayOfWeek> dayOfWeekList = new ArrayList<>();
-//
-//    // 팀원 목록
-//    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
-//    private List<UserTeam> userTeamList = new ArrayList<>();
+    // 요일 목록
+    @OneToMany(mappedBy = "dayOfWeek", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    private List<DayOfWeek> dayOfWeekList = new ArrayList<>();
+
+    // 팀원 목록
+    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    private List<UserTeam> userTeamList = new ArrayList<>();
 
     public void changeStatus(Status status) {
 
@@ -58,10 +60,18 @@ public class Team {
         this.startTime = teamRequest.getStartTime();
         this.endTime = teamRequest.getEndTime();
         this.region = teamRequest.getRegion();
-        this.district = teamRequest.getRegion();
+        this.district = teamRequest.getDistrict();
         this.difficulty = teamRequest.getDifficulty();
         this.status = teamRequest.toTeam().getStatus();
     }
+
+//    public void setDayOfWeekList(List<DayOfWeek> dayOfWeekList) {
+//        this.dayOfWeekList = dayOfWeekList;
+//    }
+//
+//    public void setUserTeamList(List<UserTeam> userTeamList) {
+//        this.userTeamList = userTeamList;
+//    }
 
     public TeamResponse toTeamResponse() {
 
@@ -72,9 +82,9 @@ public class Team {
                 .district(district)
                 .startTime(startTime)
                 .endTime(endTime)
-//                .dayOfWeek()
+//                .dayOfWeekList(dayOfWeekList)
                 .difficulty(difficulty)
-//                .userList()
+//                .userList(userTeamList)
                 .build();
     }
 

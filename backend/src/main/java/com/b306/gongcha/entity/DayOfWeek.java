@@ -1,5 +1,6 @@
 package com.b306.gongcha.entity;
 
+import com.b306.gongcha.dto.response.DayOfWeekResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,7 +9,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@ToString
 public class DayOfWeek {
 
     @Id
@@ -16,11 +16,25 @@ public class DayOfWeek {
     @Column(name = "day_of_week_id")
     private Long id;
 
-    @Column(name = "day_of_week")
+//    private Boolean monday;
+//    private Boolean tuesday;
+//    private Boolean wednesday;
+//    private Boolean thursday;
+//    private Boolean friday;
+//    private Boolean saturday;
+//    private Boolean sunday;
     private String dayOfWeek;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
+
+    public DayOfWeekResponse toDayOfResponse() {
+
+        return DayOfWeekResponse.builder()
+                .teamId(team.getId())
+                .dayOfWeek(dayOfWeek)
+                .build();
+    }
 
 }
