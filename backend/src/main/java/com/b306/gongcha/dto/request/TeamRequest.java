@@ -15,19 +15,22 @@ import java.util.List;
 public class TeamRequest {
 
     private MatchType matchType; // 매치 종류 - 내전, 친선전
-    private String address; // 희망 매치 장소
+    private String region; // 광역시, 도
+    private String district; // 일반시, 군, 구
     private LocalDateTime startTime; // 희망 매치 시간 시작
     private LocalDateTime endTime; // 희망 매치 시간 종료
-    private String[] dayOfWeek; // 희망 요일 목록
+    private ArrayList<String> dayOfWeek; // 희망 요일 목록
     private Difficulty difficulty; // 경기 수준
-    private Long[] userList; // 참여 클럽원 목록
+    private ArrayList<Long> userList; // 참여 클럽원 목록
+    private Long writerId; // 작성자(팀장) id
 
     public Team toTeam() {
         return Team.builder()
                 .matchType(matchType)
                 .startTime(startTime)
                 .endTime(endTime)
-                .address(address)
+                .region(region)
+                .district(district)
                 .difficulty(difficulty)
                 .build();
     }

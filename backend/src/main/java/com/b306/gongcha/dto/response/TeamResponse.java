@@ -16,7 +16,8 @@ public class TeamResponse {
 
     private Long id;
     private MatchType matchType;
-    private String address;
+    private String region;
+    private String district;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String[] dayOfWeek;

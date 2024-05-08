@@ -1,6 +1,7 @@
 package com.b306.gongcha.entity;
 
 import com.b306.gongcha.dto.UserDTO;
+import com.b306.gongcha.dto.request.TeamRequest;
 import com.b306.gongcha.dto.response.TeamResponse;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,13 +24,15 @@ public class Team {
     @Column(name = "team_id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "match_type")
     private MatchType matchType; // 매치 성격 - 내전/친선
     @Column(name = "start_time")
     private LocalDateTime startTime; // 희망 시간 시작
     @Column(name = "end_time")
     private LocalDateTime endTime; // 희망 시간 종료
-    private String address; // 지역
+    private String region; // 광역시, 도
+    private String district; // 일반시, 군, 구
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty; // 경기 수준
     @Enumerated(EnumType.STRING)
@@ -49,12 +52,24 @@ public class Team {
         this.status = status;
     }
 
+    public void updateTeam(TeamRequest teamRequest) {
+
+        this.matchType = teamRequest.getMatchType();
+        this.startTime = teamRequest.getStartTime();
+        this.endTime = teamRequest.getEndTime();
+        this.region = teamRequest.getRegion();
+        this.district = teamRequest.getRegion();
+        this.difficulty = teamRequest.getDifficulty();
+        this.status = teamRequest.toTeam().getStatus();
+    }
+
     public TeamResponse toTeamResponse() {
 
         return TeamResponse.builder()
                 .id(id)
                 .matchType(matchType)
-                .address(address)
+                .region(region)
+                .district(district)
                 .startTime(startTime)
                 .endTime(endTime)
 //                .dayOfWeek()
