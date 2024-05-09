@@ -87,6 +87,7 @@ public class TeamServiceImpl implements TeamService {
                     .role(Role.valueOf("팀원"))
                     .user(user)
                     .team(savedTeam)
+                    .permit(true)
                     .build();
             userTeamRepository.save(userTeam);
         }
