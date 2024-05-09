@@ -41,4 +41,17 @@ public class User extends BaseEntity {
     public void changeRole(ClubRole clubRole) {
         this.clubRole = clubRole;
     }
+
+    public void changeClub(Club club) {
+        this.club = club;
+    }
+
+    public void deleteClub() {
+        this.club = null;
+    }
+
+    public void quitClub() {
+        club.getClubUser().remove(this);
+        this.club = null;
+    }
 }
