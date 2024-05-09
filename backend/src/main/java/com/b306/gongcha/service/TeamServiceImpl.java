@@ -91,7 +91,12 @@ public class TeamServiceImpl implements TeamService {
                     .build();
             userTeamRepository.save(userTeam);
         }
-        return savedTeam.toTeamResponse();
+        List<UserTeamResponse> userTeamResponseList = new ArrayList<>();
+        List<UserTeam> userTeamList = userTeamRepository.findAllByTeamIdAndPermitIsTrue(savedTeam.getId());
+        userTeamList.forEach(u -> userTeamResponseList.add(u.toUserTeamResponse()));
+        TeamResponse teamResponse = savedTeam.toTeamResponse();
+        teamResponse.setUserTeamList(userTeamResponseList);
+        return teamResponse;
     }
 
     // 팀 정보 수정
