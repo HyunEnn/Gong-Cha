@@ -324,18 +324,19 @@ function PlayerList() {
                             >
                                 검색
                             </button>
+                            
                         </div>
                     </div>
         <div className="player-list-container flex-col items-center absolute left-1/2 transform -translate-x-1/2 top-[30%] w-[85%] h-[calc(100rem)] border-">
 
         <div className="flex-end">
-            <input 
+             {/* <input 
                 type="text" 
                 placeholder="아이디를 입력하세요" 
                 value={filter} 
                 onChange={e => setFilter(e.target.value)} 
                 className="narrow-input"
-            />
+            />  */}
         </div>
             {filteredPlayers.map(renderPlayerItem)}
         </div>
