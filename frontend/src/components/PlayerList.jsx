@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useModalStore } from '@/store/useModalStore';
 import ToggleButton from "@/components/ui/nameButton";
+import { Input } from "@/components/ui/input"
 import dummyPlayer from '@/data/dummyplayer';
 import { v4 as uuidv4 } from 'uuid';
 import defaultplayer from '@/assets/icons/defaultplayer.svg';
@@ -40,7 +41,7 @@ function PlayerList() {
     const [filter, setFilter] = useState("");
     const [selectedRegion, setSelectedRegion] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
-    const [teamInfo, setTeamInfo] = useState({
+    const [playerInfo, setPlayerInfo] = useState({
         day: [],
         startTime: '',
     });
@@ -121,7 +122,7 @@ function PlayerList() {
     };
 
     const handleFilterSearch = (e) => {
-        console.log(teamInfo);
+        console.log(playerInfo);
     };
 
     const handleRegionChange = (e) => {
@@ -199,7 +200,7 @@ function PlayerList() {
                         <div className="absolute ml-2 -mt-5 text-[calc(.6rem)] text-black/50 font-pretendardBold">필터</div>
                         <div className="mt-5 ml-[calc(0.5rem)]"
                             name="isFriendly"
-                            checked={teamInfo.isFriendly}
+                            checked={playerInfo.isFriendly}
                         >
                             <ToggleButton name={"친선전"} 
                                 defaultButtonStyle={"rounded p-[.2rem] w-10 font-pretendardBlack text-[calc(.8rem)] transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-95"}
@@ -212,7 +213,7 @@ function PlayerList() {
                             <div onClick={handleFilter2Change}>
                                 <ToggleButton name={"장소"}
                                     defaultButtonStyle={"rounded p-[.2rem] w-10 font-pretendardBlack text-[calc(.8rem)] transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-95"
-                                    + (teamInfo.location ? " bg-blue-500" : " bg-gray-300")
+                                    + (playerInfo.location ? " bg-blue-500" : " bg-gray-300")
                                     }
                                 >
                                 </ToggleButton>
@@ -257,7 +258,7 @@ function PlayerList() {
                             <div onClick={handleFilter3Change}>
                                 <ToggleButton name={"시간"} 
                                     defaultButtonStyle={"rounded p-[.2rem] w-10 font-pretendardBlack text-[calc(.8rem)] transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-95"
-                                    + (teamInfo.startTime !== '' ? " bg-blue-500" : " bg-gray-300")
+                                    + (playerInfo.startTime !== '' ? " bg-blue-500" : " bg-gray-300")
                                     }
                                 >
                                 </ToggleButton>
@@ -269,7 +270,7 @@ function PlayerList() {
                                         <Input 
                                             className="-ml-[calc(.05rem)] w-[calc(5rem)] h-[calc(1.2rem)]" 
                                             type="number"
-                                            value={teamInfo.startTime}
+                                            value={playerInfo.startTime}
                                             min={0}
                                             max={23}
                                             placeholder="시작시간"
@@ -285,7 +286,7 @@ function PlayerList() {
                             <div onClick={handleFilter4Change}>
                                 <ToggleButton name={"요일"} 
                                     defaultButtonStyle={"rounded p-[.2rem] w-10 font-pretendardBlack text-[calc(.8rem)] transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-95"
-                                    + (teamInfo.day.length !== 0 ? " bg-blue-500" : " bg-gray-300")
+                                    + (playerInfo.day.length !== 0 ? " bg-blue-500" : " bg-gray-300")
                                     }
                                 >
                                 </ToggleButton>
@@ -302,7 +303,7 @@ function PlayerList() {
                                                         type="checkbox"
                                                         name="day"
                                                         value={day}
-                                                        checked={teamInfo.day.includes(day)}
+                                                        checked={playerInfo.day.includes(day)}
                                                         onChange={(e) => handleDayChange(e, day)}
                                                     />
                                                     </label>
