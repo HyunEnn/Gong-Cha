@@ -23,7 +23,7 @@ public class UserTeamResponse extends BaseEntity {
         return team.getUserTeamList().stream()
                 .map(user -> UserTeamResponse.builder()
                         .role(user.getRole())
-                        .userId(user.getId())
+                        .userId(user.getUser().getId())
                         .userName(user.getUser().getName())
                         .permit(user.getPermit())
                         .build())
