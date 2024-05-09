@@ -338,7 +338,6 @@ function PlayerList() {
         </div>
         
             {filteredPlayers.map(renderPlayerItem)}
-            <PlayerModal isOpen={isModalOpen} type={modalType} data={modalData} onClose={closeModal} />
         </div>
     </div>
                 )
