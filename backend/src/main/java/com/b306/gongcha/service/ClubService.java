@@ -118,7 +118,7 @@ public class ClubService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
-        if(!user.getClub().getId().equals(clubId) && user.getClubRole() == ClubRole.MASTER) {
+        if(user.getClub().getId().equals(clubId) && user.getClubRole() == ClubRole.MASTER) {
             // logo 가 null 이나 empty 가 아니면, delete 우선 처리
             Club userClub = user.getClub();
             if(!(userClub.getLogo() == null || userClub.getLogo().isEmpty())) {
