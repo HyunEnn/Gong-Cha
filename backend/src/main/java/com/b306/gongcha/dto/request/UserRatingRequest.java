@@ -7,7 +7,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@ToString
 public class UserRatingRequest {
     private Long shooting;
     private Long pass;

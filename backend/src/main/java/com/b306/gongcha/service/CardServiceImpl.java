@@ -20,15 +20,11 @@ import java.util.Objects;
 public class CardServiceImpl implements CardService{
     private final CardRepository cardRepository;
     @Override
+    @Transactional(readOnly = true)
     public CardResponse getCard(Long userId) {
 
         Card card = cardRepository.findByUserId(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-        return CardResponse.builder()
-                .pass(card.getPass())
-                .speed(card.getSpeed())
-                .shooting(card.getShooting())
-                .dribble(card.getDribble())
-                .build();
+        return CardResponse.fromEntity(card);
     }
 
     @Override
@@ -57,6 +53,6 @@ public class CardServiceImpl implements CardService{
             card.updateSpeed(card.getSpeed() + 3);
         }
 
-        cardRepository.save(card);
+//        cardRepository.save(card);  // 더티체킹으로 엔티티 변경사항 자동 업데이트
     }
 }

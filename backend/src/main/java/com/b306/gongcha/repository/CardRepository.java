@@ -11,10 +11,4 @@ import java.util.Optional;
 
 public interface CardRepository extends JpaRepository<Card, Long> {
     Optional<Card> findByUserId(Long userId);
-
-//    @Query("select m from Card m where m.user.id = :shooting or m.user.id = :pass or m.user.id = :dribble or m.user.id = :speed")
-//    List<Card> findByUserId(@Param("shooting") Long shooting,
-//                            @Param("pass") Long pass,
-//                            @Param("dribble") Long dribble,
-//                            @Param("speed") Long speed);
 }
