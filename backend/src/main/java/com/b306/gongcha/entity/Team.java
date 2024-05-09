@@ -55,6 +55,11 @@ public class Team {
         this.dayOfWeek = teamRequest.getDayOfWeek();
     }
 
+    public void updateStatus(Status status) {
+
+        this.status = status;
+    }
+
     public TeamResponse toTeamResponse() {
 
         return TeamResponse.builder()

@@ -24,5 +24,7 @@ public interface TeamService {
     UserTeamResponse acceptTeam(Long teamId, Long userId);
     // 팀장이 선수의 신청 거절
     Long rejectTeam(Long teamId, Long userId);
+    // 선수 모집 완료하기
+    TeamResponse endTeamRecruit(Long teamId);
 
 }

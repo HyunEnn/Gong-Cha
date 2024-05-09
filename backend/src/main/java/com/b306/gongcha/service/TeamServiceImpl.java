@@ -171,6 +171,11 @@ public class TeamServiceImpl implements TeamService {
             throw new CustomException(ErrorCode.MEMBER_ALREADY_ACCEPTED);
         }
         userTeam.acceptUser();
+        // 인원 수 추가 후 7명이 되었으면 모집 상태를 "모집 완료"로 변경
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+        if(teamMembers == 6) {
+            team.updateStatus(Status.valueOf("모집완료"));
+        }
         return userTeam.toUserTeamResponse();
     }
 
@@ -181,5 +186,13 @@ public class TeamServiceImpl implements TeamService {
         UserTeam userTeam = userTeamRepository.findByTeamIdAndUserId(teamId, userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         userTeamRepository.deleteById(userTeam.getId());
         return userId;
+    }
+
+    @Override
+    public TeamResponse endTeamRecruit(Long teamId) {
+
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+        team.updateStatus(Status.valueOf("모집완료"));
+        return team.toTeamResponse();
     }
 }

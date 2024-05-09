@@ -123,6 +123,23 @@ public class TeamController {
     }
 
     @Operation(
+            summary = "팀이 받은 요청 목록 조회",
+            description = "팀장이 팀이 받은 요청 목록 조회"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "팀이 받은 요청 목록 조회 성공"
+    )
+    @GetMapping("/request/{teamId}")
+    public ResponseEntity<CommonResponse> getTeamRequest(@PathVariable Long teamId) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("팀장이 팀이 받은 요청 목록 조회")
+                .data(teamService.getUserTeamByTeam(teamId))
+                .build(), HttpStatus.OK);
+    }
+
+    @Operation(
             summary = "선수의 요청 승인",
             description = "팀장이 선수의 참여 요청을 승인"
     )
@@ -157,18 +174,18 @@ public class TeamController {
     }
 
     @Operation(
-            summary = "팀이 받은 요청 목록 조회",
-            description = "팀장이 팀이 받은 요청 목록 조회"
+            summary = "팀장이 선수 모집 종료",
+            description = "팀장이 게시판에서 선수 모집을 종료함"
     )
     @ApiResponse(
             responseCode = "200",
-            description = "팀이 받은 요청 목록 조회 성공"
+            description = "팀장이 선수 모집 종료 성공"
     )
-    @GetMapping("/request/{teamId}")
-    public ResponseEntity<CommonResponse> getTeamRequest(@PathVariable Long teamId) {
+    @PatchMapping("/close/{teamId}")
+    public ResponseEntity<CommonResponse> endTeamRequest(@PathVariable Long teamId) {
 
         return new ResponseEntity<>(CommonResponse.builder()
-                .message("팀장이 팀이 받은 요청 목록 조회")
+                .message("팀장이 선수 모집 종료")
                 .data(teamService.getUserTeamByTeam(teamId))
                 .build(), HttpStatus.OK);
     }
