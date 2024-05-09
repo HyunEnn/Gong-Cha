@@ -46,14 +46,15 @@ public class TeamServiceImpl implements TeamService{
         return team.toTeamResponse();
     }
 
-    // 팀원 목록 조회
+    // 승인된 팀원 목록 조회
     @Override
     @Transactional(readOnly = true)
     public List<UserTeamResponse> getTeamUsers(Long teamId) {
 
-        Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
-        return UserTeamResponse.fromEntity(team);
+        List<UserTeamResponse> userTeamResponseList = new ArrayList<>();
+        List<UserTeam> userTeamList = userTeamRepository.findAllByTeamIdAndPermitIsTrue(teamId);
+        userTeamList.forEach(u -> userTeamResponseList.add(u.toUserTeamResponse()));
+        return userTeamResponseList;
     }
 
     // 팀 정보 생성
@@ -125,6 +126,7 @@ public class TeamServiceImpl implements TeamService{
 
     // 선수가 팀에 신청
     @Override
+    @Transactional
     public UserTeamResponse requestTeam(Long teamId, Long userId) {
 
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
