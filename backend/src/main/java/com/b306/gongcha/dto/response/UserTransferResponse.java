@@ -11,6 +11,6 @@ public class UserTransferResponse {
 
     private Long transferId;
     private String userName;
-    private Boolean transferPermit;
+    private Boolean permit;
 
 }

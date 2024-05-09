@@ -4,6 +4,8 @@ import com.b306.gongcha.entity.*;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -12,15 +14,16 @@ import lombok.*;
 public class TransferResponse {
 
     private Long id;
+    private MatchType matchType;
     private int startTime; // 희망 신청 시간 시작
     private int endTime; // 희망 신청 시간 종료
-    private String dayOfWeek; // 희망 요일 - 평일, 주말, 월~일
-    private String area; // 희망 지역 - 시, 군/구 단위
-    private String info; // 선수 한마디
-    private Gender gender; // 성별
-    private Indoor indoor; // 실내, 실외 여부
+    private String region; // 광역시/도
+    private String district; // 일반시/군/구
     private Difficulty difficulty; // 경기 수준
     private Status status; // 모집 상태 정보
+    private List<String> dayOfWeek; // 희망 요일
+    private String info; // 선수 한마디
+    private Boolean isJoined; // 선수 팀 합류 여부
     private User user; // 작성자
 
 }

@@ -16,7 +16,7 @@ public class UserTransfer {
     @Column(name = "user_transfer_id")
     private Long id;
 
-    private Boolean transferPermit;
+    private Boolean permit;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -28,7 +28,7 @@ public class UserTransfer {
 
     public void acceptTransfer() {
 
-        this.transferPermit = true;
+        this.permit = true;
     }
 
     public UserTransferResponse toUserTransferResponse() {
@@ -36,7 +36,7 @@ public class UserTransfer {
         return UserTransferResponse.builder()
                 .transferId(transfer.getId())
                 .userName(user.getName())
-                .transferPermit(transferPermit)
+                .permit(permit)
                 .build();
     }
 
