@@ -303,5 +303,5 @@
 }
 
 .player-list-container {
-    transform: translate(-50%, 2%); /* Adjust the second value to move it down */
+    top: 35%;  /* Adjust the second value to move it down */
 }
