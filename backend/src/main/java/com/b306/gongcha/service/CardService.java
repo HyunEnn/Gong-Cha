@@ -7,5 +7,7 @@ public interface CardService {
 
     CardResponse getCard(Long userId);
 
+    CardResponse getMyCard();
+
     void userRating(UserRatingRequest cardRequest);
 }

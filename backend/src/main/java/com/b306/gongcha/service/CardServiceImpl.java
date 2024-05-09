@@ -5,6 +5,7 @@ import com.b306.gongcha.dto.response.CardResponse;
 import com.b306.gongcha.entity.Card;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
+import com.b306.gongcha.global.GetCurrentUserId;
 import com.b306.gongcha.repository.CardRepository;
 import com.b306.gongcha.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,14 @@ public class CardServiceImpl implements CardService{
     public CardResponse getCard(Long userId) {
 
         Card card = cardRepository.findByUserId(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        return CardResponse.fromEntity(card);
+    }
+
+    @Override
+    public CardResponse getMyCard() {
+
+        Long userId = GetCurrentUserId.currentUserId();
+        Card card = cardRepository.findByUserId(userId).orElseThrow(()->new CustomException(ErrorCode.NOT_FOUND_USER));
         return CardResponse.fromEntity(card);
     }
 

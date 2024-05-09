@@ -39,22 +39,19 @@ public class UserController {
     }
 
     @Operation(
-            summary = "유저 선수 카드 조회",
-            description = "다른 유저의 선수 카드를 조회함."
+            summary = "내 선수 카드 조회",
+            description = "내 선수 카드를 조회함."
     )
     @ApiResponse(
             responseCode = "200",
-            description = "선수 카드 조회에 성공했습니다."
+            description = "내 선수 카드 조회에 성공했습니다."
     )
-    @Schema(
-
-    )
-    @GetMapping("my-page/card/{id}")
-    public ResponseEntity<CommonResponse> getMyCard(@PathVariable("id") Long userId){
+    @GetMapping("my-page/card")
+    public ResponseEntity<CommonResponse> getMyCard(){
 
         return new ResponseEntity<>(CommonResponse.builder()
-                .message("선수 카드 조회 성공")
-                .data(cardService.getCard(userId))
+                .message("내 선수 카드 조회 성공")
+                .data(cardService.getMyCard())
                 .build(), HttpStatus.OK);
     }
 
