@@ -12,7 +12,7 @@ import java.util.List;
 @ToString
 public class TransferRequest {
 
-    private MatchType matchType;
+    private MatchType matchType; // 매치 성격 - 내전/친선
     private int startTime; // 희망 신청 시간 시작
     private int endTime; // 희망 신청 시간 종료
     private String region; // 광역시/도
@@ -22,11 +22,12 @@ public class TransferRequest {
     private List<String> dayOfWeek; // 희망 요일
     private String info; // 선수 한마디
     private Boolean isJoined; // 선수 팀 합류 여부
-    private Long userId; // 작성자
+    private Long writerId; // 작성자
 
     public Transfer toTransfer() {
 
         return Transfer.builder()
+                .matchType(matchType)
                 .startTime(startTime)
                 .endTime(endTime)
                 .region(region)
