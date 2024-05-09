@@ -18,7 +18,9 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class CardServiceImpl implements CardService{
+
     private final CardRepository cardRepository;
+
     @Override
     @Transactional(readOnly = true)
     public CardResponse getCard(Long userId) {

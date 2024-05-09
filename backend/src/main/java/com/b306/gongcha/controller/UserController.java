@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
+
     private final CardServiceImpl cardService;
 
-
     @Operation(
-            summary = "선수 카드 조회",
-            description = "유저의 선수 카드를 조회함."
+            summary = "유저 선수 카드 조회",
+            description = "다른 유저의 선수 카드를 조회함."
     )
     @ApiResponse(
             responseCode = "200",
@@ -31,6 +31,26 @@ public class UserController {
     )
     @GetMapping("/card/{id}")
     public ResponseEntity<CommonResponse> getUserCard(@PathVariable("id") Long userId){
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("선수 카드 조회 성공")
+                .data(cardService.getCard(userId))
+                .build(), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "유저 선수 카드 조회",
+            description = "다른 유저의 선수 카드를 조회함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "선수 카드 조회에 성공했습니다."
+    )
+    @Schema(
+
+    )
+    @GetMapping("my-page/card/{id}")
+    public ResponseEntity<CommonResponse> getMyCard(@PathVariable("id") Long userId){
 
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("선수 카드 조회 성공")

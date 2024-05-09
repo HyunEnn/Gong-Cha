@@ -1,5 +1,6 @@
 package com.b306.gongcha.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -13,9 +14,16 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Schema(description = "선수 카드의 슈팅 점수", example = "50")
     private int shooting;
+
+    @Schema(description = "선수 카드의 패스 점수", example = "50")
     private int pass;
+
+    @Schema(description = "선수 카드의 드리블 점수", example = "50")
     private int dribble;
+
+    @Schema(description = "선수 카드의 스피드 점수", example = "50")
     private int speed;
 
     @OneToOne(fetch = FetchType.LAZY)
