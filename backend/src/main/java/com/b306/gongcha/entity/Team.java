@@ -2,6 +2,7 @@ package com.b306.gongcha.entity;
 
 import com.b306.gongcha.dto.request.TeamRequest;
 import com.b306.gongcha.dto.response.TeamResponse;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,19 +23,33 @@ public class Team {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "match_type")
+    @Schema(description = "매칭 성격", allowableValues = { "친선", "내전"} )
     private MatchType matchType; // 매치 성격 - 내전/친선
+
     @Column(name = "start_time")
+    @Schema(description = "희망 시작 시간", example = "9")
     private int startTime; // 희망 시간 시작
+
+    @Schema(description = "희망 시작 시간", example = "18")
     @Column(name = "end_time")
     private int endTime; // 희망 시간 종료
+
+    @Schema(description = "광역시, 도", example = "대전")
     private String region; // 광역시, 도
+
+    @Schema(description = "일반시, 군, 구", example = "유성구")
     private String district; // 일반시, 군, 구
+
+    @Schema(description = "매칭 성격", allowableValues = { "초급", "중급", "고급"} )
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty; // 경기 수준
+
+    @Schema(description = "매칭 성격", defaultValue = "모집중", allowableValues = { "모집중", "모집완료", "매칭중", "매칭완료"} )
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Status status = Status.valueOf("모집중"); // 팀 상태 - 모집중, 모집완료, 매칭중, 매칭완료
 
+    @Schema(description = "희망요일")
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> dayOfWeek;
 
