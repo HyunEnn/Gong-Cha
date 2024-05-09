@@ -44,6 +44,7 @@ public class ClubApplyService {
         clubApplyRepository.save(clubApply);
     }
 
+
     public void permitApply() {
 
         Long userId = GetCurrentUserId.currentUserId();
