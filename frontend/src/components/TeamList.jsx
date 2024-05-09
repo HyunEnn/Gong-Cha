@@ -169,7 +169,7 @@ function TeamList() {
                 </div>
                 ) : (
                     <>
-                        <div className="absolute flex flex-col justify-center left-[calc(1.13125rem)] top-[calc(10.5rem)] w-[calc(20.2rem)] h-[calc(4.375rem)]">
+                        <div className="absolute flex flex-col justify-center left-[calc(1.13125rem)] top-[calc(10rem)] w-[calc(20.2rem)] h-[calc(4.375rem)]">
                             <div className="absolute ml-2 -mt-5 text-[calc(.6rem)] text-black/50 font-pretendardBold">필터</div>
                             <div className="mt-5 ml-[calc(0.5rem)]"
                                 name="isFriendly"
@@ -269,9 +269,9 @@ function TeamList() {
                                     (
                                         <div className="absolute ml-[calc(.15rem)] w-[calc(9rem)]">
                                             <div className="absolute text-[0.8rem]">
-                                                {['월', '화', '수', '목', '금', '토', '일'].map((day, index) => (
+                                                {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((day, index) => (
                                                     <div key={day}>
-                                                        <label className="absolute" style={{ marginLeft: `${0.8 * index}rem` }}>
+                                                        <label className="absolute mt-2" style={{ marginLeft: `${0.8 * index}rem` }}>
                                                         <input
                                                             type="checkbox"
                                                             name="day"
@@ -280,7 +280,7 @@ function TeamList() {
                                                             onChange={(e) => handleDayChange(e, day)}
                                                         />
                                                         </label>
-                                                        <p className="absolute px-[calc(0.15rem)] pt-[calc(0.05rem)] text-[.6rem]" style={{ marginLeft: `${0.8 * index}rem` }}>{day}</p>
+                                                        <p className="absolute -mt-[calc(0.1rem)] text-[.5rem] font-pretendardBold text-black/50" style={{ marginLeft: `${0.8 * index}rem` }}>{day}</p>
                                                     </div>
                                                 ))}
                                             </div>

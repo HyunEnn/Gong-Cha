@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import MyPageWithTransition from '@/components/MyPageWithTransition';
 import ErrorPage from '@/pages/ErrorPage';
@@ -14,104 +15,112 @@ import FindPlayerDetailPage from '@/pages/FindPlayerDetailPage';
 import FindTeamBoardPage from '@/pages/FindTeamBoardPage';
 import FindMatchBoardPage from '@/pages/FindMatchBoardPage';
 import MarketBoardPage from '@/pages/MarketBoardPage';
+import ProfilePage from '@/pages/ProfilePage';
 import PlayHistoryPage from '@/pages/PlayHistoryPage';
 import PlaySchedulePage from '@/pages/PlaySchedulePage';
 import PlayerCardPage from '@/pages/PlayerCardPage';
 import AlarmPage from '@/pages/AlarmPage';
-
-const router = createBrowserRouter([
-    // {
-    //     path: '/',
-    //     element: user ? <Navigate to="/main" /> : <Navigate to="/login" />,
-    // },
-    {
-        path: '/',
-        element: <Navigate to="/main" />,
-    },
-    {
-        path: '/test',
-        element: <Test />,
-    },
-    {
-        path: '/onboard',
-        element: <OnBoardPage />,
-    },
-    {
-        path: '/login',
-        element: <LoginPage />,
-    },
-
-    {
-        path: '/',
-        element: <BottomNav />,
-        errorElement: <ErrorPage />,
-        children: [
-            {
-                path: '/main',
-                element: <MainPage />,
-            },
-            {
-                path: '/chat',
-                element: <ChatPage />,
-            },
-            {
-                path: '/mypage',
-                element: <MyPageWithTransition />,
-                children: [
-                    {
-                        index: true,
-                        element: <MyPage />,
-                    },
-                    {
-                        path: 'playschedule',
-                        element: <PlaySchedulePage />,
-                    },
-                    {
-                        path: 'playercard',
-                        element: <PlayerCardPage />,
-                    },
-                    {
-                        path: 'playhistory',
-                        element: <PlayHistoryPage />,
-                    }
-                ],
-            },
-            {
-                path: '/alarm',
-                element: <AlarmPage />,
-            },
-            {
-                path: '/findplayer/board',
-                element: <FindPlayerBoardPage />,
-            },
-            {
-                path: '/findplayer/input',
-                element: <FindPlayerInputPage />,
-            },
-            {
-                path: '/findplayer/detail',
-                element: <FindPlayerDetailPage />,
-            },
-            {
-                path: '/findteam/board',
-                element: <FindTeamBoardPage />,
-            },
-            {
-                path: '/findmatch/board',
-                element: <FindMatchBoardPage />,
-            },
-            {
-                path: '/market/board',
-                element: <MarketBoardPage />,
-            },
-        ],
-    },
-]);
+import { Toaster } from "@/components/ui/sonner";
 
 function App() {
+    const router = createBrowserRouter([
+        // {
+        //     path: '/',
+        //     element: user ? <Navigate to="/main" /> : <Navigate to="/login" />,
+        // },
+        {
+            path: '/',
+            element: <Navigate to="/main" />,
+        },
+        {
+            path: '/test',
+            element: <Test />,
+        },
+        {
+            path: '/onboard',
+            element: <OnBoardPage />,
+        },
+        {
+            path: '/login',
+            element: <LoginPage />,
+        },
+    
+        {
+            path: '/',
+            element: <BottomNav />,
+            errorElement: <ErrorPage />,
+            children: [
+                {
+                    path: '/main',
+                    element: <MainPage />,
+                },
+                {
+                    path: '/chat',
+                    element: <ChatPage />,
+                },
+                {
+                    path: '/mypage',
+                    element: <MyPageWithTransition />,
+                    children: [
+                        {
+                            index: true,
+                            element: <MyPage />,
+                        },
+                        {
+                            path: 'profile',
+                            element: <ProfilePage />,
+                        },
+                        {
+                            path: 'playschedule',
+                            element: <PlaySchedulePage />,
+                        },
+                        {
+                            path: 'playercard',
+                            element: <PlayerCardPage />,
+                        },
+                        {
+                            path: 'playhistory',
+                            element: <PlayHistoryPage />,
+                        }
+                    ],
+                },
+                {
+                    path: '/alarm',
+                    element: <AlarmPage />,
+                },
+                {
+                    path: '/findplayer/board',
+                    element: <FindPlayerBoardPage />,
+                },
+                {
+                    path: '/findplayer/input',
+                    element: <FindPlayerInputPage />,
+                },
+                {
+                    path: '/findplayer/detail',
+                    element: <FindPlayerDetailPage />,
+                },
+                {
+                    path: '/findteam/board',
+                    element: <FindTeamBoardPage />,
+                },
+                {
+                    path: '/findmatch/board',
+                    element: <FindMatchBoardPage />,
+                },
+                {
+                    path: '/market/board',
+                    element: <MarketBoardPage />,
+                },
+            ],
+        },
+    ]);
+
     return (
         <>
-            <RouterProvider router={router} />
+            <Toaster />
+            <RouterProvider router={router}>
+            </RouterProvider>
         </>
     );
 }

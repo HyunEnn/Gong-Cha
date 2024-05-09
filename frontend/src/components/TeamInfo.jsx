@@ -15,6 +15,18 @@ function TeamInfo() {
     const [translateY, setTranslateY] = useState(0);
 
     useEffect(() => {
+        const bars = document.querySelectorAll('.progress-bar');
+        bars.forEach(bar => {
+            let targetWidth = bar.dataset.width;
+            bar.style.width = '0%';
+            setTimeout(() => {
+                bar.style.transition = 'width 0.5s ease-out';
+                bar.style.width = targetWidth;
+            }, 100);
+        });
+    }, [myTeamInfoData]);
+
+    useEffect(() => {
         setMyTeamInfoData(    // dummy data
             myTeamInfoDummyData,
         );
@@ -103,7 +115,7 @@ function TeamInfo() {
     
         return (
             <Modal show={!!selectedPlayer} onClose={handleClosePlayerCard}>
-                <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center" onClick={handleClosePlayerCard}>
+                <div className="fixed inset-0 flex items-center justify-center" onClick={handleClosePlayerCard}>
                     <div className="absolute top-0 bg-white rounded-lg shadow-lg max-w-md mx-auto mt-[calc(4.0rem)]" onClick={e => e.stopPropagation()}
                             onTouchStart={handleTouchStart}
                             onTouchMove={handleTouchMove}
@@ -131,7 +143,6 @@ function TeamInfo() {
                     <div className="mt-4 px-4 absolute top-0">
                         <p>{myTeamInfoData.writer.name} FC</p>
                     </div>
-                
                     {/* team tags */}
                     <div className="mt-4 px-4 text-[calc(.5rem)] absolute top-[calc(1.5rem)]">
                         <p>{myTeamInfoData.location} | {myTeamInfoData.time} | {myTeamInfoData.tags.map(tag => Array.isArray(tag) ? tag.join(', ') : tag).join(', ')}</p>
@@ -148,19 +159,19 @@ function TeamInfo() {
                             </div>
                         </div>
                         <div className="mt-5 ml-4 space-x-0 bg-gray-400 w-[72%] h-5 flex text-[calc(.5rem)]">
-                            <div className="bg-blue-500 h-full w-1/6">
+                            <div className="progress-bar bg-blue-500 h-full" data-width="16.666%">
                                 <p className="absolute ml-[calc(.1rem)] mt-[calc(.1rem)] text-white font-pretendardBold text-[calc(.7rem)]">40</p>
                                 <p className="absolute -mt-[calc(.6rem)] font-pretendardBlack text-blue-500">SHO</p>
                             </div>
-                            <div className="bg-green-500 h-full w-1/3">
+                            <div className="progress-bar bg-green-500 h-full" data-width="33.333%">
                                 <p className="absolute ml-[calc(.1rem)] mt-[calc(.1rem)] text-white font-pretendardBold text-[calc(.7rem)]">90</p>
                                 <p className="absolute -mt-[calc(.6rem)] font-pretendardBlack text-green-500">PAS</p>
                             </div>
-                            <div className="bg-red-500 h-full w-1/5">
+                            <div className="progress-bar bg-red-500 h-full" data-width="20%">
                                 <p className="absolute ml-[calc(.1rem)] mt-[calc(.1rem)] text-white font-pretendardBold text-[calc(.7rem)]">50</p>
                                 <p className="absolute -mt-[calc(.6rem)] font-pretendardBlack text-red-500">DRI</p>
                             </div>
-                            <div className="bg-yellow-500 h-full w-1/6">
+                            <div className="progress-bar bg-yellow-500 h-full" data-width="16.666%">
                                 <p className="absolute ml-[calc(.1rem)] mt-[calc(.1rem)] text-white font-pretendardBold text-[calc(.7rem)]">50</p>
                                 <p className="absolute -mt-[calc(.6rem)] font-pretendardBlack text-yellow-500">SPD</p>
                             </div>
@@ -171,14 +182,16 @@ function TeamInfo() {
                             <p className="absolute mt-[calc(.1rem)] right-[calc(.5rem)] font-pretendardBlack text-[calc(.7rem)] text-gray-500">/400</p>
                         </div>
                         <div className="absolute mt-[calc(3rem)]">
-                            <img className="relative w-full rounded-sm shadow-lg" 
+                            <img className="relative w-full rounded-sm shadow-background animate-grow-in" 
                                 src={teamBackground} 
                                 alt="배경 필드 사진" 
                             />
-                            <div className="flex flex-wrap items-center justify-center absolute inset-0">
+                            <div className="flex flex-wrap items-center justify-center p-4 absolute inset-0">
                                 {myTeamInfoData.players.map((player, playerIndex) => 
                                     player.stateus && (
-                                        <div key={playerIndex} className="relative flex flex-col items-center justify-center mx-2" onClick={() => handlePlayerClick(player)}>
+                                        <div key={playerIndex} className="relative flex flex-col items-center justify-center m-2"
+                                            style={{ width: 'calc(20% - 1.5rem)' }}
+                                            onClick={() => handlePlayerClick(player)}>
                                             <img className="rounded-full border-[calc(0.15rem)] border-stone-1 object-cover object-center mb-1" 
                                                 src={player.profileImage} 
                                                 alt="프로필 사진"
@@ -187,7 +200,6 @@ function TeamInfo() {
                                         </div>
                                     )
                                 )}
-                                {/* test */}
                                 {renderPlayerCardModal()}
                             </div>
                         </div>
