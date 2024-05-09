@@ -47,6 +47,8 @@ function PlayerList() {
     });
     const [filterState, setFilterState] = useState([false, false, false, false]);
     const [checked, setChecked] = useState(false);
+    const [showPlayerModal, setShowPlayerModal] = useState(false);
+    const [selectedPlayer, setSelectedPlayer] = useState(null);
 
     useEffect(() => {
         setPlayerListData(    // dummy data
@@ -179,7 +181,10 @@ function PlayerList() {
         const totalStats = player.data.pass + player.data.shooting + player.data.dribble + player.data.speed;
         const averageStats = totalStats / 4;
         return (
-            <div key={player.id} className="player-item" onClick={() => openModal(player.type, player)}>
+        <div key={player.id} className="player-item" onClick={() => {
+            setSelectedPlayer(player);
+            setShowPlayerModal(true);
+                                    }}>
                 <div className="text-sm">{averageStats.toFixed(0)}</div>
                 <img  className='w-16 h-16' src={defaultplayer} alt="기본 선수 사진" />
                 <span className="mr-4">{player.data.user_id}</span>
@@ -340,6 +345,7 @@ function PlayerList() {
         </div>
             {filteredPlayers.map(renderPlayerItem)}
         </div>
+        <PlayerModal isOpen={showPlayerModal} onClose={() => setShowPlayerModal(false)} player={selectedPlayer} />
     </div>
                 )
             }

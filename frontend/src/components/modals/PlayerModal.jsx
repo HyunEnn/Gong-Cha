@@ -1,7 +1,7 @@
 import React from 'react';
 
-function PlayerModal({ isOpen, onClose }) {
-  if (!isOpen) return null;
+function PlayerModal({ isOpen, onClose, player }) {
+  if (!isOpen || !player) return null;
 
   return (
     <div className="backdrop">
@@ -9,8 +9,11 @@ function PlayerModal({ isOpen, onClose }) {
         <div className="modal-content">
           <h2>Player Information</h2>
           <ul>
-            <li>Time: 00:00 - 24:00</li>
-            <li>Name, Age, Position, Team</li>
+            <li>Time: {player.data.startTime} - {player.data.endTime}</li>
+            <li>Name: {player.data.user_id}</li>
+            <li>Age: {player.data.age}</li>
+            <li>Position: {player.data.position}</li>
+            <li>Team: {player.data.team}</li>
           </ul>
           <button onClick={onClose} className="close-button">Close</button>
         </div>
@@ -18,5 +21,6 @@ function PlayerModal({ isOpen, onClose }) {
     </div>
   );
 }
+
 
 export default PlayerModal;
