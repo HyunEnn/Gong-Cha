@@ -1,15 +1,11 @@
 package com.b306.gongcha.entity;
 
-import com.b306.gongcha.dto.UserDTO;
 import com.b306.gongcha.dto.request.TeamRequest;
 import com.b306.gongcha.dto.response.TeamResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -39,20 +35,13 @@ public class Team {
     @Builder.Default
     private Status status = Status.valueOf("모집중"); // 팀 상태 - 모집중, 모집완료, 매칭중, 매칭완료
 
-    // 요일 목록
-    @OneToMany(mappedBy = "dayOfWeek", cascade = CascadeType.REMOVE)
-    @Builder.Default
-    private List<DayOfWeek> dayOfWeekList = new ArrayList<>();
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<String> dayOfWeek;
 
     // 팀원 목록
     @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<UserTeam> userTeamList = new ArrayList<>();
-
-    public void changeStatus(Status status) {
-
-        this.status = status;
-    }
 
     public void updateTeam(TeamRequest teamRequest) {
 
@@ -63,15 +52,8 @@ public class Team {
         this.district = teamRequest.getDistrict();
         this.difficulty = teamRequest.getDifficulty();
         this.status = teamRequest.toTeam().getStatus();
+        this.dayOfWeek = teamRequest.getDayOfWeek();
     }
-
-//    public void setDayOfWeekList(List<DayOfWeek> dayOfWeekList) {
-//        this.dayOfWeekList = dayOfWeekList;
-//    }
-//
-//    public void setUserTeamList(List<UserTeam> userTeamList) {
-//        this.userTeamList = userTeamList;
-//    }
 
     public TeamResponse toTeamResponse() {
 
@@ -82,7 +64,7 @@ public class Team {
                 .district(district)
                 .startTime(startTime)
                 .endTime(endTime)
-//                .dayOfWeekList(dayOfWeekList)
+                .dayOfWeekList(dayOfWeek)
                 .difficulty(difficulty)
 //                .userList(userTeamList)
                 .build();

@@ -20,14 +20,9 @@ public class TeamResponse {
     private String district;
     private int startTime;
     private int endTime;
-    private List<DayOfWeekResponse> dayOfWeekList;
+    private List<String> dayOfWeekList;
     private Difficulty difficulty;
     private List<UserTeamResponse> userTeamList;
-
-    public void setDayOfWeekList(List<DayOfWeekResponse> dayOfWeekList) {
-
-        this.dayOfWeekList = dayOfWeekList;
-    }
 
     public void setUserTeamList(List<UserTeamResponse> userTeamList) {
 

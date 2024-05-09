@@ -1,13 +1,11 @@
 package com.b306.gongcha.service;
 
 import com.b306.gongcha.dto.request.TeamRequest;
-import com.b306.gongcha.dto.response.DayOfWeekResponse;
 import com.b306.gongcha.dto.response.TeamResponse;
 import com.b306.gongcha.dto.response.UserTeamResponse;
 import com.b306.gongcha.entity.*;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
-import com.b306.gongcha.repository.DayOfWeekRepository;
 import com.b306.gongcha.repository.TeamRepository;
 import com.b306.gongcha.repository.UserRepository;
 import com.b306.gongcha.repository.UserTeamRepository;
@@ -26,7 +24,6 @@ public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
     private final UserTeamRepository userTeamRepository;
     private final UserRepository userRepository;
-    private final DayOfWeekRepository dayOfWeekRepository;
 
     // 팀 목록 게시글 전체 조회
     @Override
@@ -36,11 +33,6 @@ public class TeamServiceImpl implements TeamService {
         List<Team> teamList = teamRepository.findAll();
         for(Team t : teamList) {
             TeamResponse teamResponse = t.toTeamResponse();
-            // 요일 정보 가져오기
-            List<DayOfWeekResponse> dayOfWeekResponseList = new ArrayList<>();
-            List<DayOfWeek> dayOfWeekList = dayOfWeekRepository.findAllByTeamId(t.getId());
-            dayOfWeekList.forEach(d -> dayOfWeekResponseList.add(d.toDayOfResponse()));
-            teamResponse.setDayOfWeekList(dayOfWeekResponseList);
             // 팀원 정보 가져오기
             List<UserTeamResponse> userTeamResponseList = new ArrayList<>();
             // 승인된 팀원들만 가져오기
@@ -58,10 +50,6 @@ public class TeamServiceImpl implements TeamService {
     public TeamResponse getTeam(Long teamId) {
 
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
-        // 요일 정보 가져오기
-        List<DayOfWeekResponse> dayOfWeekResponseList = new ArrayList<>();
-        List<DayOfWeek> dayOfWeekList = dayOfWeekRepository.findAllByTeamId(teamId);
-        dayOfWeekList.forEach(d -> dayOfWeekResponseList.add(d.toDayOfResponse()));
         // 팀원 정보 가져오기
         List<UserTeamResponse> userTeamResponseList = new ArrayList<>();
         // 승인된 팀원들만 가져오기
@@ -69,7 +57,6 @@ public class TeamServiceImpl implements TeamService {
         userTeamList.forEach(u -> userTeamResponseList.add(u.toUserTeamResponse()));
 
         TeamResponse teamResponse = team.toTeamResponse();
-        teamResponse.setDayOfWeekList(dayOfWeekResponseList);
         teamResponse.setUserTeamList(userTeamResponseList);
         return teamResponse;
     }
@@ -81,16 +68,6 @@ public class TeamServiceImpl implements TeamService {
         // 팀 정보 저장
         Team team = teamRequest.toTeam();
         Team savedTeam = teamRepository.save(team);
-        
-        // 요일 정보 저장
-        List<String> dayOfWeekRequestList = teamRequest.getDayOfWeek();
-        for(String d : dayOfWeekRequestList) {
-            DayOfWeek dayOfWeek = DayOfWeek.builder()
-                    .dayOfWeek(d)
-                    .team(savedTeam)
-                    .build();
-            dayOfWeekRepository.save(dayOfWeek);
-        }
 
         // 팀장 정보 저장
         UserTeam teamCaptain = UserTeam.builder()
@@ -124,27 +101,7 @@ public class TeamServiceImpl implements TeamService {
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         team.updateTeam(teamRequest);
 
-        // 요일 정보 수정
-        // 팀 ID로 요일 목록 가져오기
-        // 새로 입력받은 요일 목록과 비교
-//        List<String> dayOfWeekRequestList = teamRequest.getDayOfWeek();
-//        for(String d : dayOfWeekRequestList) {
-//            DayOfWeek dayOfWeek = DayOfWeek.builder()
-//                    .dayOfWeek(d)
-//                    .team(team)
-//                    .build();
-//            dayOfWeekRepository.save(dayOfWeek);
-//        }
         return team.toTeamResponse();
-    }
-    
-    // 이미 존재하는 팀원 정보 삭제 - rejectTeam으로 대체 가능?
-    @Override
-    public Long kickUser(Long teamId, Long userId) {
-
-        UserTeam userTeam = userTeamRepository.findByTeamIdAndUserId(teamId, userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-        userTeamRepository.deleteById(userTeam.getId());
-        return userId;
     }
 
     // 팀 정보 삭제
@@ -152,8 +109,7 @@ public class TeamServiceImpl implements TeamService {
     public Long deleteTeam(Long teamId) {
 
         if(teamRepository.findById(teamId).isPresent()) {
-            // Cascade.Remove 만 설정 시 UserTeam 삭제 후 Team 삭제 - DayOfWeek 삭제가 이루어지지 않음
-            dayOfWeekRepository.deleteByTeamId(teamId);
+//            userTeamRepository.deleteAllByTeamId(teamId);
             teamRepository.deleteById(teamId);
         }
         else {
@@ -168,6 +124,9 @@ public class TeamServiceImpl implements TeamService {
 
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        if(userTeamRepository.findByTeamIdAndUserId(teamId, userId).isPresent()) {
+            throw new CustomException(ErrorCode.BOARD_REQUEST_DUPLICATE);
+        }
         UserTeam userTeam = UserTeam.builder()
                 .user(user)
                 .team(team)
@@ -197,14 +156,6 @@ public class TeamServiceImpl implements TeamService {
         return userTeamResponseList;
     }
 
-    // 팀 정보, 신청자 정보로 개별 신청 확인
-    @Override
-    public UserTeamResponse getUserTeam(Long teamId, Long userId) {
-
-        UserTeam userTeam = userTeamRepository.findByTeamIdAndUserId(teamId, userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST));
-        return userTeam.toUserTeamResponse();
-    }
-
     // 팀장이 신청자의 신청 승인 - 팀 목록에 추가
     @Override
     public UserTeamResponse acceptTeam(Long teamId, Long userId) {
@@ -227,7 +178,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public Long rejectTeam(Long teamId, Long userId) {
 
-        UserTeam userTeam = userTeamRepository.findByTeamIdAndUserId(teamId, userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST));
+        UserTeam userTeam = userTeamRepository.findByTeamIdAndUserId(teamId, userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         userTeamRepository.deleteById(userTeam.getId());
         return userId;
     }

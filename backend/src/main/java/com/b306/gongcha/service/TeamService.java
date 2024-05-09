@@ -13,8 +13,6 @@ public interface TeamService {
     TeamResponse getTeam(Long teamId);
     TeamResponse createTeam(TeamRequest teamRequest);
     TeamResponse updateTeam(Long teamId, TeamRequest teamRequest);
-    // 특정 선수 팀에서 방출
-    Long kickUser(Long teamId, Long userId);
     Long deleteTeam(Long teamId);
     // 선수가 팀에게 참여 요청
     UserTeamResponse requestTeam(Long teamId, Long userId);
@@ -22,8 +20,6 @@ public interface TeamService {
     List<UserTeamResponse> getUserTeamByUser(Long userId);
     // 팀 기준으로 신청 받은 목록 조회
     List<UserTeamResponse> getUserTeamByTeam(Long teamId);
-    // 한 신청자가 신청한 특정 팀 정보 조회
-    UserTeamResponse getUserTeam(Long teamId, Long userId);
     // 팀장이 선수의 신청 수락
     UserTeamResponse acceptTeam(Long teamId, Long userId);
     // 팀장이 선수의 신청 거절

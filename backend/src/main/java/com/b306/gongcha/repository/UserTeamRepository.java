@@ -14,4 +14,6 @@ public interface UserTeamRepository extends JpaRepository<UserTeam, Long> {
     List<UserTeam> findByUserId(Long userId);
     // 팀에 승인된 선수들만 보여주기 
     List<UserTeam> findAllByTeamIdAndPermitIsTrue(Long teamId);
+    // 승인 대기 목록 선수들만 보여주기
+    List<UserTeam> findAllByTeamIdAndPermitIsFalse(Long teamId);
 }

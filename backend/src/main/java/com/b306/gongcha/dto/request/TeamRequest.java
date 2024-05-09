@@ -32,6 +32,7 @@ public class TeamRequest {
                 .matchType(matchType)
                 .startTime(startTime)
                 .endTime(endTime)
+                .dayOfWeek(dayOfWeek)
                 .region(region)
                 .district(district)
                 .difficulty(difficulty)
