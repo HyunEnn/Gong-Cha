@@ -301,3 +301,7 @@
     border-radius: 8px;
     margin-bottom: 8px;  /* Adds space between items */
 }
+
+.player-list-container {
+    transform: translate(-50%, 2%); /* Adjust the second value to move it down */
+}

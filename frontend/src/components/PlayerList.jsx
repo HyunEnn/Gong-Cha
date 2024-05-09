@@ -223,7 +223,7 @@ function PlayerList() {
                                 (
                                     <div className="absolute -ml-[calc(.1rem)] font-pretendardBlack">
                                         <select
-                                            className="absolute text-[calc(.8rem)]"
+                                            className="absolute text-[calc(.8rem)] "
                                             name="location"
                                             value={selectedRegion}
                                             onChange={handleRegionChange}
@@ -327,7 +327,7 @@ function PlayerList() {
                             
                         </div>
                     </div>
-        <div className="player-list-container flex-col items-center absolute left-1/2 transform -translate-x-1/2 top-[30%] w-[85%] h-[calc(100rem)] border-">
+        <div className="player-list-container flex-col items-center absolute left-1/2 transform -translate-x-1/2 top-[30%] w-[85%] h-[calc(100rem)]">
 
         <div className="flex-end">
              {/* <input 
