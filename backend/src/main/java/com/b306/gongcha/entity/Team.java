@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Team {
+public class Team extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -86,7 +86,21 @@ public class Team {
                 .endTime(endTime)
                 .dayOfWeekList(dayOfWeek)
                 .difficulty(difficulty)
-//                .userList(userTeamList)
+                .status(status)
+//                .userTeamList(userTeamList)
+                .build();
+    }
+
+    public static Team fromTeamRequest(TeamRequest teamRequest) {
+
+        return Team.builder()
+                .matchType(teamRequest.getMatchType())
+                .startTime(teamRequest.getStartTime())
+                .endTime(teamRequest.getEndTime())
+                .region(teamRequest.getRegion())
+                .district(teamRequest.getDistrict())
+                .difficulty(teamRequest.getDifficulty())
+                .dayOfWeek(teamRequest.getDayOfWeek())
                 .build();
     }
 

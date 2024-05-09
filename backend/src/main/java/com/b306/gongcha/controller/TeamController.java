@@ -7,6 +7,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +31,12 @@ public class TeamController {
             description = "팀 목록 전체 조회 완료"
     )
     @GetMapping("/")
-    public ResponseEntity<CommonResponse> getAllTeams() {
+    public ResponseEntity<CommonResponse> getAllTeams(
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
 
         return new ResponseEntity<>(CommonResponse.builder()
-                .message("선수 구인 게시글 전체 조회")
-                .data(teamService.getAllTeams())
+                .message("팀 목록 전체 조회")
+                .data(teamService.getAllTeams(pageable))
                 .build(), HttpStatus.OK);
     }
 
@@ -49,10 +53,28 @@ public class TeamController {
     public ResponseEntity<CommonResponse> getTeam(@PathVariable Long teamId) {
 
         return new ResponseEntity<>(CommonResponse.builder()
-                .message("선수 구인 게시글 전체 조회")
+                .message("팀 상세 정보 조회")
                 .data(teamService.getTeam(teamId))
                 .build(), HttpStatus.OK);
     }
+
+    @Operation(
+            summary = "팀의 팀원 조회",
+            description = "팀의 팀원들 조회"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "팀원들이 정상적으로 조회되었습니다."
+    )
+    @GetMapping("/{teamId}/teamUsers")
+    public ResponseEntity<CommonResponse> getTeamUsers(@PathVariable Long teamId) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("팀원 조회 성공")
+                .data(teamService.getTeamUsers(teamId))
+                .build(), HttpStatus.OK);
+    }
+
 
     @Operation(
             summary = "팀 생성",
@@ -186,7 +208,7 @@ public class TeamController {
 
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("팀장이 선수 모집 종료")
-                .data(teamService.getUserTeamByTeam(teamId))
+                .data(teamService.endTeamRecruit(teamId))
                 .build(), HttpStatus.OK);
     }
 

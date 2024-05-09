@@ -4,13 +4,16 @@ import com.b306.gongcha.dto.request.TeamRequest;
 import com.b306.gongcha.dto.response.TeamResponse;
 import com.b306.gongcha.dto.response.UserTeamResponse;
 import com.b306.gongcha.entity.UserTeam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface TeamService {
 
-    List<TeamResponse> getAllTeams();
+    public Page<TeamResponse> getAllTeams(Pageable pageable);
     TeamResponse getTeam(Long teamId);
+    public List<UserTeamResponse> getTeamUsers(Long teamId);
     TeamResponse createTeam(TeamRequest teamRequest);
     TeamResponse updateTeam(Long teamId, TeamRequest teamRequest);
     Long deleteTeam(Long teamId);

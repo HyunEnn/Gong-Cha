@@ -10,16 +10,19 @@ import com.b306.gongcha.repository.TeamRepository;
 import com.b306.gongcha.repository.UserRepository;
 import com.b306.gongcha.repository.UserTeamRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class TeamServiceImpl implements TeamService {
+public class TeamServiceImpl implements TeamService{
 
     private final TeamRepository teamRepository;
     private final UserTeamRepository userTeamRepository;
@@ -27,53 +30,53 @@ public class TeamServiceImpl implements TeamService {
 
     // 팀 목록 게시글 전체 조회
     @Override
-    public List<TeamResponse> getAllTeams() {
+    @Transactional(readOnly = true)
+    public Page<TeamResponse> getAllTeams(Pageable pageable) {
 
-        List<TeamResponse> teamResponseList = new ArrayList<>();
-        List<Team> teamList = teamRepository.findAll();
-        for(Team t : teamList) {
-            TeamResponse teamResponse = t.toTeamResponse();
-            // 팀원 정보 가져오기
-            List<UserTeamResponse> userTeamResponseList = new ArrayList<>();
-            // 승인된 팀원들만 가져오기
-            List<UserTeam> userTeamList = userTeamRepository.findAllByTeamIdAndPermitIsTrue(t.getId());
-            userTeamList.forEach(u -> userTeamResponseList.add(u.toUserTeamResponse()));
-            teamResponse.setUserTeamList(userTeamResponseList);
-
-            teamResponseList.add(teamResponse);
-        }
-        return teamResponseList;
+        Page<Team> teams = teamRepository.findAll(pageable);
+        return teams.map(TeamResponse::fromEntity);
     }
 
     // 팀 게시글 상세 조회
     @Override
+    @Transactional(readOnly = true)
     public TeamResponse getTeam(Long teamId) {
 
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
-        // 팀원 정보 가져오기
-        List<UserTeamResponse> userTeamResponseList = new ArrayList<>();
-        // 승인된 팀원들만 가져오기
-        List<UserTeam> userTeamList = userTeamRepository.findAllByTeamIdAndPermitIsTrue(teamId);
-        userTeamList.forEach(u -> userTeamResponseList.add(u.toUserTeamResponse()));
+        return team.toTeamResponse();
+    }
 
-        TeamResponse teamResponse = team.toTeamResponse();
-        teamResponse.setUserTeamList(userTeamResponseList);
-        return teamResponse;
+    // 팀원 목록 조회
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserTeamResponse> getTeamUsers(Long teamId) {
+
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+        return UserTeamResponse.fromEntity(team);
     }
 
     // 팀 정보 생성
     @Override
+    @Transactional
     public TeamResponse createTeam(TeamRequest teamRequest) {
 
         // 팀 정보 저장
-        Team team = teamRequest.toTeam();
+        Team team = Team.fromTeamRequest(teamRequest);
         Team savedTeam = teamRepository.save(team);
 
         // 팀장 정보 저장
+        User captain = userRepository.findById(teamRequest.getWriterId())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        Team newTeam = teamRepository.findById(savedTeam.getId())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+
+        // Builder 패턴 수정
         UserTeam teamCaptain = UserTeam.builder()
                 .role(Role.valueOf("팀장"))
-                .user(userRepository.findById(teamRequest.getWriterId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)))
-                .team(teamRepository.findById(savedTeam.getId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM)))
+                .user(captain)
+                .team(newTeam)
                 .permit(true)
                 .build();
         userTeamRepository.save(teamCaptain);
@@ -81,7 +84,9 @@ public class TeamServiceImpl implements TeamService {
         // 팀원 정보 저장 - 주어진 유저 id값 목록 사용
         List<User> userList = new ArrayList<>();
         List<Long> userIdList = teamRequest.getUserList();
-        userIdList.forEach(ui -> userList.add(userRepository.findById(ui).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER))));
+        userIdList.forEach(ui -> userList.add(userRepository.findById(ui)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER))));
+
         for(User user : userList) {
             UserTeam userTeam = UserTeam.builder()
                     .role(Role.valueOf("팀원"))
@@ -91,12 +96,7 @@ public class TeamServiceImpl implements TeamService {
                     .build();
             userTeamRepository.save(userTeam);
         }
-        List<UserTeamResponse> userTeamResponseList = new ArrayList<>();
-        List<UserTeam> userTeamList = userTeamRepository.findAllByTeamIdAndPermitIsTrue(savedTeam.getId());
-        userTeamList.forEach(u -> userTeamResponseList.add(u.toUserTeamResponse()));
-        TeamResponse teamResponse = savedTeam.toTeamResponse();
-        teamResponse.setUserTeamList(userTeamResponseList);
-        return teamResponse;
+        return savedTeam.toTeamResponse();
     }
 
     // 팀 정보 수정
@@ -115,7 +115,6 @@ public class TeamServiceImpl implements TeamService {
     public Long deleteTeam(Long teamId) {
 
         if(teamRepository.findById(teamId).isPresent()) {
-//            userTeamRepository.deleteAllByTeamId(teamId);
             teamRepository.deleteById(teamId);
         }
         else {
@@ -171,7 +170,8 @@ public class TeamServiceImpl implements TeamService {
         if(teamMembers == 7) {
             throw new CustomException(ErrorCode.MEMBER_LIMIT_EXCEEDED);
         }
-        UserTeam userTeam = userTeamRepository.findByTeamIdAndUserId(teamId, userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST));
+        UserTeam userTeam = userTeamRepository.findByTeamIdAndUserId(teamId, userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST));
         // 이미 팀에 추가된 사용자인 경우 예외처리
         if(userTeam.getPermit()) {
             throw new CustomException(ErrorCode.MEMBER_ALREADY_ACCEPTED);
@@ -189,7 +189,8 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public Long rejectTeam(Long teamId, Long userId) {
 
-        UserTeam userTeam = userTeamRepository.findByTeamIdAndUserId(teamId, userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        UserTeam userTeam = userTeamRepository.findByTeamIdAndUserId(teamId, userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         userTeamRepository.deleteById(userTeam.getId());
         return userId;
     }

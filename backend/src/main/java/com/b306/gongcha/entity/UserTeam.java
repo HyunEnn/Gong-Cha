@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class UserTeam {
+public class UserTeam extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +40,7 @@ public class UserTeam {
         return UserTeamResponse.builder()
                 .role(role)
                 .userName(user.getName())
-                .teamId(team.getId())
+                .userId(user.getId())
                 .permit(permit)
                 .build();
     }

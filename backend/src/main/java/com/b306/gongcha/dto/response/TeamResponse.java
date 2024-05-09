@@ -19,13 +19,21 @@ public class TeamResponse {
     private int endTime;
     private List<String> dayOfWeekList;
     private Difficulty difficulty;
-    private List<UserTeamResponse> userTeamList;
+    private Status status;
 
-    public void setUserTeamList(List<UserTeamResponse> userTeamList) {
+    public static TeamResponse fromEntity(Team team) {
 
-        this.userTeamList = userTeamList;
+        return TeamResponse.builder()
+                .id(team.getId())
+                .matchType(team.getMatchType())
+                .region(team.getRegion())
+                .district(team.getDistrict())
+                .startTime(team.getStartTime())
+                .endTime(team.getEndTime())
+                .dayOfWeekList(team.getDayOfWeek())
+                .difficulty(team.getDifficulty())
+                .status(team.getStatus())
+                .build();
     }
-
-
 
 }
