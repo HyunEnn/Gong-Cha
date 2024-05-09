@@ -9,9 +9,6 @@ import java.util.List;
 
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@ToString
 public class TeamResponse {
 
     private Long id;

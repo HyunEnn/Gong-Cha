@@ -11,9 +11,6 @@ import java.util.List;
 
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@ToString
 public class TeamRequest {
 
     private MatchType matchType; // 매치 종류 - 내전, 친선전
