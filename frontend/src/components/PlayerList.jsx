@@ -337,7 +337,6 @@ function PlayerList() {
                 className="narrow-input"
             />
         </div>
-        
             {filteredPlayers.map(renderPlayerItem)}
         </div>
     </div>

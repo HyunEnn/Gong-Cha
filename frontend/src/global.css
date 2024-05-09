@@ -283,7 +283,7 @@
 .flex-end {
     display: flex;
     justify-content: flex-end;
-    margin-top: 8px; 
+    margin-top: 20px; 
 }
 
 .narrow-input {
