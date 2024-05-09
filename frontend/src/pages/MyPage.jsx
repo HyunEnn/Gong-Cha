@@ -98,10 +98,10 @@ function MyPage() {
                 <div className="absolute flex left-[calc(1.13125rem)] top-[calc(14.5rem)] w-[calc(19.75rem)] rounded transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-92" onClick={() => handlePlayScheduleClick()}>
                     <CardForm className="flex justify-center w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] border-gray-50 bg-stone-50">
                         <CardContent className="p-[calc(0.125rem)]">
-                            <img className="animate-zoom-in-out" src={playScheduleIcon} alt="현재 진행중인 경기" />
+                            <img className="animate-zoom-in-out" src={playScheduleIcon} alt="현재 진행중인 팀" />
                         </CardContent>
                     </CardForm>
-                    <span className="relative left-[calc(0.8125rem)] pt-[calc(0.1rem)] font-pretendardBlack">현재 진행중인 경기</span>
+                    <span className="relative left-[calc(0.8125rem)] pt-[calc(0.1rem)] font-pretendardBlack">현재 진행중인 팀</span>
                     <img className="absolute right-0 inline" src={rArrowIcon} alt="들어가기" />
                 </div>
                 {/* PlayHistory content*/}

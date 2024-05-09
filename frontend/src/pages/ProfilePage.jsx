@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import imglyRemoveBackground from "@imgly/background-removal";
+import { toast } from "sonner"
 import {
     Drawer,
     DrawerClose,
@@ -100,6 +101,14 @@ function ProfilePage() {
     const handleSubmitProfileImage = () => {
         removeBackground();
         setShowProfileImageDrawer(false);
+        toast("프로필 이미지가 업로드 되었어요!", {
+            description: "이미지 반영까지는 대략 30초 소요됩니다",
+            className: 'toaster',
+            action: {
+              label: "확인",
+              onClick: () => console.log("이벤트 확인"),
+            },
+        });
     };
 
     const handleFileChange = (e) => {

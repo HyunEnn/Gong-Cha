@@ -123,10 +123,10 @@ function TeamInfo() {
                             style={{ transform: `translateY(${translateY}px)` }}>
                         {/* 닫기 바 */}
                         <div className="absolute w-full h-4 cursor-pointer">
-                            <div className="absolute transform -translate-x-1/2 -translate-y-1/2 w-24 h-1 bg-gray-500 rounded"></div>
+                            <div className="expand-animation absolute transform -translate-x-1/2 -translate-y-1/2 w-24 h-1 bg-gray-500 rounded"></div>
                         </div>
                         {/* PlayerCard */}
-                        <PlayerCard player={selectedPlayer}/>
+                        <PlayerCard player={selectedPlayer} className={'flip-enter'}/>
                     </div>
                 </div>
             </Modal>
@@ -189,8 +189,11 @@ function TeamInfo() {
                             <div className="flex flex-wrap items-center justify-center p-4 absolute inset-0">
                                 {myTeamInfoData.players.map((player, playerIndex) => 
                                     player.stateus && (
-                                        <div key={playerIndex} className="relative flex flex-col items-center justify-center m-2"
-                                            style={{ width: 'calc(20% - 1.5rem)' }}
+                                        <div key={playerIndex} className="fade-in relative flex flex-col items-center justify-center m-2"
+                                            style={{
+                                                width: 'calc(20% - 1.5rem)',
+                                                animationDelay: `${playerIndex * 0.1}s`
+                                            }}
                                             onClick={() => handlePlayerClick(player)}>
                                             <img className="rounded-full border-[calc(0.15rem)] border-stone-1 object-cover object-center mb-1" 
                                                 src={player.profileImage} 

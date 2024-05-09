@@ -11,11 +11,13 @@ const myPageDummyData = {
     userId: 0,
     name: '정준수',
     profileImage : profileImage,
+    stateus: true,
+    playNum: 5,
     SHO: 95,
     PAS: 90,
     DRI: 97,
-    PAC: 90,
-    MAN: 100,
+    PAC: 98,
+    MAN: 90,
 };
 
 const playScheduleDummyData = [
