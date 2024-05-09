@@ -1,33 +1,3 @@
-import React, { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import ToggleButton from "@/components/ui/nameButton";
-import { Input } from "@/components/ui/input"
-import Modal from '@/components/Modal';
-import TeamInfo from '@/components/TeamInfo';
-import emptyGhostIcon from '@/assets/icons/emptyGhost.svg';
-import rArrowIcon from '@/assets/icons/rArrow.svg';
-import { TeamListDummyData } from '@/data/dummyData'; // dummy data
-
-const regions = [
-    { id: 1, region: '서울', districts: ['강남구', '송파구', '강서구', '마포구', '종로구', '중구', '용산구', '성동구', '광진구', '동대문구', '중랑구', '성북구', '강북구', '도봉구', '노원구', '은평구', '서대문구', '구로구', '금천구', '영등포구', '동작구', '관악구', '서초구', '강동구'] },
-    { id: 2, region: '부산', districts: ['해운대구', '수영구', '남구', '북구', '동래구', '금정구', '부산진구', '연제구', '사하구', '강서구', '사상구', '기장군'] },
-    { id: 3, region: '대구', districts: ['수성구', '달서구', '북구', '동구', '서구', '남구', '달성군'] },
-    { id: 4, region: '인천', districts: ['연수구', '남동구', '서구', '부평구', '계양구', '미추홀구', '동구', '중구', '강화군', '옹진군'] },
-    { id: 5, region: '광주', districts: ['서구', '북구', '광산구', '남구', '동구'] },
-    { id: 6, region: '대전', districts: ['서구', '유성구', '대덕구', '중구', '동구'] },
-    { id: 7, region: '울산', districts: ['울주군', '남구', '북구', '동구', '중구'] },
-    { id: 8, region: '세종', districts: ['세종특별자치시'] },
-    { id: 9, region: '경기', districts: ['수원시', '성남시', '고양시', '용인시', '부천시', '안산시', '안양시', '남양주시', '화성시', '평택시', '의정부시', '시흥시', '파주시', '김포시', '광명시', '광주시', '군포시', '이천시', '양주시', '오산시', '구리시', '안성시', '포천시', '의왕시', '하남시', '여주시', '양평군', '동두천시', '가평군', '과천시'] },
-    { id: 10, region: '강원', districts: ['춘천시', '원주시', '강릉시', '동해시', '태백시', '속초시', '삼척시'] },
-    { id: 11, region: '충북', districts: ['청주시', '충주시', '제천시'] },
-    { id: 12, region: '충남', districts: ['천안시', '공주시', '보령시', '아산시', '서산시', '논산시', '계룡시', '당진시'] },
-    { id: 13, region: '전남', districts: ['목포시', '여수시', '순천시', '나주시', '광양시'] },
-    { id: 14, region: '전북', districts: ['전주시', '군산시', '익산시', '정읍시', '남원시', '김제시'] },
-    { id: 15, region: '경남', districts: ['창원시', '진주시', '통영시', '사천시', '김해시', '밀양시', '거제시', '양산시'] },
-    { id: 16, region: '경북', districts: ['포항시', '경주시', '김천시', '안동시', '구미시', '영주시', '영천시', '상주시', '문경시', '경산시'] },
-    { id: 17, region: '제주', districts: ['제주시', '서귀포시'] },
-];
-
 function TeamList() {
     const [teamListData, setTeamListData] = useState([]);
     const [detailKey, setDetailKey] = useState({ key: '' });
@@ -169,7 +139,7 @@ function TeamList() {
                 </div>
                 ) : (
                     <>
-                        <div className="absolute flex flex-col justify-center left-[calc(1.13125rem)] top-[calc(10.5rem)] w-[calc(20.2rem)] h-[calc(4.375rem)]">
+                        <div className="absolute flex flex-col justify-center left-[calc(1.13125rem)] top-[calc(10rem)] w-[calc(20.2rem)] h-[calc(4.375rem)]">
                             <div className="absolute ml-2 -mt-5 text-[calc(.6rem)] text-black/50 font-pretendardBold">필터</div>
                             <div className="mt-5 ml-[calc(0.5rem)]"
                                 name="isFriendly"
@@ -269,9 +239,9 @@ function TeamList() {
                                     (
                                         <div className="absolute ml-[calc(.15rem)] w-[calc(9rem)]">
                                             <div className="absolute text-[0.8rem]">
-                                                {['월', '화', '수', '목', '금', '토', '일'].map((day, index) => (
+                                                {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((day, index) => (
                                                     <div key={day}>
-                                                        <label className="absolute" style={{ marginLeft: `${0.8 * index}rem` }}>
+                                                        <label className="absolute mt-2" style={{ marginLeft: `${0.8 * index}rem` }}>
                                                         <input
                                                             type="checkbox"
                                                             name="day"
@@ -280,7 +250,7 @@ function TeamList() {
                                                             onChange={(e) => handleDayChange(e, day)}
                                                         />
                                                         </label>
-                                                        <p className="absolute px-[calc(0.15rem)] pt-[calc(0.05rem)] text-[.6rem]" style={{ marginLeft: `${0.8 * index}rem` }}>{day}</p>
+                                                        <p className="absolute -mt-[calc(0.1rem)] text-[.5rem] font-pretendardBold text-black/50" style={{ marginLeft: `${0.8 * index}rem` }}>{day}</p>
                                                     </div>
                                                 ))}
                                             </div>
