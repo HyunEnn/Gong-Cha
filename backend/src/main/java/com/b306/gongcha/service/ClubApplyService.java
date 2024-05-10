@@ -26,23 +26,25 @@ public class ClubApplyService {
      * 2. 클럽 마스터가 해당 요청을 승인하면 팀에 추가하고 삭제, 거절하면 그대로 삭제
      */
 
-    public void applyClub(Long clubId, ClubApplyRequest request) {
+        public void applyClub(Long clubId, ClubApplyRequest request) {
 
-        Long userId = GetCurrentUserId.currentUserId();
+            Long userId = GetCurrentUserId.currentUserId();
 
-        // 유효성 검사
-        User applyUser = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID));
+            // 유효성 검사
+            User applyUser = userRepository.findById(userId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID));
 
-        Club club = clubRepository.findById(clubId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
+            Club club = clubRepository.findById(clubId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
 
-        // dto 정보를 entity 에 conversion
-        ClubApply clubApply = request.fromRequestWithUserAndClub(applyUser, club);
+            // dto 정보를 entity 에 conversion
+            ClubApply clubApply = request.fromRequestWithUserAndClub(applyUser, club);
 
-        // db 에 저장
-        clubApplyRepository.save(clubApply);
-    }
+            // db 에 저장
+            clubApplyRepository.save(clubApply);
+        }
+
+//    public List<>
 
 
 
