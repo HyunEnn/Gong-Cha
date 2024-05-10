@@ -31,7 +31,7 @@ public class TransferController {
             responseCode = "200",
             description = "이적시장 선수 목록 조회 성공"
     )
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<CommonResponse> getAllTransfers(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 10) Pageable pageable ) {
 
@@ -68,7 +68,7 @@ public class TransferController {
             responseCode = "200",
             description = "이적시장 등록이 완료되었습니다."
     )
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<CommonResponse> createTransfer(@RequestBody TransferRequest transferRequest) {
 
         return new ResponseEntity<>(CommonResponse.builder()

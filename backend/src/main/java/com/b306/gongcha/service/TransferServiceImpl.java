@@ -1,6 +1,8 @@
 package com.b306.gongcha.service;
 
 import com.b306.gongcha.dto.request.TransferRequest;
+import com.b306.gongcha.dto.request.UserTeamRequest;
+import com.b306.gongcha.dto.request.UserTransferRequest;
 import com.b306.gongcha.dto.response.TransferResponse;
 import com.b306.gongcha.dto.response.UserTransferResponse;
 import com.b306.gongcha.entity.*;
@@ -55,7 +57,7 @@ public class TransferServiceImpl implements TransferService{
         Transfer transfer = transferRequest.toTransfer();
         User user = userRepository.findById(transferRequest.getWriterId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-        transfer.setUser(user);
+        transfer.addUser(user);
         transferRepository.save(transfer);
         return transfer.toTransferResponse();
     }
@@ -66,7 +68,10 @@ public class TransferServiceImpl implements TransferService{
 
         Transfer transfer = transferRepository.findById(transferId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOARD));
+        User user = userRepository.findById(transferRequest.getWriterId())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         transfer.updateTransfer(transferRequest);
+        transfer.addUser(user);
         return transfer.toTransferResponse();
     }
 
@@ -103,19 +108,18 @@ public class TransferServiceImpl implements TransferService{
 
         // 작성자와 신청자가 동일인인 경우
         if(userId.equals(transfer.getUser().getId())) {
-            throw new CustomException(ErrorCode.BOARD_REQUEST_FAIL);
+            throw new CustomException(ErrorCode.BAD_REQUEST_APPLY);
         }
-
         // 신청자가 해당 글에 중복 신청한 경우
         else if(userTransferRepository.findByTransferIdAndUserId(transferId, userId).isPresent()) {
             throw new CustomException(ErrorCode.BOARD_REQUEST_DUPLICATE);
         }
 
-        UserTransfer userTransfer = UserTransfer.builder()
-                .permit(false)
-                .user(user)
-                .transfer(transfer)
-                .build();
+        UserTransferRequest userTransferRequest = new UserTransferRequest(false, user, transfer);
+        UserTransfer userTransfer = UserTransfer.fromRequest(userTransferRequest);
+        userTransfer.changePermit(false);
+        userTransfer.changeUser(user);
+        userTransfer.changeTransfer(transfer);
         return userTransferRepository.save(userTransfer).toUserTransferResponse();
     }
 
@@ -166,17 +170,17 @@ public class TransferServiceImpl implements TransferService{
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
         User user = transferRepository.findById(transferId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getUser();
-        UserTeam userTeam = UserTeam.builder()
-                .user(user)
-                .team(team)
-                .role(Role.valueOf("팀원"))
-                .permit(true)
-                .build();
+        UserTeamRequest userTeamRequest = new UserTeamRequest(Role.valueOf("팀원"), true, user, team);
+        UserTeam userTeam = UserTeam.fromRequest(userTeamRequest);
+        userTeam.changeUser(user);
+        userTeam.changeTeam(team);
+        userTeam.changeRole(Role.valueOf("팀원"));
+        userTeam.changePermit(true);
         userTeamRepository.save(userTeam);
         // 선수 신청 승인 처리
         UserTransfer userTransfer = userTransferRepository.findByTransferIdAndUserId(transferId, userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST));
-        userTransfer.acceptTransfer();
+        userTransfer.changePermit(true);
 
         return userTransfer.toUserTransferResponse();
     }

@@ -56,7 +56,7 @@ public class Transfer extends BaseEntity {
     private Boolean isJoined = false; // 선수가 (모집중, 모집완료, 매칭중)팀에 합류하면 선수 목록에서 보이지 않음
 
     @OneToOne
-    @JoinColumn( name = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "transfer", cascade = CascadeType.REMOVE)
@@ -73,9 +73,10 @@ public class Transfer extends BaseEntity {
         this.difficulty = transferRequest.getDifficulty();
         this.dayOfWeek = transferRequest.getDayOfWeek();
         this.info = transferRequest.getInfo();
+//        this.user = transferRequest.toTransfer().getUser();
     }
 
-    public void setUser(User user) {
+    public void addUser(User user) {
         this.user = user;
     }
 

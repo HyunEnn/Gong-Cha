@@ -1,5 +1,6 @@
 package com.b306.gongcha.entity;
 
+import com.b306.gongcha.dto.request.UserTransferRequest;
 import com.b306.gongcha.dto.response.UserTransferResponse;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,9 +27,25 @@ public class UserTransfer extends BaseEntity {
     @JoinColumn(name = "transfer_id")
     private Transfer transfer;
 
-    public void acceptTransfer() {
+    public void changePermit(Boolean permit) {
+        this.permit = permit;
+    }
 
-        this.permit = true;
+    public void changeUser(User user) {
+        this.user = user;
+    }
+
+    public void changeTransfer(Transfer transfer) {
+        this.transfer = transfer;
+    }
+
+    public static UserTransfer fromRequest(UserTransferRequest userTransferRequest) {
+
+        return UserTransfer.builder()
+                .permit(userTransferRequest.getPermit())
+                .user(userTransferRequest.getUser())
+                .transfer(userTransferRequest.getTransfer())
+                .build();
     }
 
     public UserTransferResponse toUserTransferResponse() {
