@@ -5,8 +5,8 @@ const dummyPlayer = [
     data: {
     user_id: '정준수',
     match_type: "친선",
-    start_time : 1300,
-    end_time : 1600,
+    start_time : "13:00",
+    end_time : "16:00",
     day_of_week : ["월", "수", "금"],
     region: "대전",
     district: "유성구",
@@ -25,8 +25,8 @@ const dummyPlayer = [
     data: {
     user_id: '오치승',
     match_type: "내전",
-    start_time : 1200,
-    end_time : 1400,
+    start_time : "12:00",
+    end_time : "14:00",
     day_of_week : "월",
     region: "대전",
     district: "서구",
@@ -45,8 +45,8 @@ const dummyPlayer = [
     data: {
     user_id: '우찬명',
     match_type: "친선",
-    start_time : 900,
-    end_time : 2200,
+    start_time : "09:00",
+    end_time : "22:00",
     day_of_week : ["월", "수", "금", "일"],
     region: "세종",
     district: "세종특별자치시",
