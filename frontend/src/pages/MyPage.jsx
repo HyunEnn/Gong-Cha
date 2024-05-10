@@ -12,8 +12,9 @@ import pencilIcon from '@/assets/icons/pencil.svg';
 import rArrowIcon from '@/assets/icons/rArrow.svg';
 import playScheduleIcon from '@/assets/icons/playSchedule.svg';
 import playHistoryIcon from '@/assets/icons/playHistory.svg';
-import playerCardIcon from '@/assets/icons/playerCard.svg';
 import alarmIcon from '@/assets/icons/alarm.svg';
+import Lottie from 'lottie-react';
+import playerCardAnimation from '@/assets/lottie/playercard';
 import { myPageDummyData } from '@/data/dummyData'; // dummy data
 
 function MyPage() {
@@ -52,7 +53,7 @@ function MyPage() {
         }, 180);
     };
     const handleProfileClick = () => {
-        handleNagivate(0);
+        handleNagivate('profile');
     };
     const handlePlayScheduleClick = () => {
         handleNagivate('playschedule');
@@ -97,17 +98,17 @@ function MyPage() {
                 <div className="absolute flex left-[calc(1.13125rem)] top-[calc(14.5rem)] w-[calc(19.75rem)] rounded transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-92" onClick={() => handlePlayScheduleClick()}>
                     <CardForm className="flex justify-center w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] border-gray-50 bg-stone-50">
                         <CardContent className="p-[calc(0.125rem)]">
-                            <img src={playScheduleIcon} alt="현재 진행중인 경기" />
+                            <img className="animate-zoom-in-out" src={playScheduleIcon} alt="현재 진행중인 팀" />
                         </CardContent>
                     </CardForm>
-                    <span className="relative left-[calc(0.8125rem)] pt-[calc(0.1rem)] font-pretendardBlack">현재 진행중인 경기</span>
+                    <span className="relative left-[calc(0.8125rem)] pt-[calc(0.1rem)] font-pretendardBlack">현재 진행중인 팀</span>
                     <img className="absolute right-0 inline" src={rArrowIcon} alt="들어가기" />
                 </div>
                 {/* PlayHistory content*/}
                 <div className="absolute flex left-[calc(1.13125rem)] top-[calc(17.3125rem)] w-[calc(19.75rem)] rounded transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handlePlayHistoryClick()}>
                     <CardForm className="flex justify-center w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] border-gray-50 bg-stone-50">
                         <CardContent className="p-[calc(0.125rem)] pl-[calc(0.15rem)]">
-                            <img className="w-full h-full" src={playHistoryIcon} alt="경기내역" />
+                            <img className="w-full h-full animate-zoom-in-out" src={playHistoryIcon} alt="경기내역" />
                         </CardContent>
                     </CardForm>
                     <span className="relative left-[calc(0.8125rem)] pt-[calc(0.1rem)] font-pretendardBlack">경기내역</span>
@@ -116,22 +117,28 @@ function MyPage() {
                 {/* PlayerCard content*/}
                 <div className="absolute flex left-[calc(1.13125rem)] top-[calc(20.125rem)] w-[calc(19.75rem)] rounded transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handlePlayerCardClick()}>
                     <CardForm className="flex justify-center w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] border-gray-50 bg-stone-50">
-                        <CardContent className="p-[calc(0.125rem)]">
-                            <img className="w-full h-full rounded-[calc(0.2rem)]" src={playerCardIcon} alt="내 선수카드" />
-                        </CardContent>
                     </CardForm>
                     <span className="relative left-[calc(0.8125rem)] pt-[calc(0.1rem)] font-pretendardBlack">내 선수카드</span>
                     <img className="absolute right-0 inline" src={rArrowIcon} alt="들어가기" />
+                    <div className='w-[calc(2rem)] h-[calc(2rem)] -ml-[calc(6.4rem)] -mt-[calc(0.15rem)]'>
+                        <Lottie
+                            animationData={playerCardAnimation}
+                            loop={false}
+                            autoplay={true}
+                        />
+                    </div>
                 </div>
                 {/* Alarm content*/}
                 <div className="absolute flex left-[calc(1.13125rem)] top-[calc(22.9375rem)] w-[calc(19.75rem)] rounded transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handleAlarmClick()}>
                     <CardForm className="flex justify-center w-[calc(1.6875rem)] h-[calc(1.6875rem)] rounded-[7px] border-gray-50 bg-stone-50">
                         <CardContent className="p-[calc(0.125rem)]">
-                            <img className="w-full h-full" src={alarmIcon} alt="알림함" />
+                            <img className="w-full h-full animate-zoom-in-out" src={alarmIcon} alt="알림함" />
                         </CardContent>
                     </CardForm>
                     <span className="relative left-[calc(0.8125rem)] pt-[calc(0.1rem)] font-pretendardBlack">알림함</span>
                     <img className="absolute right-0 inline" src={rArrowIcon} alt="들어가기" />
+                    <div className='w-[calc(2rem)] h-[calc(2rem)] -ml-[calc(4.4rem)] -mt-[calc(0.18rem)]'>
+                    </div>
                 </div>
             </>
         </>

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import emptyGhostIcon from '@/assets/icons/emptyGhost.svg';
 import Modal from '@/components/Modal';
-import PlayerCard from '@/components/PlayerCard';
-import teamBackground from '@/assets/images/FieldBackground.png';
+import TeamInfo from '@/components/TeamInfo';
 import { myTeamInfoDummyData } from '@/data/dummyData'; // dummy data
 
 const regions = [
@@ -32,18 +31,7 @@ function MyTeamInfo() {
     const [myTeamInfoData, setMyTeamInfoData] = useState([]);
     const [selectedRegion, setSelectedRegion] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
-    const [selectedPlayer, setSelectedPlayer] = useState(null);
-    const [startY, setStartY] = useState(0);
-    const [dragging, setDragging] = useState(false);
-    const [translateY, setTranslateY] = useState(0);
-    const [teamInfo, setTeamInfo] = useState({
-        isFriendly: false,
-        time: 0,
-        day: [],
-        location: '',
-        difficulty: 'Beginner',
-        clubMembers: [],
-    });
+    const [teamInfo, setTeamInfo] = useState({});
 
     useEffect(() => {
         setMyTeamInfoData(    // dummy data
@@ -80,10 +68,6 @@ function MyTeamInfo() {
 
     const handleCreateSubmit = () => {
         setShowModal(false);
-    };
-
-    const handleFinishButton = () => {
-        
     };
 
     const closeModal = () => {
@@ -142,64 +126,6 @@ function MyTeamInfo() {
         }));
     };
 
-    const handlePlayerClick = (clickedPlayer) => {
-        const player = clickedPlayer;
-        
-        if (player) {
-            setSelectedPlayer(player);
-            setTranslateY(0);
-        }
-    };
-
-    const handleClosePlayerCard = () => {
-        setSelectedPlayer(null);
-    };
-
-    const handleTouchStart = (e) => {
-        setStartY(e.touches[0].clientY);
-        setDragging(true);
-    };
-
-    const handleTouchMove = (e) => {
-        if (!dragging) return;
-        const currentY = e.touches[0].clientY;
-        const moveY = currentY - startY;
-        setTranslateY(moveY);
-
-        if (moveY > 200) {
-            handleClosePlayerCard();
-        }
-    };
-
-    const handleTouchEnd = () => {
-        setDragging(false);
-        setTranslateY(0);
-    };
-
-    // PlayerCard modal rendering
-    const renderPlayerCardModal = () => {
-        if (!selectedPlayer) return null;
-    
-        return (
-            <Modal show={!!selectedPlayer} onClose={handleClosePlayerCard}>
-                <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center" onClick={handleClosePlayerCard}>
-                    <div className="absolute top-0 bg-white rounded-lg shadow-lg max-w-md mx-auto mt-[calc(4.0rem)]" onClick={e => e.stopPropagation()}
-                            onTouchStart={handleTouchStart}
-                            onTouchMove={handleTouchMove}
-                            onTouchEnd={handleTouchEnd}
-                            style={{ transform: `translateY(${translateY}px)` }}>
-                        {/* 닫기 바 */}
-                        <div className="absolute w-full h-4 cursor-pointer">
-                            <div className="absolute transform -translate-x-1/2 -translate-y-1/2 w-24 h-1 bg-gray-500 rounded"></div>
-                        </div>
-                        {/* PlayerCard */}
-                        <PlayerCard player={selectedPlayer}/>
-                    </div>
-                </div>
-            </Modal>
-        );
-    };
-
     return (
         <>
             {/* create team button */}
@@ -221,100 +147,16 @@ function MyTeamInfo() {
                     )}
             </div>
             {/* team info */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 top-[30%] w-[85%] h-[calc(100rem)] rounded bg-slate-50">
+            <div className="absolute left-1/2 transform -translate-x-1/2 top-[30%] w-[85%] rounded bg-slate-50">
                 {myTeamInfoData.length === 0 ? (
                     <div className="absolute flex justify-center left-1/2 top-[calc(10rem)] transform -translate-x-1/2 p-0 w-[calc(6rem)] h-[calc(6rem)]">
                         <img src={emptyGhostIcon} alt="나의 팀이 없습니다" />
                         <p className="absolute top-[calc(7rem)] font-pretendardBlack text-[calc(0.4rem)] text-gray-500">나의 팀이 없어요</p>
                     </div>
                 ) : (
-                    <>
-                        {/* team name */}
-                        <div className="mt-4 px-4 absolute top-0">
-                            <p>{myTeamInfoData.writer.name} FC</p>
-                        </div>
-                        {/* team tags */}
-                        <div className="mt-4 px-4 text-[calc(.5rem)] absolute top-[calc(1.5rem)]">
-                            <p>{myTeamInfoData.location} | {myTeamInfoData.time} | {myTeamInfoData.tags.map(tag => Array.isArray(tag) ? tag.join(', ') : tag).join(', ')}</p>
-                        </div>
-                        <div className="absolute mt-0 right-0 px-3 text-[calc(.5rem)] top-[calc(1.5rem)]">
-                            <button className="rounded w-[calc(4rem)] h-5 text-[calc(.5rem)] bg-green-500" onClick={handleFinishButton}>모집 완료하기</button>
-                        </div>
-                        {/* team analysis */}
-                        <div>
-                            {/* overall */}
-                            <div className="flex mt-20 ml-4 space-x-0">
-                                <div className="h-full w-1/6 font-pretendardBlack">
-                                    종합
-                                </div>
-                            </div>
-                            <div className="mt-5 ml-4 space-x-0 bg-gray-400 w-[80%] h-5 flex text-[calc(.5rem)]">
-                                <div className="bg-blue-500 h-full w-1/6">
-                                    <p className="absolute -mt-2 font-pretendardBlack">SHO</p>
-                                </div>
-                                <div className="bg-green-500 h-full w-1/3">
-                                    <p className="absolute -mt-2 font-pretendardBlack">PAS</p>
-                                </div>
-                                <div className="bg-red-500 h-full w-1/5">
-                                    <p className="absolute -mt-2 font-pretendardBlack">DRI</p>
-                                </div>
-                                <div className="bg-yellow-500 h-full w-1/6">
-                                    <p className="absolute -mt-2 font-pretendardBlack">SPD</p>
-                                </div>
-                                <div className="">
-                                    <p className="absolute ml-[calc(.8rem)] mt-[calc(.4rem)] font-pretendardBold text-white">max</p>
-                                </div>
-                            </div>
-                            <div className="absolute mt-[calc(3rem)]">
-                                <img className="relative w-full rounded-sm shadow-lg" 
-                                    src={teamBackground} 
-                                    alt="배경 필드 사진" 
-                                />
-                                <div className="flex flex-wrap items-center justify-center absolute inset-0">
-                                    {myTeamInfoData.players.map((player, playerIndex) => 
-                                        player.stateus && (
-                                            <div key={playerIndex} className="relative flex flex-col items-center justify-center mx-2" onClick={() => handlePlayerClick(player)}>
-                                                <img className="rounded-full border-[calc(0.15rem)] border-stone-1 object-cover object-center mb-1" 
-                                                    src={player.profileImage} 
-                                                    alt="프로필 사진"
-                                                    style={{ width: '2rem', height: '2rem', objectFit: 'contain' }} />
-                                                <p className="font-pretendardBold text-white text-[calc(0.7rem)]" style={{ alignSelf: 'flex-start' }}>{player.name}</p>
-                                            </div>
-                                        )
-                                    )}
-                                    {/* test */}
-                                    {renderPlayerCardModal()}
-                                </div>
-                            </div>
-                        </div>
-                        {/* player info */}
-                        <div className="mt-[calc(20rem)] space-x-0">
-                            <div className="ml-4 h-full w-1/6 font-pretendardBlack">
-                                전력
-                            </div>
-                            <div className="relative left-10 w-[87%]">
-                                {myTeamInfoData.players.map((player, playerIndex) => (
-                                    <div key={playerIndex} className={"" + (player.stateus ? "" : " opacity-20")}>
-                                        <div className="relative flex justify-start border-b-[calc(0.05rem)] w-[calc(16rem)]">
-                                            <div className="absolute -left-6 mt-5">
-                                                <div className="absolute w-1 h-5 bg-red-400"></div>
-                                                <p className="ml-2 -mt-[calc(.15rem)] font-pretendardBlack">
-                                                    {parseInt((player.SHO + player.PAS + player.DRI + player.PAC) / 4)}
-                                                </p>
-                                            </div>
-                                            <img className="border-stone-1 object-cover object-center mb-1"
-                                                src={player.profileImage} 
-                                                alt="프로필 사진"
-                                                style={{ width: '4rem', height: '4rem', objectFit: 'contain' }} />
-                                            <p className="relative mt-4 ml-2 font-pretendardBlack text-black text-[calc(0.8rem)]">{player.name}</p>
-                                            <p className="absolute mt-[calc(2.5rem)] ml-[calc(4.5rem)] font-pretendardRegular text-gray-500 text-[calc(0.5rem)]">경기수</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </>
+                    <TeamInfo></TeamInfo>
                 )}
+                <div className="mb-[calc(10rem)]"></div>
             </div>
             {/* create team modal */}
             {showModal && (

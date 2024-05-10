@@ -1,26 +1,26 @@
+import React, { useState } from 'react';
 import dummySilverLeager from '@/data/dummyImages/dummySilverLeager.png';
-import { useEffect } from 'react';
 
-function PlayerCard({ player }) {
+function PlayerCard({ player, className }) {
     if (!player || Object.keys(player).length === 0) {
         return null;
     }
 
-    const value = parseInt((player.SHO + player.PAS + player.DRI + player.PAC + player.MAN) / 5);
+    const [shine, setShine] = useState(false);
 
-    useEffect(() => {
-        const cardElement = document.getElementById('playerCard');
+    const value = parseInt((player.SHO + player.PAS + player.DRI + player.PAC + player.MAN) / 5) || 0;
 
-        if (cardElement) {
-            cardElement.classList.add('shine');
-        }
+    React.useEffect(() => {
+        setShine(true);
     }, []);
 
     return (
-        <div className="parentWithShadow">
+        <div className={`parentWithShadow ${className}`}>
             <div
                 id="playerCard"
-                className="absolute left-[calc(-7.5rem)] transform -translate-x-1/2 top-[50%] w-[15.625rem] h-[24.360rem]"
+                className={`absolute left-[calc(-7.5rem)] top-[50%] w-[15.625rem] h-[24.360rem] ${
+                    shine ? 'shine' : ''
+                }`}
             >
                 <img className="absolute rounded-t-lg" src={dummySilverLeager} alt="카드" />
                 <div className="absolute flex flex-col items-center justify-center w-full h-full">
