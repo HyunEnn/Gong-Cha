@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class UserTransfer {
+public class UserTransfer extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ public class UserTransfer {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User user; // 신청자(팀장) ID
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "transfer_id")
@@ -34,7 +34,7 @@ public class UserTransfer {
     public UserTransferResponse toUserTransferResponse() {
 
         return UserTransferResponse.builder()
-                .transferId(transfer.getId())
+                .userId(user.getId())
                 .userName(user.getName())
                 .permit(permit)
                 .build();

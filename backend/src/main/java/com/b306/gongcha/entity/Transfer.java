@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,7 +30,7 @@ public class Transfer extends BaseEntity {
     @Schema(description = "희망 시작 시간", example = "9")
     private int startTime; // 희망 시간 시작
 
-    @Schema(description = "희망 시작 시간", example = "18")
+    @Schema(description = "희망 종료 시간", example = "18")
     @Column(name = "end_time")
     private int endTime; // 희망 시간 종료
 
@@ -55,8 +56,12 @@ public class Transfer extends BaseEntity {
     private Boolean isJoined = false; // 선수가 (모집중, 모집완료, 매칭중)팀에 합류하면 선수 목록에서 보이지 않음
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn( name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "transfer", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    private List<UserTransfer> userTransferList = new ArrayList<>();
 
     public void updateTransfer(TransferRequest transferRequest) {
 

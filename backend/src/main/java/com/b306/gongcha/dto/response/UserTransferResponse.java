@@ -9,7 +9,7 @@ import lombok.*;
 @ToString
 public class UserTransferResponse {
 
-    private Long transferId;
+    private Long userId;
     private String userName;
     private Boolean permit;
 

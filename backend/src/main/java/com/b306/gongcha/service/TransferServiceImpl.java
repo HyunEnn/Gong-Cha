@@ -3,14 +3,10 @@ package com.b306.gongcha.service;
 import com.b306.gongcha.dto.request.TransferRequest;
 import com.b306.gongcha.dto.response.TransferResponse;
 import com.b306.gongcha.dto.response.UserTransferResponse;
-import com.b306.gongcha.entity.Transfer;
-import com.b306.gongcha.entity.User;
-import com.b306.gongcha.entity.UserTransfer;
+import com.b306.gongcha.entity.*;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
-import com.b306.gongcha.repository.TransferRepository;
-import com.b306.gongcha.repository.UserRepository;
-import com.b306.gongcha.repository.UserTransferRepository;
+import com.b306.gongcha.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +24,8 @@ public class TransferServiceImpl implements TransferService{
     private final TransferRepository transferRepository;
     private final UserTransferRepository userTransferRepository;
     private final UserRepository userRepository;
+    private final UserTeamRepository userTeamRepository;
+    private final TeamRepository teamRepository;
 
     // 이적시장 선수 전체 조회
     @Override
@@ -36,15 +34,11 @@ public class TransferServiceImpl implements TransferService{
 
         Page<Transfer> pages = transferRepository.findAll(pageable);
         return pages.map(TransferResponse::fromEntity);
-//        List<TransferResponse> transferResponseList = new ArrayList<>();
-//        List<Transfer> transferList = transferRepository.findAll();
-//        // 전체 리스트 조회 후 Response Dto List 형태로 변환
-//        transferList.forEach(t -> transferResponseList.add(t.toTransferResponse()));
-//        return transferResponseList;
     }
 
     // 이적시장 선수 상세 조회
     @Override
+    @Transactional(readOnly = true)
     public TransferResponse getTransfer(Long transferId) {
 
         // 조회 실패 시 해당 정보 조회 실패 에러 반환
@@ -55,6 +49,7 @@ public class TransferServiceImpl implements TransferService{
 
     // 이적시장 선수 정보 작성
     @Override
+    @Transactional
     public TransferResponse createTransfer(TransferRequest transferRequest) {
 
         Transfer transfer = transferRequest.toTransfer();
@@ -91,25 +86,35 @@ public class TransferServiceImpl implements TransferService{
 
     // 이적시장 합류 신청
     @Override
+    @Transactional
     public UserTransferResponse requestTransfer(Long transferId, Long userId) {
+
+        // 팀장 여부 확인 - 팀장만 요청을 할 수 있음
+        UserTeam captain = userTeamRepository.findByUserIdAndRole(userId, Role.valueOf("팀장"));
+        if(captain == null) {
+            throw new CustomException(ErrorCode.NO_AUTHORITY_USER);
+        }
 
         // 이적시장 정보, 신청자 정보 받아오기
         Transfer transfer = transferRepository.findById(transferId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOARD));
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
         // 작성자와 신청자가 동일인인 경우
         if(userId.equals(transfer.getUser().getId())) {
             throw new CustomException(ErrorCode.BOARD_REQUEST_FAIL);
         }
+
         // 신청자가 해당 글에 중복 신청한 경우
         else if(userTransferRepository.findByTransferIdAndUserId(transferId, userId).isPresent()) {
             throw new CustomException(ErrorCode.BOARD_REQUEST_DUPLICATE);
         }
+
         UserTransfer userTransfer = UserTransfer.builder()
                 .permit(false)
-                .transfer(transfer)
                 .user(user)
+                .transfer(transfer)
                 .build();
         return userTransferRepository.save(userTransfer).toUserTransferResponse();
     }
@@ -142,13 +147,37 @@ public class TransferServiceImpl implements TransferService{
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST)).toUserTransferResponse();
     }
 
-    // 이적시장 신청 승인
+    // 이적시장 신청 승인 - 승인 후 UserTeam Table에 추가
     @Override
+    @Transactional
     public UserTransferResponse acceptTransfer(Long transferId, Long userId) {
 
+        // 이적시장 게시글이 존재하는지 확인
+        Transfer transfer = transferRepository.findById(transferId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOARD));
+        transfer.updateJoin(true);
+
+        // 선수에게 요청한 사람이 팀장인가 확인
+        UserTeam captain = userTeamRepository.findByUserIdAndRole(userId, Role.valueOf("팀장"));
+        if(captain == null) {
+            throw new CustomException(ErrorCode.NO_AUTHORITY_USER);
+        }
+        Team team = teamRepository.findById(captain.getTeam().getId())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+        User user = transferRepository.findById(transferId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getUser();
+        UserTeam userTeam = UserTeam.builder()
+                .user(user)
+                .team(team)
+                .role(Role.valueOf("팀원"))
+                .permit(true)
+                .build();
+        userTeamRepository.save(userTeam);
+        // 선수 신청 승인 처리
         UserTransfer userTransfer = userTransferRepository.findByTransferIdAndUserId(transferId, userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST));
         userTransfer.acceptTransfer();
+
         return userTransfer.toUserTransferResponse();
     }
 

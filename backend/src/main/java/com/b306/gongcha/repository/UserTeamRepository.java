@@ -1,5 +1,6 @@
 package com.b306.gongcha.repository;
 
+import com.b306.gongcha.entity.Role;
 import com.b306.gongcha.entity.UserTeam;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -16,4 +17,5 @@ public interface UserTeamRepository extends JpaRepository<UserTeam, Long> {
     List<UserTeam> findAllByTeamIdAndPermitIsTrue(Long teamId);
     // 승인 대기 목록 선수들만 보여주기
     List<UserTeam> findAllByTeamIdAndPermitIsFalse(Long teamId);
+    UserTeam findByUserIdAndRole(Long userId, Role role);
 }
