@@ -36,6 +36,10 @@ public enum ErrorCode {
     BOARD_REQUEST_FAIL(HttpStatus.BAD_REQUEST, "신청에 실패하였습니다."),
     BOARD_REQUEST_DUPLICATE(HttpStatus.BAD_REQUEST, "이미 신청이 완료되었습니다."),
 
+    NOT_FOUND_TEAM(HttpStatus.NOT_FOUND, "팀 정보를 찾을 수 없습니다."),
+    MEMBER_ALREADY_ACCEPTED(HttpStatus.BAD_REQUEST, "이미 팀원으로 추가되었습니다."),
+    MEMBER_LIMIT_EXCEEDED(HttpStatus.BAD_REQUEST, "최대 팀원 인원수를 초과하였습니다.");
+
     NOT_FOUND_CLUB(HttpStatus.BAD_REQUEST, "존재하지 않는 클럽입니다.");
 
     private final HttpStatus httpStatus;
