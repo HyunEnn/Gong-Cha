@@ -7,14 +7,12 @@ import com.b306.gongcha.service.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "User", description = "User 관련 API")
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -93,23 +91,6 @@ public class UserController {
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("프로필 사진 변경 성공")
                 .data(userService.updateProfile(file))
-                .build(), HttpStatus.OK);
-    }
-
-    @Operation(
-            summary = "닉네임 변경",
-            description = "유저 닉네임을 변경함."
-    )
-    @ApiResponse(
-            responseCode = "200",
-            description = "닉네임 변경에 성공했습니다."
-    )
-    @PatchMapping("/name")
-    public ResponseEntity<CommonResponse> updateUserName(){
-
-        return new ResponseEntity<>(CommonResponse.builder()
-                .message("닉네임 변경 성공")
-                .data("")
                 .build(), HttpStatus.OK);
     }
 }
