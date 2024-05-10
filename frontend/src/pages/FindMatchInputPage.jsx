@@ -18,8 +18,7 @@ function FindMatchInputPage() {
     const [time, setTime] = useState(null);
     const [place, setPlace] = useState('');
     const [text, setText] = useState('');
-    const [gender, setGender] = useState('');
-    const [inOrOut, setInOrOut] = useState('');
+
     const [level, setLevel] = useState('');
     const [totalPeople, setTotalPeople] = useState('');
     const [currentPeople, setCurrentPeople] = useState('');
@@ -54,8 +53,8 @@ function FindMatchInputPage() {
                 {/* 장소 등록 */}
                 <AccordionItem value="item-2">
                     <AccordionTrigger>
-                        <span>구장명</span>
-                        <span>{place ? place : '구장을 선택해주세요'}</span>
+                        <span>지역</span>
+                        <span>{place ? place : '지역을 선택해주세요'}</span>
                     </AccordionTrigger>
                     <AccordionContent className="flex justify-center p-2">
                         <AutoComplete place={place} setPlace={setPlace} />
@@ -69,26 +68,6 @@ function FindMatchInputPage() {
                     </AccordionTrigger>
                     <AccordionContent className="flex justify-center p-2">
                         <InputAndDelete text={text} setText={setText} />
-                    </AccordionContent>
-                </AccordionItem>
-                {/* 성별 등록 */}
-                <AccordionItem value="item-4">
-                    <AccordionTrigger>
-                        <span>성별</span>
-                        <span>{gender ? gender : '성별을 선택해주세요'}</span>
-                    </AccordionTrigger>
-                    <AccordionContent className="flex justify-center p-2">
-                        <ChooseBadges setValue={setGender} first="남자" second="여자" third="남녀무관" />
-                    </AccordionContent>
-                </AccordionItem>
-                {/* 실내외 등록 */}
-                <AccordionItem value="item-5">
-                    <AccordionTrigger>
-                        <span>실내외</span>
-                        <span>{inOrOut ? inOrOut : '실내외를 선택해주세요'}</span>
-                    </AccordionTrigger>
-                    <AccordionContent className="flex justify-center p-2">
-                        <ChooseBadges setValue={setInOrOut} first="실내" second="실외" third="실내외" />
                     </AccordionContent>
                 </AccordionItem>
                 {/* 난이도 등록 */}

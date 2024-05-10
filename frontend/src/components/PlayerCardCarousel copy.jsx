@@ -1,7 +1,9 @@
 import dummySilverLeager from '@/data/dummyImages/dummySilverLeager.png';
 import { useEffect } from 'react';
 
-function PlayerCard({ player }) {
+// PlayerCard 원본을 작게 디자인하기 위해 참고하는 PlayerCard 원본 파일입니다.
+
+function PlayerCardCarousel({ player }) {
     if (!player || Object.keys(player).length === 0) {
         return null;
     }
@@ -18,10 +20,7 @@ function PlayerCard({ player }) {
 
     return (
         <div className="parentWithShadow">
-            <div
-                id="playerCard"
-                className="absolute left-[calc(-7.5rem)] transform -translate-x-1/2 top-[50%] w-[15.625rem] h-[24.360rem]"
-            >
+            <div id="playerCard" className="absolute transform -translate-x-1/2 w-[15.625rem] h-[24.360rem]">
                 <img className="absolute rounded-t-lg" src={dummySilverLeager} alt="카드" />
                 <div className="absolute flex flex-col items-center justify-center w-full h-full">
                     <img
@@ -53,4 +52,4 @@ function PlayerCard({ player }) {
     );
 }
 
-export default PlayerCard;
+export default PlayerCardCarousel;
