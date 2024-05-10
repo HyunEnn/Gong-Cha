@@ -28,11 +28,12 @@ function PlayerModal({ isOpen, onClose, player }) {
           {/* Modal Body */}
           <div className="p-6">
             <ul className="text-gray-600 text-lg leading-relaxed">
+              <li>이름: {player.data.user_id}</li>
               <li>시간: {player.data.start_time}~{player.data.end_time}</li>
               <li>요일: {player.data.day_of_week}</li>
-              <li>이름: {player.data.user_id}</li>
+              <li>경기 방식: {player.data.match_type}</li>
+              <li>나의 한마디: {player.data.info}</li>
               <li>난이도: {player.data.difficulty}</li>
-              <li>Team: {player.data.team}</li>
             </ul>
           </div>
 
