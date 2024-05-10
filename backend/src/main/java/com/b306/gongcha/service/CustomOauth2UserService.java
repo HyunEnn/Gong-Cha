@@ -2,7 +2,9 @@ package com.b306.gongcha.service;
 
 import com.b306.gongcha.dto.UserDTO;
 import com.b306.gongcha.dto.response.*;
+import com.b306.gongcha.entity.Card;
 import com.b306.gongcha.entity.User;
+import com.b306.gongcha.repository.CardRepository;
 import com.b306.gongcha.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class CustomOauth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+    private final CardRepository cardRepository;
     private final EntityManager em;
 
     // 리소스 되는 유저 정보
@@ -64,6 +67,16 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
                     .build();
 
             userRepository.save(newUser);
+
+            Card card = Card.builder()
+                    .shooting(50)
+                    .speed(50)
+                    .pass(50)
+                    .dribble(50)
+                    .user(newUser)
+                    .build();
+
+            cardRepository.save(card);
 
             UserDTO userDTO = UserDTO.builder()
                     .userId(newUser.getId())
