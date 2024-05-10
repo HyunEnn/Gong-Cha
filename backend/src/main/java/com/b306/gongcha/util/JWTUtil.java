@@ -26,6 +26,11 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("userInfo", String.class);
     }
 
+    public Long getUserId(String token) {
+
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("userId", Long.class);
+    }
+
     public String getRole(String token) {
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
@@ -41,7 +46,7 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
-    public String createJwt(String category, String userInfo, String role, Long expiredMs) {
+    public String createJwt(Long userId, String category, String userInfo, String role, Long expiredMs) {
         // 서버 디폴트 시간대 설정
 
         System.out.println("생성 시간 = " + new Date(System.currentTimeMillis()));
@@ -49,6 +54,7 @@ public class JWTUtil {
         // JWT 생성
         return Jwts.builder()
                 .claim("category", category)
+                .claim("userId", userId)
                 .claim("userInfo", userInfo)
                 .claim("role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
