@@ -8,9 +8,18 @@ function PlayerModal({ isOpen, onClose, player }) {
       <div className="relative w-auto max-w-3xl mx-auto my-6">
         {/* Overlay */}
         <div className="fixed inset-0 bg-black opacity-50"></div>
-
+        
         {/* Modal Content */}
         <div className="relative z-50 bg-white rounded-lg shadow-lg">
+          {/* Close Button */}
+          <button
+            onClick={onClose} 
+            className="absolute top-3 left-3 w-6 h-6 bg-[#FF5F51] rounded-full shadow-sm text-white flex items-center justify-center text-xl leading-none"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+
           {/* Modal Header */}
           <div className="flex items-center justify-center p-5 border-b border-gray-300 rounded-t">
             <h3 className="text-3xl font-semibold">선수 정보</h3>
