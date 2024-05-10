@@ -27,3 +27,7 @@ services:
       PROD_REDIS_PORT: ${PROD_REDIS_PORT}
     networks:
       - gongcha-network
+      
+networks:
+  gongcha-network:
+    external: true
