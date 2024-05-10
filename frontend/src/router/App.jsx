@@ -56,8 +56,8 @@ function App() {
                     element: <MainPage />,
                 },
                 {
-                    path: '/chat',
-                    element: <ChatPage />,
+                    path: '/club',
+                    element: <ClubPage />,
                 },
                 {
                     path: '/mypage',
@@ -89,25 +89,29 @@ function App() {
                     path: '/alarm',
                     element: <AlarmPage />,
                 },
-                {
-                    path: '/findplayer/board',
-                    element: <FindPlayerBoardPage />,
-                },
-                {
-                    path: '/findplayer/input',
-                    element: <FindPlayerInputPage />,
-                },
-                {
-                    path: '/findplayer/detail',
-                    element: <FindPlayerDetailPage />,
-                },
-                {
-                    path: '/findteam/board',
-                    element: <FindTeamBoardPage />,
-                },
+                // {
+                //     path: '/findplayer/board',
+                //     element: <FindPlayerBoardPage />,
+                // },
+                // {
+                //     path: '/findplayer/input',
+                //     element: <FindPlayerInputPage />,
+                // },
+                // {
+                //     path: '/findplayer/detail',
+                //     element: <FindPlayerDetailPage />,
+                // },
                 {
                     path: '/findmatch/board',
                     element: <FindMatchBoardPage />,
+                },
+                {
+                    path: '/findmatch/input',
+                    element: <FindMatchInputPage />,
+                },
+                {
+                    path: '/findmatch/detail/:id',
+                    element: <FindMatchDetailPage />,
                 },
                 {
                     path: '/market/board',
