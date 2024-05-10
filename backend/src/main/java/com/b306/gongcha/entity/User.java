@@ -21,6 +21,7 @@ public class User extends BaseEntity {
     private String email;
     private String role;
     private String provider;
+    private String profile;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
@@ -36,6 +37,11 @@ public class User extends BaseEntity {
 
     public void updateEmail(String email) {
         this.email = email;
+    }
+
+    public void updateProfile(String profile) {
+        System.out.println("프로필 업데이트 편의 메서드");
+        this.profile = profile;
     }
 
     public void changeRole(ClubRole clubRole) {

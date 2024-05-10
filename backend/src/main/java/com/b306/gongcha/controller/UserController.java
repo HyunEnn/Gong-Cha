@@ -3,6 +3,7 @@ package com.b306.gongcha.controller;
 import com.b306.gongcha.dto.request.UserRatingRequest;
 import com.b306.gongcha.dto.response.CommonResponse;
 import com.b306.gongcha.service.CardServiceImpl;
+import com.b306.gongcha.service.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/users")
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final CardServiceImpl cardService;
+    private final UserServiceImpl userService;
 
     @Operation(
             summary = "유저 선수 카드 조회",
@@ -70,6 +73,24 @@ public class UserController {
         cardService.userRating(cardRequest);
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("선수 평가 성공")
+                .build(), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "프로필 사진 변경",
+            description = "유저 프로필 사진을 변경함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "프로필 사진 변경에 성공했습니다."
+    )
+    @PatchMapping("/profile")
+    public ResponseEntity<CommonResponse> updateProfile(
+            @RequestPart(value = "file", required = false) MultipartFile file){
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("프로필 사진 변경 성공")
+                .data(userService.updateProfile(file))
                 .build(), HttpStatus.OK);
     }
 }
