@@ -52,7 +52,7 @@ public class ClubApplyController {
 
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("클럽 신청 목록 조회 완료")
-//                .data(clubApplyService.)
+                .data(clubApplyService.getAllClubApplies(clubId))
                 .build(), HttpStatus.OK);
     }
     
