@@ -37,15 +37,16 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         // jwt를 만들 때, role과 username을 claim해서 만들었기 때문에 값을 넘겨줘야함
         String userInfo = customUserDetails.getUserInfo();
-        Long userId = userRepository.findByUserInfo(userInfo).getId();
+        Long userId = customUserDetails.getUserId();
+//        Long userId = userRepository.findByUserInfo(userInfo).getId();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        String access = jwtUtil.createJwt("access", userInfo, role, 60 * 60 * 1000L); // 1시간
-        String refresh = jwtUtil.createJwt("refresh", userInfo, role, 60 * 60 * 24L * 1000); // 하루
+        String access = jwtUtil.createJwt(userId, "access", userInfo, role, 60 * 60 * 1000L); // 1시간
+        String refresh = jwtUtil.createJwt(userId, "refresh", userInfo, role, 60 * 60 * 24L * 1000); // 하루
 
         // refresh 토큰 저장
         User byUserInfo = userRepository.findByUserInfo(userInfo);

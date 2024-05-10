@@ -58,7 +58,7 @@ public class Oauth2TokenService {
         String userInfo = jwtUtil.getUserInfo(refresh);
         System.out.println("토큰 재발급을 위한 userInfo = " + userInfo);
         String role = jwtUtil.getRole(refresh);
-        Long userId = userRepository.findByUserInfo(userInfo).getId();
+        Long userId = jwtUtil.getUserId(refresh);
 
         // 들어온 refresh 가 redis 에 들어있는 refresh 인지 검사
         boolean isExist = refreshTokenRepository.existsById(userId);
@@ -67,8 +67,8 @@ public class Oauth2TokenService {
         }
 
         // 새로운 JWT 토큰 발행
-        String newAccess = jwtUtil.createJwt("Authorization", userInfo, role, 60 * 60 * 1000L);
-        String newRefresh = jwtUtil.createJwt("refresh", userInfo, role, 60 * 60 * 24L * 1000);
+        String newAccess = jwtUtil.createJwt(userId, "Authorization", userInfo, role, 60 * 60 * 1000L);
+        String newRefresh = jwtUtil.createJwt(userId, "refresh", userInfo, role, 60 * 60 * 24L * 1000);
 
         // 기존 redis 에 있는 refresh 삭제 후 신규 토큰 저장
         refreshTokenService.deleteRefreshToken(userId);

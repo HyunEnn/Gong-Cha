@@ -8,9 +8,6 @@ import lombok.*;
 
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@ToString
 public class RecruitResponse {
 
     private Long id;
