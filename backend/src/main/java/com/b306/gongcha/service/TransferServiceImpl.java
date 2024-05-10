@@ -12,6 +12,8 @@ import com.b306.gongcha.repository.TransferRepository;
 import com.b306.gongcha.repository.UserRepository;
 import com.b306.gongcha.repository.UserTransferRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,13 +31,16 @@ public class TransferServiceImpl implements TransferService{
 
     // 이적시장 선수 전체 조회
     @Override
-    public List<TransferResponse> getAllTransfers() {
+    @Transactional(readOnly = true)
+    public Page<TransferResponse> getAllTransfers(Pageable pageable) {
 
-        List<TransferResponse> transferResponseList = new ArrayList<>();
-        List<Transfer> transferList = transferRepository.findAll();
-        // 전체 리스트 조회 후 Response Dto List 형태로 변환
-        transferList.forEach(t -> transferResponseList.add(t.toTransferResponse()));
-        return transferResponseList;
+        Page<Transfer> pages = transferRepository.findAll(pageable);
+        return pages.map(TransferResponse::fromEntity);
+//        List<TransferResponse> transferResponseList = new ArrayList<>();
+//        List<Transfer> transferList = transferRepository.findAll();
+//        // 전체 리스트 조회 후 Response Dto List 형태로 변환
+//        transferList.forEach(t -> transferResponseList.add(t.toTransferResponse()));
+//        return transferResponseList;
     }
 
     // 이적시장 선수 상세 조회

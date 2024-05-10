@@ -4,6 +4,9 @@ import com.b306.gongcha.dto.request.TransferRequest;
 import com.b306.gongcha.dto.response.CommonResponse;
 import com.b306.gongcha.service.TransferService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +20,12 @@ public class TransferController {
 
     // 이적시장 정보 전체 조회
     @GetMapping("/")
-    public ResponseEntity<CommonResponse> getAllTransfers() {
+    public ResponseEntity<CommonResponse> getAllTransfers(
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 10) Pageable pageable ) {
 
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("이적시장 목록 전체 조회")
-                .data(transferService.getAllTransfers())
+                .data(transferService.getAllTransfers(pageable))
                 .build(), HttpStatus.OK);
     }
 

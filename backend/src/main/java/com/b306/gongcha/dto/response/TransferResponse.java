@@ -25,4 +25,20 @@ public class TransferResponse {
     private Boolean isJoined; // 선수 팀 합류 여부
     private User user; // 작성자
 
+    public static TransferResponse fromEntity(Transfer transfer) {
+        return TransferResponse.builder()
+                .id(transfer.getId())
+                .matchType(transfer.getMatchType())
+                .startTime(transfer.getStartTime())
+                .endTime(transfer.getEndTime())
+                .region(transfer.getRegion())
+                .district(transfer.getDistrict())
+                .difficulty(transfer.getDifficulty())
+                .dayOfWeek(transfer.getDayOfWeek())
+                .info(transfer.getInfo())
+                .isJoined(transfer.getIsJoined())
+                .user(transfer.getUser())
+                .build();
+    }
+
 }
