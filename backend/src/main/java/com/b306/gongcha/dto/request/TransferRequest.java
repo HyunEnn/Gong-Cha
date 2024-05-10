@@ -7,9 +7,6 @@ import java.util.List;
 
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@ToString
 public class TransferRequest {
 
     private MatchType matchType; // 매치 성격 - 내전/친선

@@ -4,12 +4,9 @@ import lombok.*;
 
 @Getter
 @Builder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@ToString
 public class UserTransferResponse {
 
-    private Long userId;
+    private Long teamId;
     private String userName;
     private Boolean permit;
 
