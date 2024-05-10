@@ -3,7 +3,6 @@ package com.b306.gongcha.entity;
 import com.b306.gongcha.entity.num.Status;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.Id;
 
 @Entity
 @Getter
