@@ -10,5 +10,4 @@ public class ClubApplyResponse {
     private String userName;
     private String content;
 
-
 }

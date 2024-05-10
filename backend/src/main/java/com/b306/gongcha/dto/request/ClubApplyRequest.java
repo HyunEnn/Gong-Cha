@@ -3,8 +3,10 @@ package com.b306.gongcha.dto.request;
 import com.b306.gongcha.entity.Club;
 import com.b306.gongcha.entity.ClubApply;
 import com.b306.gongcha.entity.User;
+import jakarta.persistence.Lob;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder

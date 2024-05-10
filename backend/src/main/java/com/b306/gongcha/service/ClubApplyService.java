@@ -45,6 +45,8 @@ public class ClubApplyService {
     }
 
 
+
+
     public void permitApply() {
 
         Long userId = GetCurrentUserId.currentUserId();

@@ -23,7 +23,7 @@ public class ClubApply extends BaseEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(columnDefinition = "text", name = "apply_content")
+    @Column(name = "apply_content")
     private String applyContent;
 
 
