@@ -6,7 +6,7 @@ import lombok.*;
 @Builder
 public class UserTransferResponse {
 
-    private Long teamId;
+    private Long userId;
     private String userName;
     private Boolean permit;
 
