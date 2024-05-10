@@ -27,6 +27,9 @@ module.exports = {
             },
         },
         extend: {
+            backgroundImage: {
+                'grass-pattern': "url('@/assets/images/grassBG.svg')",
+            },
             colors: {
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
@@ -97,6 +100,8 @@ module.exports = {
                 pretendardBold: ['Pretendard-Bold'],
                 ygJalnan: ['yg-jalnan'],
                 pretendardBlack: ['Pretendard-Black', 'sans-serif'],
+                gmarketSansRegular: ['GmarketSansMedium'],
+                gmarketSansBold: ['GmarketSansBold'],
             },
             borderRadius: {
                 lg: 'var(--radius)',

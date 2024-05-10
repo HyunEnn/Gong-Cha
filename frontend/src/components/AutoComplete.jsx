@@ -66,7 +66,7 @@ function AutoComplete({ place, setPlace }) {
             </div>
             {isHaveInputValue && (
                 <ul className="block pt-2 mx-auto list-none bg-white border border-t-0 border-gray-300 rounded-b-lg shadow-lg">
-                    {dropDownList.length === 0 && <li className="p-4">해당하는 구장이 없습니다</li>}
+                    {dropDownList.length === 0 && <li className="p-4">해당하는 지역이 없습니다</li>}
                     {dropDownList.map((dropDownItem, dropDownIndex) => {
                         return (
                             <li

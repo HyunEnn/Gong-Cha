@@ -4,8 +4,10 @@ import { useFindPlayerBoardStore } from '@/stores/findPlayerBoardStore';
 function FindPlayerBoard() {
     const navigate = useNavigate();
     const { dummyFindPlayerList } = useFindPlayerBoardStore();
-    const handleOpenFindPlayerDetail = () => {
-        navigate('/findplayer/detail');
+    const handleOpenFindPlayerDetail = (value) => {
+        // console.log(value);
+        // updateFindPlayerBoardStore로 게시글 설정
+        navigate(`/findplayer/detail/${value.key}`);
     };
     return (
         <>
@@ -14,7 +16,7 @@ function FindPlayerBoard() {
                 <div
                     key={index}
                     className="grid grid-cols-5 gap-4 mt-4 text-center border border-solid rounded-lg"
-                    onClick={() => handleOpenFindPlayerDetail()}
+                    onClick={() => handleOpenFindPlayerDetail(value)}
                 >
                     <div className="flex flex-col justify-center pl-2 text-xl font-pretendardBold">{value.time}</div>
                     <div className="flex flex-col justify-center col-span-3">

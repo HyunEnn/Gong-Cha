@@ -81,6 +81,7 @@ function PlayerRegistration() {
                 <div className="flex flex-row justify-center mt-4">
                     <Input className="w-40 h-9" />
                     &nbsp;&nbsp;&nbsp;&nbsp;
+                    {/* TODO */}
                     <Button size="sm" variant="default">
                         등록
                     </Button>

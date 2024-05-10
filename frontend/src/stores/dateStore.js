@@ -3,7 +3,7 @@ import { create } from 'zustand';
 export const useDateStore = create((set) => {
     // dateList를 생성하는 로직
     const dateList = [];
-    for (let i = 0; i < 14; i++) {
+    for (let i = 0; i < 7; i++) {
         const date = new Date();
         date.setDate(date.getDate() + i);
 

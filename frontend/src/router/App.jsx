@@ -7,20 +7,21 @@ import OnBoardPage from '@/pages/OnBoardPage';
 import LoginPage from '@/pages/LoginPage';
 import BottomNav from '@/nav/BottomNav';
 import MainPage from '@/pages/MainPage';
-import ChatPage from '@/pages/ChatPage';
+import ClubPage from '@/pages/ClubPage';
 import MyPage from '@/pages/MyPage';
 import FindPlayerBoardPage from '@/pages/FindPlayerBoardPage';
 import FindPlayerInputPage from '@/pages/FindPlayerInputPage';
 import FindPlayerDetailPage from '@/pages/FindPlayerDetailPage';
-import FindTeamBoardPage from '@/pages/FindTeamBoardPage';
 import FindMatchBoardPage from '@/pages/FindMatchBoardPage';
 import MarketBoardPage from '@/pages/MarketBoardPage';
 import ProfilePage from '@/pages/ProfilePage';
 import PlayHistoryPage from '@/pages/PlayHistoryPage';
+import FindMatchInputPage from '@/pages/FindMatchInputPage';
+import FindMatchDetailPage from '@/pages/FindMatchDetailPage';
 import PlaySchedulePage from '@/pages/PlaySchedulePage';
 import PlayerCardPage from '@/pages/PlayerCardPage';
 import AlarmPage from '@/pages/AlarmPage';
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from '@/components/ui/sonner';
 
 function App() {
     const router = createBrowserRouter([
@@ -44,7 +45,7 @@ function App() {
             path: '/login',
             element: <LoginPage />,
         },
-    
+
         {
             path: '/',
             element: <BottomNav />,
@@ -81,7 +82,7 @@ function App() {
                         {
                             path: 'playhistory',
                             element: <PlayHistoryPage />,
-                        }
+                        },
                     ],
                 },
                 {
@@ -119,8 +120,7 @@ function App() {
     return (
         <>
             <Toaster />
-            <RouterProvider router={router}>
-            </RouterProvider>
+            <RouterProvider router={router}></RouterProvider>
         </>
     );
 }
