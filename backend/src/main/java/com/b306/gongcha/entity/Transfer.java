@@ -43,11 +43,6 @@ public class Transfer {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty; // 경기 수준
 
-    @Schema(description = "매칭 성격", defaultValue = "모집중", allowableValues = { "모집중", "모집완료", "매칭중", "매칭완료"} )
-    @Enumerated(EnumType.STRING)
-    @Builder.Default
-    private Status status = Status.valueOf("모집중"); // 팀 상태 - 모집중, 모집완료, 매칭중, 매칭완료
-
     @Schema(description = "희망요일")
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> dayOfWeek;
@@ -71,7 +66,6 @@ public class Transfer {
         this.region = transferRequest.getRegion();
         this.district = transferRequest.getDistrict();
         this.difficulty = transferRequest.getDifficulty();
-        this.status = transferRequest.getStatus();
         this.dayOfWeek = transferRequest.getDayOfWeek();
         this.info = transferRequest.getInfo();
     }
@@ -94,7 +88,6 @@ public class Transfer {
                 .region(region)
                 .district(district)
                 .difficulty(difficulty)
-                .status(status)
                 .dayOfWeek(dayOfWeek)
                 .info(info)
                 .isJoined(isJoined)

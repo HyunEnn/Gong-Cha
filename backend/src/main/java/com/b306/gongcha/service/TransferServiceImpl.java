@@ -43,7 +43,8 @@ public class TransferServiceImpl implements TransferService{
     public TransferResponse getTransfer(Long transferId) {
 
         // 조회 실패 시 해당 정보 조회 실패 에러 반환
-        Transfer transfer = transferRepository.findById(transferId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOARD));
+        Transfer transfer = transferRepository.findById(transferId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOARD));
         return transfer.toTransferResponse();
     }
 
@@ -52,7 +53,8 @@ public class TransferServiceImpl implements TransferService{
     public TransferResponse createTransfer(TransferRequest transferRequest) {
 
         Transfer transfer = transferRequest.toTransfer();
-        User user = userRepository.findById(transferRequest.getWriterId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        User user = userRepository.findById(transferRequest.getWriterId())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         transfer.setUser(user);
         transferRepository.save(transfer);
         return transfer.toTransferResponse();
@@ -62,7 +64,8 @@ public class TransferServiceImpl implements TransferService{
     @Override
     public TransferResponse updateTransfer(Long transferId, TransferRequest transferRequest) {
 
-        Transfer transfer = transferRepository.findById(transferId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOARD));
+        Transfer transfer = transferRepository.findById(transferId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOARD));
         transfer.updateTransfer(transferRequest);
         return transfer.toTransferResponse();
     }
@@ -86,8 +89,10 @@ public class TransferServiceImpl implements TransferService{
     public UserTransferResponse requestTransfer(Long transferId, Long userId) {
 
         // 이적시장 정보, 신청자 정보 받아오기
-        Transfer transfer = transferRepository.findById(transferId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOARD));
-        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        Transfer transfer = transferRepository.findById(transferId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_BOARD));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         // 작성자와 신청자가 동일인인 경우
         if(userId.equals(transfer.getUser().getId())) {
             throw new CustomException(ErrorCode.BOARD_REQUEST_FAIL);
@@ -128,14 +133,16 @@ public class TransferServiceImpl implements TransferService{
     @Override
     public UserTransferResponse getUserTransfer(Long transferId, Long userId) {
 
-        return userTransferRepository.findByTransferIdAndUserId(transferId, userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST)).toUserTransferResponse();
+        return userTransferRepository.findByTransferIdAndUserId(transferId, userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST)).toUserTransferResponse();
     }
 
     // 이적시장 신청 승인
     @Override
     public UserTransferResponse acceptTransfer(Long transferId, Long userId) {
 
-        UserTransfer userTransfer = userTransferRepository.findByTransferIdAndUserId(transferId, userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST));
+        UserTransfer userTransfer = userTransferRepository.findByTransferIdAndUserId(transferId, userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST));
         userTransfer.acceptTransfer();
         return userTransfer.toUserTransferResponse();
     }
@@ -144,7 +151,8 @@ public class TransferServiceImpl implements TransferService{
     @Override
     public Long rejectTransfer(Long transferId, Long userId) {
 
-        UserTransfer userTransfer = userTransferRepository.findByTransferIdAndUserId(transferId, userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST));
+        UserTransfer userTransfer = userTransferRepository.findByTransferIdAndUserId(transferId, userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST));
         userTransferRepository.deleteById(userTransfer.getId());
         return transferId;
     }

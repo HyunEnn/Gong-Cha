@@ -20,7 +20,6 @@ public class TransferResponse {
     private String region; // 광역시/도
     private String district; // 일반시/군/구
     private Difficulty difficulty; // 경기 수준
-    private Status status; // 모집 상태 정보
     private List<String> dayOfWeek; // 희망 요일
     private String info; // 선수 한마디
     private Boolean isJoined; // 선수 팀 합류 여부
