@@ -78,14 +78,54 @@ public class ClubApplyService {
 
     }
 
-
-    public void permitApply() {
+    public void permitApply(Long clubId, Long applyId) {
 
         Long userId = GetCurrentUserId.currentUserId();
 
         User masterUser = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
 
+        // 신청 내역 체크
+        ClubApply clubApply = clubApplyRepository.findById(applyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APPLY));
+
+        // 유저가 마스터인지, 클럽 소속이 되있는 지 체크
+        if(masterUser.getClubRole() == ClubRole.MASTER && masterUser.getClub().getId().equals(clubId)) {
+            // 클럽에 신청한 유저를 추가
+            club.addClubUser(clubApply.getUser());
+
+            // 신청한 유저의 클럽을 설정
+            clubApply.getUser().changeClub(club);
+
+            // 클럽 신청 리스트를 제거
+            clubApplyRepository.deleteById(applyId);
+        } else { // 아닌 경우, 예외 처리
+            throw new CustomException(ErrorCode.NOT_FOUND_AUTHENTICATION);
+        }
+    }
+
+    public void deniedApply(Long clubId, Long applyId) {
+
+        Long userId = GetCurrentUserId.currentUserId();
+
+        User masterUser = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
+
+        // 신청 내역 체크
+        ClubApply clubApply = clubApplyRepository.findById(applyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APPLY));
+
+        // 마스터 유저 확인하고, 요청 거절
+        if(masterUser.getClubRole() == ClubRole.MASTER && masterUser.getClub().getId().equals(clubId)) {
+            clubApplyRepository.deleteById(applyId);
+        } else {
+            throw new CustomException(ErrorCode.NOT_FOUND_AUTHENTICATION);
+        }
     }
 }

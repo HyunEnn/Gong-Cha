@@ -55,5 +55,41 @@ public class ClubApplyController {
                 .data(clubApplyService.getAllClubApplies(clubId))
                 .build(), HttpStatus.OK);
     }
+
+    @Operation(
+            summary = "클럽 신청 승인",
+            description = "클럽 신청에 대해서 승인해줍니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "클럽 신청이 완료되었습니다."
+    )
+    @PostMapping("/{clubId}/{applyId}/permit")
+    public ResponseEntity<CommonResponse> permitApply(Long clubId, Long applyId) {
+
+        clubApplyService.permitApply(clubId, applyId);
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("클럽 신청이 승인되었습니다.")
+                .build(), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "클럽 신청 거부",
+            description = "클럽 신청이 거부되었습니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "클럽 신청이 거부가 완료되었습니다."
+    )
+    @PostMapping("/{clubId}/{applyId}/deny")
+    public ResponseEntity<CommonResponse> deniedApply(Long clubId, Long applyId) {
+
+        clubApplyService.deniedApply(clubId, applyId);
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("클럽 신청이 거부되었습니다.")
+                .build(), HttpStatus.OK);
+    }
     
 }
