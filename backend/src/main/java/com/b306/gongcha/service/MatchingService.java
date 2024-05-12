@@ -1,6 +1,7 @@
 package com.b306.gongcha.service;
 
 import com.b306.gongcha.dto.request.MatchingRequest;
+import com.b306.gongcha.dto.response.MatchingResponse;
 import com.b306.gongcha.entity.Matching;
 import com.b306.gongcha.entity.Role;
 import com.b306.gongcha.entity.Team;
@@ -11,6 +12,8 @@ import com.b306.gongcha.repository.MatchingAskRepository;
 import com.b306.gongcha.repository.MatchingRepository;
 import com.b306.gongcha.repository.UserTeamRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,10 +37,18 @@ public class MatchingService {
     }
     
     // 매칭 게시판 작성
+    @Transactional
     public void createMatching(MatchingRequest matchingRequest) {
 
         Matching matching = Matching.fromRequest(matchingRequest);
         matchingRepository.save(matching);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<MatchingResponse> getAllMatchings(Pageable pageable) {
+
+        Page<Matching> matchings = matchingRepository.findAll(pageable);
+        return matchings.map(MatchingResponse::fromEntity);
     }
 
 }
