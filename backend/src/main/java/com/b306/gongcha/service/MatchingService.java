@@ -94,6 +94,8 @@ public class MatchingService {
         else {
             MatchingAskRequest matchingAskRequest = new MatchingAskRequest(versusTeamId, false);
             MatchingAsk matchingAsk = MatchingAsk.fromRequest(matchingAskRequest);
+            matchingAsk.updateMatching(matchingRepository.findById(matchingTeamId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MATCHING)));
             matchingAskRepository.save(matchingAsk);
         }
 

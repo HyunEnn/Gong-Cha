@@ -116,7 +116,7 @@ public class MatchingController {
             responseCode = "200",
             description = "매칭을 정상적으로 신청하였습니다."
     )
-    @PostMapping("/{matchingTeamId}/{versusTeamId}")
+    @PostMapping("/request/{matchingTeamId}/{versusTeamId}")
     public ResponseEntity<CommonResponse> requestMatching(@PathVariable Long matchingTeamId, @PathVariable Long versusTeamId) {
 
         matchingService.requestMatching(matchingTeamId, versusTeamId);

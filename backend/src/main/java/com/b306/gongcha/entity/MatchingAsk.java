@@ -37,6 +37,11 @@ public class MatchingAsk extends BaseEntity {
         this.permit = permit;
     }
 
+    public void updateMatching(Matching matching) {
+
+        this.matching = matching;
+    }
+
     public static MatchingAsk fromRequest(MatchingAskRequest matchingAskRequest) {
 
         return MatchingAsk.builder()
