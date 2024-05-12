@@ -59,4 +59,12 @@ public class MatchingService {
         return MatchingResponse.fromEntity(matching);
     }
 
+    public MatchingResponse updateMatching(Long matchingId, MatchingRequest matchingRequest) {
+
+        Matching matching = matchingRepository.findById(matchingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MATCHING));
+        matching.updateMatching(matchingRequest);
+        return MatchingResponse.fromEntity(matching);
+    }
+
 }

@@ -74,4 +74,21 @@ public class MatchingController {
                 .build(), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "매칭 정보 수정",
+            description = "매칭 정보를 수정함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "매칭 정보를 정상적으로 수정하였습니다."
+    )
+    @PatchMapping("/{matchingId}")
+    public ResponseEntity<CommonResponse> updateMatching(@PathVariable Long matchingId, @RequestBody MatchingRequest matchingRequest) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("매칭 정보 수정 완료")
+                .data(matchingService.updateMatching(matchingId, matchingRequest))
+                .build(), HttpStatus.OK);
+    }
+
 }

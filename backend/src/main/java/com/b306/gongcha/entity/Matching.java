@@ -50,6 +50,15 @@ public class Matching extends BaseEntity {
         this.status = status;
     }
 
+    public void updateMatching(MatchingRequest matchingRequest) {
+
+        this.date = matchingRequest.getDate();
+        this.region = matchingRequest.getRegion();
+        this.district = matchingRequest.getDistrict();
+        this.info = matchingRequest.getInfo();
+        this.difficulty = matchingRequest.getDifficulty();
+    }
+
     public static Matching fromRequest(MatchingRequest matchingRequest) {
 
         return Matching.builder()
