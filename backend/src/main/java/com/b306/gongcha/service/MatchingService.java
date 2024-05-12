@@ -114,7 +114,7 @@ public class MatchingService {
         matchingAskList.forEach(ma -> matchingAskResponseList.add(MatchingAskResponse.fromEntity(ma)));
         return matchingAskResponseList;
     }
-    
+
     // 받은 신청 승인
     public void acceptMatching(Long matchingTeamId, Long versusTeamId) {
 
@@ -129,6 +129,15 @@ public class MatchingService {
             matchingAsk.updatePermit(true);
             matchingAskRepository.save(matchingAsk);
         }
+    }
+
+    // 받은 신청 거절
+    public void rejectMatching(Long matchingTeamId, Long versusTeamId) {
+
+        // 신청 정보 확인
+        MatchingAsk matchingAsk = matchingAskRepository.findByMatchingTeamIdAndVersusTeamId(matchingTeamId, versusTeamId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST));
+        matchingAskRepository.delete(matchingAsk);
     }
 
 }

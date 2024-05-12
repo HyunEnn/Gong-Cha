@@ -159,4 +159,21 @@ public class MatchingController {
                 .build(), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "상대팀 매칭 신청 거절",
+            description = "상대팀이 해당 매칭 게시판 신청을 거절함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "매칭 신청을 정상적으로 거절하였습니다."
+    )
+    @DeleteMapping("/request/{matchingTeamId}/{versusTeamId}")
+    public ResponseEntity<CommonResponse> rejectMatching(@PathVariable Long matchingTeamId, @PathVariable Long versusTeamId) {
+
+        matchingService.rejectMatching(matchingTeamId, versusTeamId);
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("매칭 신청 거절 완료")
+                .build(), HttpStatus.OK);
+    }
+
 }
