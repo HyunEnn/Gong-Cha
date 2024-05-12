@@ -57,4 +57,21 @@ public class MatchingController {
                 .build(), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "매칭 상세 조회",
+            description = "매칭 상세 정보를 조회함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "매칭 상세 정보를 정상적으로 조회하였습니다."
+    )
+    @GetMapping("/{matchingId}")
+    public ResponseEntity<CommonResponse> getMatching(@PathVariable Long matchingId) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("매칭 상세 정보 조회 완료")
+                .data(matchingService.getMatching(matchingId))
+                .build(), HttpStatus.OK);
+    }
+
 }

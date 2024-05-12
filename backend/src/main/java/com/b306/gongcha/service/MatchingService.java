@@ -51,4 +51,12 @@ public class MatchingService {
         return matchings.map(MatchingResponse::fromEntity);
     }
 
+    @Transactional(readOnly = true)
+    public MatchingResponse getMatching(Long matchingId) {
+
+        Matching matching = matchingRepository.findById(matchingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MATCHING));
+        return MatchingResponse.fromEntity(matching);
+    }
+
 }
