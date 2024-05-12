@@ -21,6 +21,7 @@ public class User extends BaseEntity {
     private String email;
     private String role;
     private String provider;
+    private String firebaseToken;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")

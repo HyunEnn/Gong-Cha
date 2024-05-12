@@ -26,7 +26,8 @@ public class CardServiceImpl implements CardService{
     @Transactional(readOnly = true)
     public CardResponse getCard(Long userId) {
 
-        Card card = cardRepository.findByUserId(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        Card card = cardRepository.findByUserId(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         return CardResponse.fromEntity(card);
     }
 
@@ -34,7 +35,8 @@ public class CardServiceImpl implements CardService{
     public CardResponse getMyCard() {
 
         Long userId = GetCurrentUserId.currentUserId();
-        Card card = cardRepository.findByUserId(userId).orElseThrow(()->new CustomException(ErrorCode.NOT_FOUND_USER));
+        Card card = cardRepository.findByUserId(userId)
+                .orElseThrow(()->new CustomException(ErrorCode.NOT_FOUND_USER));
         return CardResponse.fromEntity(card);
     }
 
@@ -50,7 +52,8 @@ public class CardServiceImpl implements CardService{
 
     public void updateUserCard(Long userId, String option){
 
-        Card card = cardRepository.findByUserId(userId).orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND_USER));
+        Card card = cardRepository.findByUserId(userId)
+                .orElseThrow(()-> new CustomException(ErrorCode.NOT_FOUND_USER));
         if (Objects.equals(option, "shooting")){
             card.updateShooting(card.getShooting() + 3);
         }
