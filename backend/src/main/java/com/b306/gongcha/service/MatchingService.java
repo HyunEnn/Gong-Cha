@@ -44,6 +44,7 @@ public class MatchingService {
         matchingRepository.save(matching);
     }
 
+    // 매칭 게시판 전체 조회
     @Transactional(readOnly = true)
     public Page<MatchingResponse> getAllMatchings(Pageable pageable) {
 
@@ -51,6 +52,7 @@ public class MatchingService {
         return matchings.map(MatchingResponse::fromEntity);
     }
 
+    // 매칭 게시판 상세 조회
     @Transactional(readOnly = true)
     public MatchingResponse getMatching(Long matchingId) {
 
@@ -59,6 +61,7 @@ public class MatchingService {
         return MatchingResponse.fromEntity(matching);
     }
 
+    // 매칭 게시판 정보 수정
     public MatchingResponse updateMatching(Long matchingId, MatchingRequest matchingRequest) {
 
         Matching matching = matchingRepository.findById(matchingId)
@@ -67,6 +70,7 @@ public class MatchingService {
         return MatchingResponse.fromEntity(matching);
     }
 
+    // 매칭 게시판 정보 삭제
     public void deleteMatching(Long matchingId) {
 
         if(matchingRepository.findById(matchingId).isEmpty()) {
