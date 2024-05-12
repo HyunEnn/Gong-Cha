@@ -1,6 +1,7 @@
 package com.b306.gongcha.dto.response;
 
 import com.b306.gongcha.entity.Difficulty;
+import com.b306.gongcha.entity.Matching;
 import com.b306.gongcha.entity.Status;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,5 +20,19 @@ public class MatchingResponse {
     private Difficulty difficulty; // 경기 수준
     private Status status; // 팀 상태 - 매칭중, 매칭완료
     private Long matchingTeamId;
+
+    public static MatchingResponse fromEntity(Matching matching) {
+
+        return MatchingResponse.builder()
+                .id(matching.getId())
+                .date(matching.getDate())
+                .region(matching.getRegion())
+                .district(matching.getDistrict())
+                .info(matching.getInfo())
+                .difficulty(matching.getDifficulty())
+                .status(matching.getStatus())
+                .matchingTeamId(matching.getMatchingTeamId())
+                .build();
+    }
 
 }

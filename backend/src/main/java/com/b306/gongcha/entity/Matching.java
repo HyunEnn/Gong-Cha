@@ -1,5 +1,6 @@
 package com.b306.gongcha.entity;
 
+import com.b306.gongcha.dto.request.MatchingRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
@@ -43,5 +44,22 @@ public class Matching {
     @Schema(description = "매칭 글 올린 팀 id", allowableValues = "1L" )
     @Column(name = "matching_team_id")
     private Long matchingTeamId;
+
+    public void updateStatus(Status status) {
+
+        this.status = status;
+    }
+
+    public static Matching fromRequest(MatchingRequest matchingRequest) {
+
+        return Matching.builder()
+                .date(matchingRequest.getDate())
+                .region(matchingRequest.getRegion())
+                .district(matchingRequest.getDistrict())
+                .info(matchingRequest.getInfo())
+                .difficulty(matchingRequest.getDifficulty())
+                .matchingTeamId(matchingRequest.getMatchingTeamId())
+                .build();
+    }
 
 }
