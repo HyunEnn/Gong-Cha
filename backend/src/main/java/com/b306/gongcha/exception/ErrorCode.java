@@ -39,6 +39,8 @@ public enum ErrorCode {
     MEMBER_ALREADY_ACCEPTED(HttpStatus.BAD_REQUEST, "이미 팀원으로 추가되었습니다."),
     MEMBER_LIMIT_EXCEEDED(HttpStatus.BAD_REQUEST, "최대 팀원 인원수를 초과하였습니다."),
 
+    NO_AUTHORITY_MANAGER(HttpStatus.BAD_REQUEST, "팀장만 접근할 수 있습니다"),
+
     NOT_FOUND_CLUB(HttpStatus.BAD_REQUEST, "존재하지 않는 클럽입니다.");
 
     private final HttpStatus httpStatus;
