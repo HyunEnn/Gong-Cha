@@ -9,13 +9,15 @@ import lombok.Getter;
 public class MatchingAskResponse {
 
     private Long id;
+    private Long matchingTeamId;
     private Long versusTeamId;
     private Boolean permit;
 
-    public MatchingAskResponse fromEntity(MatchingAsk matchingAsk) {
+    public static MatchingAskResponse fromEntity(MatchingAsk matchingAsk) {
 
         return MatchingAskResponse.builder()
                 .id(matchingAsk.getId())
+                .matchingTeamId(matchingAsk.getMatching().getMatchingTeamId())
                 .versusTeamId(matchingAsk.getVersusTeamId())
                 .permit(matchingAsk.getPermit())
                 .build();

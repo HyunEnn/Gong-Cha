@@ -125,4 +125,21 @@ public class MatchingController {
                 .build(), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "상대팀 매칭 신청 목록",
+            description = "상대팀이 해당 매칭 게시판 신청 목록을 조회함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "매칭 신청 목록을 정상적으로 조회하였습니다."
+    )
+    @GetMapping("/request/{matchingTeamId}")
+    public ResponseEntity<CommonResponse> getRequestMatching(@PathVariable Long matchingTeamId) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("매칭 신청 목록 조회 완료")
+                .data(matchingService.getAllMatchingAsks(matchingTeamId))
+                .build(), HttpStatus.OK);
+    }
+
 }

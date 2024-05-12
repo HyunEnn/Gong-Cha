@@ -2,6 +2,7 @@ package com.b306.gongcha.service;
 
 import com.b306.gongcha.dto.request.MatchingAskRequest;
 import com.b306.gongcha.dto.request.MatchingRequest;
+import com.b306.gongcha.dto.response.MatchingAskResponse;
 import com.b306.gongcha.dto.response.MatchingResponse;
 import com.b306.gongcha.entity.*;
 import com.b306.gongcha.exception.CustomException;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -81,6 +83,8 @@ public class MatchingService {
         }
     }
 
+    // 매칭 신청하기
+    @Transactional
     public void requestMatching(Long matchingTeamId, Long versusTeamId) {
 
         // 신청하는 팀의 존재 여부 확인
@@ -99,6 +103,16 @@ public class MatchingService {
             matchingAskRepository.save(matchingAsk);
         }
 
+    }
+    
+    // 게시판 작성한 팀이 받은 신청 목록 조회
+    @Transactional(readOnly = true)
+    public List<MatchingAskResponse> getAllMatchingAsks(Long matchingTeamId) {
+
+        List<MatchingAskResponse> matchingAskResponseList = new ArrayList<>();
+        List<MatchingAsk> matchingAskList = matchingAskRepository.findByMatchingTeamIdAndPermitIsFalse(matchingTeamId);
+        matchingAskList.forEach(ma -> matchingAskResponseList.add(MatchingAskResponse.fromEntity(ma)));
+        return matchingAskResponseList;
     }
 
 }
