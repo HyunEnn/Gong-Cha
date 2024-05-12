@@ -32,5 +32,12 @@ public class MatchingService {
         }
         return true;
     }
+    
+    // 매칭 게시판 작성
+    public void createMatching(MatchingRequest matchingRequest) {
+
+        Matching matching = Matching.fromRequest(matchingRequest);
+        matchingRepository.save(matching);
+    }
 
 }
