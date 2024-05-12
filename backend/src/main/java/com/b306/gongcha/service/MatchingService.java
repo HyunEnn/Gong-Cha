@@ -67,4 +67,14 @@ public class MatchingService {
         return MatchingResponse.fromEntity(matching);
     }
 
+    public void deleteMatching(Long matchingId) {
+
+        if(matchingRepository.findById(matchingId).isEmpty()) {
+            throw new CustomException(ErrorCode.NOT_FOUND_MATCHING);
+        }
+        else {
+            matchingRepository.deleteById(matchingId);
+        }
+    }
+
 }

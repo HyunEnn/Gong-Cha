@@ -91,4 +91,21 @@ public class MatchingController {
                 .build(), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "매칭 정보 삭제",
+            description = "매칭 정보를 삭제함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "매칭 정보를 정상적으로 삭제하였습니다."
+    )
+    @DeleteMapping("/{matchingId}")
+    public ResponseEntity<CommonResponse> deleteMatching(@PathVariable Long matchingId) {
+
+        matchingService.deleteMatching(matchingId);
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("매칭 정보 삭제 완료")
+                .build(), HttpStatus.OK);
+    }
+
 }
