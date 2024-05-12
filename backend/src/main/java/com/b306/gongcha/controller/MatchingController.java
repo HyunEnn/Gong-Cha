@@ -108,4 +108,21 @@ public class MatchingController {
                 .build(), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "상대팀 매칭 신청",
+            description = "상대팀이 매칭 게시판에 매칭을 신청함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "매칭을 정상적으로 신청하였습니다."
+    )
+    @PostMapping("/{matchingTeamId}/{versusTeamId}")
+    public ResponseEntity<CommonResponse> requestMatching(@PathVariable Long matchingTeamId, @PathVariable Long versusTeamId) {
+
+        matchingService.requestMatching(matchingTeamId, versusTeamId);
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("매칭 신청 완료")
+                .build(), HttpStatus.OK);
+    }
+
 }

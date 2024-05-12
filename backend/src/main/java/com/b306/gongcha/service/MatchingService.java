@@ -1,15 +1,14 @@
 package com.b306.gongcha.service;
 
+import com.b306.gongcha.dto.request.MatchingAskRequest;
 import com.b306.gongcha.dto.request.MatchingRequest;
 import com.b306.gongcha.dto.response.MatchingResponse;
-import com.b306.gongcha.entity.Matching;
-import com.b306.gongcha.entity.Role;
-import com.b306.gongcha.entity.Team;
-import com.b306.gongcha.entity.UserTeam;
+import com.b306.gongcha.entity.*;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
 import com.b306.gongcha.repository.MatchingAskRepository;
 import com.b306.gongcha.repository.MatchingRepository;
+import com.b306.gongcha.repository.TeamRepository;
 import com.b306.gongcha.repository.UserTeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +22,7 @@ import java.util.List;
 @Service
 public class MatchingService {
 
+    private final TeamRepository teamRepository;
     private final UserTeamRepository userTeamRepository;
     private final MatchingRepository matchingRepository;
     private final MatchingAskRepository matchingAskRepository;
@@ -79,6 +79,24 @@ public class MatchingService {
         else {
             matchingRepository.deleteById(matchingId);
         }
+    }
+
+    public void requestMatching(Long matchingTeamId, Long versusTeamId) {
+
+        // 신청하는 팀의 존재 여부 확인
+        if(teamRepository.findById(versusTeamId).isEmpty()) {
+            throw new CustomException(ErrorCode.NOT_FOUND_TEAM);
+        }
+        // 동일 팀으로 이미 신청했는지 확인
+        else if(matchingAskRepository.findByMatchingTeamIdAndVersusTeamId(matchingTeamId, versusTeamId) != null) {
+            throw new CustomException(ErrorCode.BOARD_REQUEST_DUPLICATE);
+        }
+        else {
+            MatchingAskRequest matchingAskRequest = new MatchingAskRequest(versusTeamId, false);
+            MatchingAsk matchingAsk = MatchingAsk.fromRequest(matchingAskRequest);
+            matchingAskRepository.save(matchingAsk);
+        }
+
     }
 
 }
