@@ -92,7 +92,7 @@ public class MatchingService {
             throw new CustomException(ErrorCode.NOT_FOUND_TEAM);
         }
         // 동일 팀으로 이미 신청했는지 확인
-        else if(matchingAskRepository.findByMatchingTeamIdAndVersusTeamId(matchingTeamId, versusTeamId) != null) {
+        else if(matchingAskRepository.findByMatchingTeamIdAndVersusTeamId(matchingTeamId, versusTeamId).isPresent()) {
             throw new CustomException(ErrorCode.BOARD_REQUEST_DUPLICATE);
         }
         else {
@@ -113,6 +113,22 @@ public class MatchingService {
         List<MatchingAsk> matchingAskList = matchingAskRepository.findByMatchingTeamIdAndPermitIsFalse(matchingTeamId);
         matchingAskList.forEach(ma -> matchingAskResponseList.add(MatchingAskResponse.fromEntity(ma)));
         return matchingAskResponseList;
+    }
+    
+    // 받은 신청 승인
+    public void acceptMatching(Long matchingTeamId, Long versusTeamId) {
+
+        // 신청 정보 확인
+        MatchingAsk matchingAsk = matchingAskRepository.findByMatchingTeamIdAndVersusTeamId(matchingTeamId, versusTeamId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST));
+        // 신청 정보 승인 여부 확인
+        if(matchingAsk.getPermit()) {
+            throw new CustomException(ErrorCode.BOARD_REQUEST_DUPLICATE);
+        }
+        else {
+            matchingAsk.updatePermit(true);
+            matchingAskRepository.save(matchingAsk);
+        }
     }
 
 }
