@@ -52,7 +52,7 @@ public class MatchingService {
             matchingRepository.save(matching);
         }
 
-        // 팀 게시판의 상태 매칭중으로 변경하기
+        // 팀 게시판의 상태 매칭중으로 변경하기 - 팀 목록으로 변경?
         Long teamId = userTeamRepository.findByUserIdAndRole(userId, Role.valueOf("팀장")).getTeam().getId();
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
@@ -99,20 +99,16 @@ public class MatchingService {
 
     // 매칭 신청하기
     @Transactional
-    public void requestMatching(Long matchingTeamId, Long versusTeamId) {
+    public void requestMatching(Long matchingId, Long versusTeamId) {
 
         // 신청하는 팀의 존재 여부 확인
         if(teamRepository.findById(versusTeamId).isEmpty()) {
             throw new CustomException(ErrorCode.NOT_FOUND_TEAM);
         }
-        // 동일 팀으로 이미 신청했는지 확인
-        else if(matchingAskRepository.findByMatchingTeamIdAndVersusTeamId(matchingTeamId, versusTeamId).isPresent()) {
-            throw new CustomException(ErrorCode.BOARD_REQUEST_DUPLICATE);
-        }
         else {
             MatchingAskRequest matchingAskRequest = new MatchingAskRequest(versusTeamId, false);
             MatchingAsk matchingAsk = MatchingAsk.fromRequest(matchingAskRequest);
-            matchingAsk.updateMatching(matchingRepository.findById(matchingTeamId)
+            matchingAsk.updateMatching(matchingRepository.findById(matchingId)
                     .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MATCHING)));
             matchingAskRepository.save(matchingAsk);
         }
