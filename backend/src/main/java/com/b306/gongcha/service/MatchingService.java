@@ -50,6 +50,12 @@ public class MatchingService {
             matchingRepository.save(matching);
         }
 
+        // 팀 게시판의 상태 매칭중으로 변경하기
+        Long teamId = userTeamRepository.findByUserIdAndRole(userId, Role.valueOf("팀장")).getTeam().getId();
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+        team.updateStatus(Status.valueOf("매칭중"));
+        teamRepository.save(team);
     }
 
     // 매칭 게시판 전체 조회
@@ -147,12 +153,25 @@ public class MatchingService {
             // 매칭 승인 됨
             matchingAsk.updatePermit(true);
             matchingAskRepository.save(matchingAsk);
+
             // 매칭 게시판 상태 "매칭완료"로 변경
             Long matchingId = matchingAsk.getMatching().getId();
             Matching matching = matchingRepository.findById(matchingId)
                     .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MATCHING));
             matching.updateStatus(Status.valueOf("매칭완료"));
             matchingRepository.save(matching);
+
+            // 팀 게시판의 상태 매칭완료로 변경하기
+            Team team = teamRepository.findById(matchingTeamId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+            team.updateStatus(Status.valueOf("매칭완료"));
+            teamRepository.save(team);
+
+            // 상대팀도 동일하게 매칭완료로 변경
+            Team versusTeam = teamRepository.findById(versusTeamId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+            team.updateStatus(Status.valueOf("매칭완료"));
+            teamRepository.save(versusTeam);
         }
     }
 
