@@ -143,6 +143,23 @@ public class MatchingController {
     }
 
     @Operation(
+            summary = "현재 로그인한 팀장이 받은 매칭 신청 목록",
+            description = "현재 로그인한 팀장이 받은 매칭 신청 목록을 조회함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "팀장이 받은 매칭 신청 목록을 정상적으로 조회하였습니다."
+    )
+    @GetMapping("/request")
+    public ResponseEntity<CommonResponse> getRequestMatchingByUser() {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("팀장의 매칭 신청 목록 조회 완료")
+                .data(matchingService.getAllMatchingAsksByUserId())
+                .build(), HttpStatus.OK);
+    }
+
+    @Operation(
             summary = "상대팀 매칭 신청 승인",
             description = "상대팀이 해당 매칭 게시판 신청을 승인함."
     )

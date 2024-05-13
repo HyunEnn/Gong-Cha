@@ -29,7 +29,7 @@ public class MatchingAsk extends BaseEntity {
 
     // 팀 id - 팀 정보 없이 팀원들의 카드 정보만 필요하기 때문
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "matching_team_id")
+    @JoinColumn(name = "matching_id")
     private Matching matching;
 
     public void updatePermit(Boolean permit) {

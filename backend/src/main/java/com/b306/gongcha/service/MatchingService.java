@@ -120,6 +120,18 @@ public class MatchingService {
         return matchingAskResponseList;
     }
 
+    // 게시판 작성한 팀장이 받은 신청 목록 조회
+    @Transactional(readOnly = true)
+    public List<MatchingAskResponse> getAllMatchingAsksByUserId() {
+
+        Long userId = GetCurrentUserId.currentUserId();
+        Long teamId = userTeamRepository.findByUserIdAndRole(userId, Role.valueOf("팀장")).getId();
+        List<MatchingAskResponse> matchingAskResponseList = new ArrayList<>();
+        List<MatchingAsk> matchingAskList = matchingAskRepository.findByMatchingTeamIdAndPermitIsFalse(teamId);
+        matchingAskList.forEach(ma -> matchingAskResponseList.add(MatchingAskResponse.fromEntity(ma)));
+        return matchingAskResponseList;
+    }
+
     // 받은 신청 승인
     public void acceptMatching(Long matchingTeamId, Long versusTeamId) {
 
