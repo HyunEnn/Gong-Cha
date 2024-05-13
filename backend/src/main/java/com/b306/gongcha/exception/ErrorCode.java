@@ -39,7 +39,9 @@ public enum ErrorCode {
     MEMBER_ALREADY_ACCEPTED(HttpStatus.BAD_REQUEST, "이미 팀원으로 추가되었습니다."),
     MEMBER_LIMIT_EXCEEDED(HttpStatus.BAD_REQUEST, "최대 팀원 인원수를 초과하였습니다."),
 
-    NOT_FOUND_CLUB(HttpStatus.BAD_REQUEST, "존재하지 않는 클럽입니다.");
+    NOT_FOUND_CLUB(HttpStatus.BAD_REQUEST, "존재하지 않는 클럽입니다."),
+
+    NOT_FOUND_FIREBASE_TOKEN(HttpStatus.NOT_FOUND, "Firebase 토큰이 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String detail;

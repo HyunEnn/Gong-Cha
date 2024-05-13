@@ -27,6 +27,16 @@ services:
       PROD_REDIS_PORT: ${PROD_REDIS_PORT}
     networks:
       - gongcha-network
+
+  react-app:
+    container_name: frontend
+    image: gongcha-front
+    restart: unless-stopped
+    ports:
+      - 5173:5173
+    networks:
+      - gongcha-network
+
       
 networks:
   gongcha-network:
