@@ -143,8 +143,15 @@ public class MatchingService {
             throw new CustomException(ErrorCode.BOARD_REQUEST_DUPLICATE);
         }
         else {
+            // 매칭 승인 됨
             matchingAsk.updatePermit(true);
             matchingAskRepository.save(matchingAsk);
+            // 매칭 게시판 상태 "매칭완료"로 변경
+            Long matchingId = matchingAsk.getMatching().getId();
+            Matching matching = matchingRepository.findById(matchingId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MATCHING));
+            matching.updateStatus(Status.valueOf("매칭완료"));
+            matchingRepository.save(matching);
         }
     }
 
