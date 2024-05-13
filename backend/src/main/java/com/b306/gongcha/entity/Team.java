@@ -44,7 +44,7 @@ public class Team extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty; // 경기 수준
 
-    @Schema(description = "매칭 성격", defaultValue = "모집중", allowableValues = { "모집중", "모집완료", "매칭중", "매칭완료"} )
+    @Schema(description = "매칭 성격", defaultValue = "모집중", allowableValues = { "모집중", "모집완료", "매칭중", "매칭완료", "경기종료"} )
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Status status = Status.valueOf("모집중"); // 팀 상태 - 모집중, 모집완료, 매칭중, 매칭완료
