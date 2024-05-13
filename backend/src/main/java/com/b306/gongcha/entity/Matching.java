@@ -1,11 +1,13 @@
 package com.b306.gongcha.entity;
 
 import com.b306.gongcha.dto.request.MatchingRequest;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -19,7 +21,8 @@ public class Matching extends BaseEntity {
     @Column(name = "matching_id")
     private Long id;
 
-    @Schema(description = "경기 날찌 시간", example = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+    @Schema(description = "경기 날찌 시간", example = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime date; // 경기 시간
 
     @Schema(description = "광역시, 도", example = "대전")
@@ -52,7 +55,7 @@ public class Matching extends BaseEntity {
 
     public void updateMatching(MatchingRequest matchingRequest) {
 
-        this.date = matchingRequest.getDate();
+        this.date = LocalDateTime.parse(matchingRequest.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.region = matchingRequest.getRegion();
         this.district = matchingRequest.getDistrict();
         this.info = matchingRequest.getInfo();
@@ -62,7 +65,7 @@ public class Matching extends BaseEntity {
     public static Matching fromRequest(MatchingRequest matchingRequest) {
 
         return Matching.builder()
-                .date(matchingRequest.getDate())
+                .date(LocalDateTime.parse(matchingRequest.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                 .region(matchingRequest.getRegion())
                 .district(matchingRequest.getDistrict())
                 .info(matchingRequest.getInfo())

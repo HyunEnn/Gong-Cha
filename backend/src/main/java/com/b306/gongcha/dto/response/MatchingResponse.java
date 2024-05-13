@@ -7,13 +7,16 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 @Getter
 @Builder
 public class MatchingResponse {
 
     private Long id;
-    private LocalDateTime date; // 경기 시간
+    private String date; // 경기 시간
     private String region; // 광역시, 도
     private String district; // 일반시, 군, 구
     private String info; // 모집 한마디
@@ -25,7 +28,7 @@ public class MatchingResponse {
 
         return MatchingResponse.builder()
                 .id(matching.getId())
-                .date(matching.getDate())
+                .date(matching.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd E요일 HH:mm")))
                 .region(matching.getRegion())
                 .district(matching.getDistrict())
                 .info(matching.getInfo())

@@ -6,14 +6,16 @@ import com.b306.gongcha.entity.Status;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.text.DateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
 @Builder
 public class MatchingRequest {
 
-    private LocalDateTime date;
+    private String date; // 예약 시간
     private String region; // 광역시, 도
     private String district; // 일반시, 군, 구
     private String info; // 희망 매치 시간 시작
