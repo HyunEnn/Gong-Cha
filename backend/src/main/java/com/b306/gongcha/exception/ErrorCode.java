@@ -37,7 +37,8 @@ public enum ErrorCode {
 
     NOT_FOUND_CLUB(HttpStatus.BAD_REQUEST, "존재하지 않는 클럽입니다."),
 
-    NOT_FOUND_APPLY(HttpStatus.BAD_REQUEST, "클럽 신청이 존재하지 않습니다.");
+    NOT_FOUND_APPLY(HttpStatus.BAD_REQUEST, "클럽 신청이 존재하지 않습니다."),
+    AlREADY_CLUB_APPLY(HttpStatus.BAD_REQUEST, "클럽 신청이 이미 존재합니다.");
 
     private final HttpStatus httpStatus;
     private final String detail;

@@ -40,19 +40,24 @@ public class ClubApplyService {
         User applyUser = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID));
 
-        // 신청 유저가 클럽에 들어가 있는 상태인지 유효성 검사
-        if (applyUser.getClub().getId() != null) {
-            throw new CustomException(ErrorCode.ALREADY_EXIST_USER_IN_CLUB);
+        // 이미 클럽 신청한 기록이 있으면 더 이상 신청이 불가능 해야함
+        if(clubApplyRepository.findByUserId(userId).isPresent()) {
+            throw new CustomException(ErrorCode.AlREADY_CLUB_APPLY);
         }
 
-        Club club = clubRepository.findById(clubId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
+        // 신청 유저가 클럽에 들어가 있는 상태인지 유효성 검사
+        if (applyUser.getClub() != null) {
+            throw new CustomException(ErrorCode.ALREADY_EXIST_USER_IN_CLUB);
+        } else {
+            Club club = clubRepository.findById(clubId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
 
-        // dto 정보를 entity 에 conversion
-        ClubApply clubApply = request.fromRequestWithUserAndClub(applyUser, club);
+            // dto 정보를 entity 에 conversion
+            ClubApply clubApply = request.fromRequestWithUserAndClub(applyUser, club);
 
-        // db 에 저장
-        clubApplyRepository.save(clubApply);
+            // db 에 저장
+            clubApplyRepository.save(clubApply);
+        }
     }
 
     public List<ClubApplyResponse> getAllClubApplies(Long clubId) {
@@ -99,6 +104,9 @@ public class ClubApplyService {
 
             // 신청한 유저의 클럽을 설정
             clubApply.getUser().changeClub(club);
+
+            // 유저의 롤을 회원으로 지정
+            clubApply.getUser().changeRole(ClubRole.USER);
 
             // 클럽 신청 리스트를 제거
             clubApplyRepository.deleteById(applyId);

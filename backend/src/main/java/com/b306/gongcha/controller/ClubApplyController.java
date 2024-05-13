@@ -65,7 +65,8 @@ public class ClubApplyController {
             description = "클럽 신청이 완료되었습니다."
     )
     @PostMapping("/{clubId}/{applyId}/permit")
-    public ResponseEntity<CommonResponse> permitApply(Long clubId, Long applyId) {
+    public ResponseEntity<CommonResponse> permitApply(@PathVariable Long clubId,
+                                                      @PathVariable Long applyId) {
 
         clubApplyService.permitApply(clubId, applyId);
 
@@ -83,7 +84,8 @@ public class ClubApplyController {
             description = "클럽 신청이 거부가 완료되었습니다."
     )
     @PostMapping("/{clubId}/{applyId}/deny")
-    public ResponseEntity<CommonResponse> deniedApply(Long clubId, Long applyId) {
+    public ResponseEntity<CommonResponse> deniedApply(@PathVariable Long clubId,
+                                                      @PathVariable Long applyId) {
 
         clubApplyService.deniedApply(clubId, applyId);
 
