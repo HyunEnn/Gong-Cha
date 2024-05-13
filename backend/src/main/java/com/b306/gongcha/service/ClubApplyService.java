@@ -69,7 +69,9 @@ public class ClubApplyService {
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
 
         // 현재 접속한 유저가 마스터인지 확인
-        if(clubMaster.getClub().getId().equals(clubId) && clubMaster.getClubRole() == ClubRole.MASTER) {
+        if(clubMaster.getClub() != null &&
+                clubMaster.getClub().getId().equals(clubId) &&
+                clubMaster.getClubRole() == ClubRole.MASTER) {
             List<ClubApply> clubApplies = clubApplyRepository.findAll();
 
             return clubApplies.stream()

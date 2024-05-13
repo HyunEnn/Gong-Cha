@@ -12,6 +12,7 @@ import lombok.Getter;
 public class ClubApplyResponse {
 
     private Long userId;
+    private Long clubId;
     private String userName;
     private String content;
 
@@ -19,6 +20,7 @@ public class ClubApplyResponse {
 
         return ClubApplyResponse.builder()
                 .userId(clubApply.getUser().getId())
+                .clubId(clubApply.getId())
                 .userName(clubApply.getUser().getName())
                 .content(clubApply.getApplyContent())
                 .build();
