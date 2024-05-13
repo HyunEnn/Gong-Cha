@@ -7,6 +7,7 @@ import com.b306.gongcha.dto.response.MatchingResponse;
 import com.b306.gongcha.entity.*;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
+import com.b306.gongcha.global.GetCurrentUserId;
 import com.b306.gongcha.repository.MatchingAskRepository;
 import com.b306.gongcha.repository.MatchingRepository;
 import com.b306.gongcha.repository.TeamRepository;
@@ -42,8 +43,12 @@ public class MatchingService {
     @Transactional
     public void createMatching(MatchingRequest matchingRequest) {
 
-        Matching matching = Matching.fromRequest(matchingRequest);
-        matchingRepository.save(matching);
+        Long userId = GetCurrentUserId.currentUserId();
+        if(isManager(userId)) {
+            Matching matching = Matching.fromRequest(matchingRequest);
+            matchingRepository.save(matching);
+        }
+
     }
 
     // 매칭 게시판 전체 조회
