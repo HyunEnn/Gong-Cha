@@ -35,13 +35,20 @@ public enum ErrorCode {
     BOARD_REQUEST_FAIL(HttpStatus.BAD_REQUEST, "신청에 실패하였습니다."),
     BOARD_REQUEST_DUPLICATE(HttpStatus.BAD_REQUEST, "이미 신청이 완료되었습니다."),
 
+
+    NOT_FOUND_CLUB(HttpStatus.BAD_REQUEST, "존재하지 않는 클럽입니다."),
+    NOT_FOUND_APPLY(HttpStatus.BAD_REQUEST, "클럽 신청이 존재하지 않습니다."),
+    AlREADY_CLUB_APPLY(HttpStatus.BAD_REQUEST, "클럽 신청이 이미 존재합니다."),
+
     NOT_FOUND_TEAM(HttpStatus.NOT_FOUND, "팀 정보를 찾을 수 없습니다."),
     MEMBER_ALREADY_ACCEPTED(HttpStatus.BAD_REQUEST, "이미 팀원으로 추가되었습니다."),
     MEMBER_LIMIT_EXCEEDED(HttpStatus.BAD_REQUEST, "최대 팀원 인원수를 초과하였습니다."),
 
-    NOT_FOUND_CLUB(HttpStatus.BAD_REQUEST, "존재하지 않는 클럽입니다."),
+    NOT_FOUND_FIREBASE_TOKEN(HttpStatus.NOT_FOUND, "Firebase 토큰이 존재하지 않습니다."),
 
-    NOT_FOUND_FIREBASE_TOKEN(HttpStatus.NOT_FOUND, "Firebase 토큰이 존재하지 않습니다.");
+    NO_AUTHORITY_USER(HttpStatus.BAD_REQUEST, "팀장만 사용할 수 있습니다."),
+    BAD_REQUEST_APPLY(HttpStatus.BAD_REQUEST, "본인의 게시글에 신청할 수 없습니다.");
+
 
     private final HttpStatus httpStatus;
     private final String detail;
