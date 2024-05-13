@@ -16,9 +16,11 @@ import com.b306.gongcha.repository.UserTeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -170,7 +172,7 @@ public class MatchingService {
             // 상대팀도 동일하게 매칭완료로 변경
             Team versusTeam = teamRepository.findById(versusTeamId)
                     .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
-            team.updateStatus(Status.valueOf("매칭완료"));
+            versusTeam.updateStatus(Status.valueOf("매칭완료"));
             teamRepository.save(versusTeam);
         }
     }
@@ -214,6 +216,45 @@ public class MatchingService {
         }
         else {
             throw new CustomException(ErrorCode.NOT_FOUND_TEAM);
+        }
+    }
+
+    // 매칭 상태 매칭종료 상태로 변경
+    public void endMatching(Long matchingId) {
+
+        // 매칭 게시판 상태 "매칭완료"로 변경
+        Matching matching = matchingRepository.findById(matchingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MATCHING));
+        matching.updateStatus(Status.valueOf("경기종료"));
+        matchingRepository.save(matching);
+
+        // 팀 게시판의 상태 매칭완료로 변경하기
+        MatchingAsk matchingAsk = matchingAskRepository.findByMatchingTeamIdAndPermitIsTrue(matchingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MATCHING));
+        Long matchingTeamId = matchingAsk.getMatching().getMatchingTeamId();
+        Team team = teamRepository.findById(matchingTeamId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+        team.updateStatus(Status.valueOf("경기종료"));
+        teamRepository.save(team);
+
+        // 상대팀도 동일하게 매칭완료로 변경
+        Long versusTeamId = matchingAsk.getVersusTeamId();
+        Team versusTeam = teamRepository.findById(versusTeamId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+        versusTeam.updateStatus(Status.valueOf("경기종료"));
+        teamRepository.save(versusTeam);
+    }
+
+    // (매칭 시간 + 2시간)이 현재 시간보다 빠르면 매칭 종료 - @Scheduled로 1시간마다 실행
+    @Scheduled(cron = "0 0 0/1 * * *")
+    public void checkMatchingStatus() {
+
+        List<Matching> matchingList = matchingRepository.findAll();
+        for(Matching m : matchingList) {
+            if(m.getStatus() == Status.valueOf("매칭완료")
+                    && m.getDate().plusHours(2).isBefore(LocalDateTime.now())) {
+                endMatching(m.getId());
+            }
         }
     }
 

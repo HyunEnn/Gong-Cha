@@ -13,4 +13,7 @@ public interface MatchingAskRepository extends JpaRepository<MatchingAsk, Long> 
     Optional<MatchingAsk> findByMatchingTeamIdAndVersusTeamId(Long matchingTeamId, Long versusTeamId);
     @Query("select ma from MatchingAsk ma where ma.matching.matchingTeamId = :matchingTeamId and ma.permit = false")
     List<MatchingAsk> findByMatchingTeamIdAndPermitIsFalse(Long matchingTeamId);
+    @Query("select ma from MatchingAsk ma where ma.matching.matchingTeamId = :matchingTeamId and ma.permit = true")
+    Optional<MatchingAsk> findByMatchingTeamIdAndPermitIsTrue(Long matchingTeamId);
+
 }

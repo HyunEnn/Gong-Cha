@@ -229,4 +229,21 @@ public class MatchingController {
                 .build(), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "팀 매칭 상태 종료",
+            description = "경기 시간이 2시간 경과 시 팀 매칭 상태 종료함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "팀 매칭 상태 종료 성공"
+    )
+    @PatchMapping("/{matchingId}/close")
+    public ResponseEntity<CommonResponse> closeMatching(@PathVariable Long matchingId) {
+
+        matchingService.endMatching(matchingId);
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("팀 매칭 상태 종료로 변경")
+                .build(), HttpStatus.OK);
+    }
+
 }
