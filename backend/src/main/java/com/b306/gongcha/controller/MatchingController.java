@@ -3,6 +3,7 @@ package com.b306.gongcha.controller;
 import com.b306.gongcha.dto.request.MatchingRequest;
 import com.b306.gongcha.dto.response.CommonResponse;
 import com.b306.gongcha.service.MatchingService;
+import com.b306.gongcha.service.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class MatchingController {
 
     private final MatchingService matchingService;
+    private final TeamService teamService;
 
     @Operation(
             summary = "매치 생성",
@@ -190,6 +192,40 @@ public class MatchingController {
         matchingService.rejectMatching(matchingTeamId, versusTeamId);
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("매칭 신청 거절 완료")
+                .build(), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "상대팀 팀원 정보 목록 조회",
+            description = "상대팀 팀원 정보 목록을 조회함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "상대팀 팀원 정보 목록을 조회 성공"
+    )
+    @GetMapping("/{matchingId}/versus/teammates")
+    public ResponseEntity<CommonResponse> getMyTeammates(@PathVariable Long matchingId) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("상대팀 팀원 정보 목록을 조회")
+                .data(matchingService.getVersusTeamUsers(matchingId))
+                .build(), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "상대팀 팀원 카드 목록 조회",
+            description = "상대팀 팀원 카드 목록을 조회함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "상대팀 팀원 카드 목록을 조회 성공"
+    )
+    @GetMapping("/{matchingId}/versus/teammates/cards")
+    public ResponseEntity<CommonResponse> getVersusTeammates(@PathVariable Long matchingId) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("상대팀 팀원 카드 목록을 조회")
+                .data(matchingService.getVersusTeamCards(matchingId))
                 .build(), HttpStatus.OK);
     }
 

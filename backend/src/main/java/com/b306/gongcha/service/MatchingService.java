@@ -2,6 +2,7 @@ package com.b306.gongcha.service;
 
 import com.b306.gongcha.dto.request.MatchingAskRequest;
 import com.b306.gongcha.dto.request.MatchingRequest;
+import com.b306.gongcha.dto.response.CardResponse;
 import com.b306.gongcha.dto.response.MatchingAskResponse;
 import com.b306.gongcha.dto.response.MatchingResponse;
 import com.b306.gongcha.entity.*;
@@ -162,6 +163,39 @@ public class MatchingService {
         MatchingAsk matchingAsk = matchingAskRepository.findByMatchingTeamIdAndVersusTeamId(matchingTeamId, versusTeamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REQUEST));
         matchingAskRepository.delete(matchingAsk);
+    }
+
+    // 상대팀 팀원 정보 목록 조회
+    @Transactional(readOnly = true)
+    public List<User> getVersusTeamUsers(Long matchingId) {
+
+        Long versusTeamId = matchingAskRepository.findById(matchingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM)).getVersusTeamId();
+        if(teamRepository.findById(versusTeamId).isPresent()) {
+            return userTeamRepository.findUsersByTeamId(versusTeamId);
+        }
+        else {
+            throw new CustomException(ErrorCode.NOT_FOUND_TEAM);
+        }
+    }
+
+    // 상대팀 팀원 카드 목록 조회
+    @Transactional(readOnly = true)
+    public List<CardResponse> getVersusTeamCards(Long matchingId) {
+
+        Long versusTeamId = matchingAskRepository.findById(matchingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM)).getVersusTeamId();
+        if(teamRepository.findById(versusTeamId).isPresent()) {
+            List<CardResponse> cardResponseList = new ArrayList<>();
+            List<Card> cardList = userTeamRepository.findCardsByTeamId(versusTeamId);
+            for(Card card : cardList) {
+                cardResponseList.add(CardResponse.fromEntity(card));
+            }
+            return cardResponseList;
+        }
+        else {
+            throw new CustomException(ErrorCode.NOT_FOUND_TEAM);
+        }
     }
 
 }
