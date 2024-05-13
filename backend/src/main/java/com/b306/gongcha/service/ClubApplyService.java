@@ -14,8 +14,6 @@ import com.b306.gongcha.repository.ClubRepository;
 import com.b306.gongcha.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,11 +65,11 @@ public class ClubApplyService {
         User clubMaster = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID));
 
-        Club club = clubRepository.findById(clubId)
+        clubRepository.findById(clubId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
 
         // 현재 접속한 유저가 마스터인지 확인
-        if(clubMaster.getClub().getId() == clubId && clubMaster.getClubRole() == ClubRole.MASTER) {
+        if(clubMaster.getClub().getId().equals(clubId) && clubMaster.getClubRole() == ClubRole.MASTER) {
             List<ClubApply> clubApplies = clubApplyRepository.findAll();
 
             return clubApplies.stream()
@@ -122,11 +120,11 @@ public class ClubApplyService {
         User masterUser = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 
-        Club club = clubRepository.findById(clubId)
+        clubRepository.findById(clubId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
 
         // 신청 내역 체크
-        ClubApply clubApply = clubApplyRepository.findById(applyId)
+        clubApplyRepository.findById(applyId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_APPLY));
 
         // 마스터 유저 확인하고, 요청 거절
