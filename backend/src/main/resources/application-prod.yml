@@ -8,6 +8,11 @@ spring:
     url: jdbc:mysql://${PROD_MYSQL_URI}:3306/gongcha?serverTimezone=Asia/Seoul
     username: ${PROD_MYSQL_USERNAME}
     password: ${PROD_MYSQL_PASSWORD}
+  
+  jwt:
+    redis:
+      host: ${PROD_REDIS_HOST}
+      port: ${PROD_REDIS_PORT}
 
 logging:
   level:
