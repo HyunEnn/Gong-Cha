@@ -13,6 +13,7 @@ public class ClubApply extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "club_apply_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,6 +26,5 @@ public class ClubApply extends BaseEntity{
 
     @Column(columnDefinition = "text", name = "apply_content")
     private String applyContent;
-
 
 }
