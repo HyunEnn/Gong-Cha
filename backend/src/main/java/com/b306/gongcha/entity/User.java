@@ -41,7 +41,6 @@ public class User extends BaseEntity {
     }
 
     public void updateProfile(String profile) {
-        System.out.println("프로필 업데이트 편의 메서드");
         this.profile = profile;
     }
 
