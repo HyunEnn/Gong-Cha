@@ -1,8 +1,12 @@
 package com.b306.gongcha.repository;
 
+import com.b306.gongcha.dto.response.CardResponse;
+import com.b306.gongcha.entity.Card;
 import com.b306.gongcha.entity.Role;
+import com.b306.gongcha.entity.User;
 import com.b306.gongcha.entity.UserTeam;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,4 +23,10 @@ public interface UserTeamRepository extends JpaRepository<UserTeam, Long> {
     List<UserTeam> findAllByTeamIdAndPermitIsFalse(Long teamId);
     // 유저 id와 역할로 팀장 여부 확인
     UserTeam findByUserIdAndRole(Long userId, Role role);
+    // 팀 id로 유저 정보 목록 불러오기
+    @Query("select u from User u left outer join UserTeam ut on u.id = ut.user.id where ut.team.id = :teamId")
+    List<User> findUsersByTeamId(Long teamId);
+    // 팀 id로 유저 카드 목록을 불러오기
+    @Query("select c from Card c left outer join UserTeam ut on c.user.id = ut.user.id where ut.team.id = :teamId")
+    List<Card> findCardsByTeamId(Long teamId);
 }

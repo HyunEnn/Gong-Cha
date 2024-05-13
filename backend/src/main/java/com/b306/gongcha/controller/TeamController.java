@@ -30,7 +30,7 @@ public class TeamController {
             responseCode = "200",
             description = "팀 목록 전체 조회 완료"
     )
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<CommonResponse> getAllTeams(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
 
@@ -84,7 +84,7 @@ public class TeamController {
             responseCode = "200",
             description = "팀 생성 완료"
     )
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<CommonResponse> createTeam(@RequestBody TeamRequest teamRequest) {
 
         return new ResponseEntity<>(CommonResponse.builder()
@@ -209,6 +209,40 @@ public class TeamController {
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("팀장이 선수 모집 종료")
                 .data(teamService.endTeamRecruit(teamId))
+                .build(), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "팀원 정보 목록 조회",
+            description = "팀에서 팀원 정보 목록을 조회함"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "팀에서 팀원 정보 목록을 조회 성공"
+    )
+    @GetMapping("/{teamId}/teammates")
+    public ResponseEntity<CommonResponse> getTeammates(@PathVariable Long teamId) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("팀에서 팀원 정보 목록을 조회")
+                .data(teamService.getUsersByTeam(teamId))
+                .build(), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "팀원 카드 목록 조회",
+            description = "팀에서 팀원 카드 목록을 조회함"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "팀에서 팀원 카드 목록을 조회 성공"
+    )
+    @GetMapping("/{teamId}/teammates/cards")
+    public ResponseEntity<CommonResponse> getTeammateCards(@PathVariable Long teamId) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("팀에서 팀원 카드 목록을 조회")
+                .data(teamService.getCardsByTeam(teamId))
                 .build(), HttpStatus.OK);
     }
 

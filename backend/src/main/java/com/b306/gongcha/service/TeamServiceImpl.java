@@ -1,6 +1,8 @@
 package com.b306.gongcha.service;
 
+import com.b306.gongcha.dto.UserDTO;
 import com.b306.gongcha.dto.request.TeamRequest;
+import com.b306.gongcha.dto.response.CardResponse;
 import com.b306.gongcha.dto.response.TeamResponse;
 import com.b306.gongcha.dto.response.UserTeamResponse;
 import com.b306.gongcha.entity.*;
@@ -204,4 +206,36 @@ public class TeamServiceImpl implements TeamService{
         team.updateStatus(Status.valueOf("모집완료"));
         return team.toTeamResponse();
     }
+
+    // 선수 정보 불러오기
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> getUsersByTeam(Long teamId) {
+
+        if(teamRepository.findById(teamId).isPresent()) {
+            return userTeamRepository.findUsersByTeamId(teamId);
+        }
+        else {
+            throw new CustomException(ErrorCode.NOT_FOUND_TEAM);
+        }
+    }
+
+    // 선수 카드 정보 불러오기
+    @Override
+    @Transactional(readOnly = true)
+    public List<CardResponse> getCardsByTeam(Long teamId) {
+
+        if(teamRepository.findById(teamId).isPresent()) {
+            List<CardResponse> cardResponseList = new ArrayList<>();
+            List<Card> cardList = userTeamRepository.findCardsByTeamId(teamId);
+            for(Card card : cardList) {
+                cardResponseList.add(CardResponse.fromEntity(card));
+            }
+            return cardResponseList;
+        }
+        else {
+            throw new CustomException(ErrorCode.NOT_FOUND_TEAM);
+        }
+    }
+
 }
