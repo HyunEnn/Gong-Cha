@@ -19,7 +19,7 @@ public class FcmConfig {
     FirebaseMessaging firebaseMessaging() throws IOException {
 
         // Firebase Admin SDK의 서비스 계정 키 파일 위치를 지정
-        ClassPathResource resource = new ClassPathResource("firebase-adminsdk.json");
+        ClassPathResource resource = new ClassPathResource("gongcha-ae3ce-firebase-adminsdk-mvgtl-e4d60372a3.json");
 
         InputStream refreshToken = resource.getInputStream();
 

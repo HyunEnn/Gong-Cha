@@ -4,6 +4,9 @@ import com.b306.gongcha.entity.num.ClubRole;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
@@ -23,6 +26,9 @@ public class User extends BaseEntity {
     private String provider;
     private String profile;
     private String firebaseToken;
+
+    @OneToMany(mappedBy = "toUser")
+    private List<Notice> noticeList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")

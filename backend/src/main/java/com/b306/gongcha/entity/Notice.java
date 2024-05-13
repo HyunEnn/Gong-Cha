@@ -2,16 +2,18 @@ package com.b306.gongcha.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
+@Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class NoticeBox extends BaseEntity{
+@AllArgsConstructor
+public class Notice extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "notice_box_id")
+    @Column(name = "notice_id")
     private Long id;
 
     @Schema(description = "알림 보내는 유저")

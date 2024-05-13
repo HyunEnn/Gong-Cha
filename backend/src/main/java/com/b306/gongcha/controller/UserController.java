@@ -95,5 +95,21 @@ public class UserController {
                 .data(userService.updateProfile(file))
                 .build(), HttpStatus.OK);
     }
+
+    @Operation(
+            summary = "알림 메세지 조회",
+            description = "유저가 받은 알림을 조회함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "알림 조회에 성공했습니다."
+    )
+    @PostMapping("/notice")
+    public ResponseEntity<CommonResponse> notice(){
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("알림 조회 성공")
+                .data(userService.getNotices())
+                .build(), HttpStatus.OK);
+    }
 }
 

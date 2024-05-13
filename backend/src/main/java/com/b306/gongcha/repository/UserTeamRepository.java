@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface UserTeamRepository extends JpaRepository<UserTeam, Long> {
 
     Optional<UserTeam> findByTeamIdAndUserId(Long teamId, Long userId);
+
     // 승인 여부와 상관없이 신청한 모든 유저 정보 반환
     List<UserTeam> findAllByTeamId(Long teamId);
     List<UserTeam> findByUserId(Long userId);
@@ -18,4 +19,6 @@ public interface UserTeamRepository extends JpaRepository<UserTeam, Long> {
     // 승인 대기 목록 선수들만 보여주기
     List<UserTeam> findAllByTeamIdAndPermitIsFalse(Long teamId);
     UserTeam findByUserIdAndRole(Long userId, Role role);
+
+    UserTeam findByTeamIdAndRole(Long teamId, Role role);
 }

@@ -6,6 +6,7 @@ import com.b306.gongcha.dto.response.UserTeamResponse;
 import com.b306.gongcha.entity.*;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
+import com.b306.gongcha.repository.NoticeRepository;
 import com.b306.gongcha.repository.TeamRepository;
 import com.b306.gongcha.repository.UserRepository;
 import com.b306.gongcha.repository.UserTeamRepository;
@@ -27,6 +28,7 @@ public class TeamServiceImpl implements TeamService{
     private final TeamRepository teamRepository;
     private final UserTeamRepository userTeamRepository;
     private final UserRepository userRepository;
+    private final NoticeRepository noticeRepository;
 
     // 팀 목록 게시글 전체 조회
     @Override
@@ -140,6 +142,18 @@ public class TeamServiceImpl implements TeamService{
                 .role(Role.valueOf("팀원"))
                 .build();
         UserTeam seavedUserTeam = userTeamRepository.save(userTeam);
+
+        userTeam = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"));
+        User captain = userTeam.getUser();
+        Notice notice = Notice.builder()
+                .toUser(user)
+                .fromUser(captain)
+                .content("알림 테스트")
+                .noticeType(NoticeType.invite)
+                .readPermit(false)
+                .responsePermit(false)
+                .build();
+        noticeRepository.save(notice);
         return seavedUserTeam.toUserTeamResponse();
     }
 
