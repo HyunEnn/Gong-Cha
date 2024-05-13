@@ -178,7 +178,7 @@ public class TeamServiceImpl implements TeamService{
         if(userTeam.getPermit()) {
             throw new CustomException(ErrorCode.MEMBER_ALREADY_ACCEPTED);
         }
-        userTeam.acceptUser();
+        userTeam.changePermit(true);
         // 인원 수 추가 후 7명이 되었으면 모집 상태를 "모집 완료"로 변경
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
         if(teamMembers == 6) {

@@ -1,12 +1,8 @@
 package com.b306.gongcha.entity;
 
-import com.b306.gongcha.dto.response.RecruitResponse;
 import com.b306.gongcha.dto.response.UserRecruitResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
