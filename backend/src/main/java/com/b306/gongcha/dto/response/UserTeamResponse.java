@@ -17,6 +17,12 @@ public class UserTeamResponse extends BaseEntity {
     private Long userId;
     private String userName;
     private Boolean permit;
+    private int games;
+
+    public void updateGames(int games) {
+
+        this.games = games;
+    }
 
     public static List<UserTeamResponse> fromEntity(Team team) {
 

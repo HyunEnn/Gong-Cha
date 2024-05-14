@@ -8,6 +8,7 @@ import com.b306.gongcha.dto.response.UserTeamResponse;
 import com.b306.gongcha.entity.*;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
+import com.b306.gongcha.repository.MatchingAskRepository;
 import com.b306.gongcha.repository.TeamRepository;
 import com.b306.gongcha.repository.UserRepository;
 import com.b306.gongcha.repository.UserTeamRepository;
@@ -29,6 +30,7 @@ public class TeamServiceImpl implements TeamService{
     private final TeamRepository teamRepository;
     private final UserTeamRepository userTeamRepository;
     private final UserRepository userRepository;
+    private final MatchingAskRepository matchingAskRepository;
 
     // 팀 목록 게시글 전체 조회
     @Override
@@ -56,6 +58,9 @@ public class TeamServiceImpl implements TeamService{
         List<UserTeamResponse> userTeamResponseList = new ArrayList<>();
         List<UserTeam> userTeamList = userTeamRepository.findAllByTeamIdAndPermitIsTrue(teamId);
         userTeamList.forEach(u -> userTeamResponseList.add(u.toUserTeamResponse()));
+        userTeamResponseList.forEach(u -> u.updateGames(
+                matchingAskRepository.countAllByTeamIdAndStatus(u.getUserId())
+                        + matchingAskRepository.countAllByVersusTeamIdAndStatus(u.getUserId())));
         return userTeamResponseList;
     }
 
