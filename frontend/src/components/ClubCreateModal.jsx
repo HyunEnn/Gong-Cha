@@ -85,6 +85,7 @@ function ClubCreateModal({ isOpen, onClose }) {
         // 여기에 axios 클럽 생성 요청 보내기
         clubCreateRequest.skillLevel = clublevel;
         console.log(clubCreateRequest);
+        onClose();
     };
 
     const handleRegionChange = (e) => {
