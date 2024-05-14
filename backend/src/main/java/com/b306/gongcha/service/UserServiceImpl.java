@@ -38,8 +38,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<NoticeBoxResponse> getNotices() {
-        Long userId = GetCurrentUserId.currentUserId();
 
+        Long userId = GetCurrentUserId.currentUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         return NoticeBoxResponse.fromEntity(user);

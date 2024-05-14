@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByUserInfo(String userInfo);
-
+    User findByClubIdAndClubRole(Long id, ClubRole role);
 
 }

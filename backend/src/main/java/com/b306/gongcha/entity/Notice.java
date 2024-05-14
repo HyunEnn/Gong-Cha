@@ -38,4 +38,28 @@ public class Notice extends BaseEntity{
     @Enumerated(EnumType.STRING)
     @Schema(description = "알림 타입", allowableValues = { "invite", "join", "matching"} )
     private NoticeType noticeType;
+
+    public static Notice createClubNotice(User applyUser, User user){
+
+        return Notice.builder()
+                .toUser(applyUser)
+                .fromUser(user)
+                .content(applyUser.getName() + "님으로 부터 클럽 가입 요청이 도착했습니다.")
+                .noticeType(NoticeType.invite)
+                .readPermit(false)
+                .responsePermit(false)
+                .build();
+    }
+
+    public static Notice createTeamNotice(User captain, User user){
+
+        return Notice.builder()
+                .toUser(user)
+                .fromUser(captain)
+                .content(user.getName() + "님으로 부터 팀 가입 요청이 도착했습니다.")
+                .noticeType(NoticeType.invite)
+                .readPermit(false)
+                .responsePermit(false)
+                .build();
+    }
 }

@@ -20,10 +20,12 @@ public class NoticeBoxResponse {
     private Boolean readPermit;
     private Boolean responsePermit;
     public static List<NoticeBoxResponse> fromEntity(User user) {
+
         return user.getNoticeList().stream()
                 .map(notice -> NoticeBoxResponse.builder()
                         .content(notice.getContent())
                         .fromUser(notice.getFromUser().getName())
+                        .toUser(notice.getToUser().getName())
                         .noticeType(notice.getNoticeType())
                         .readPermit(notice.getReadPermit())
                         .responsePermit(notice.getResponsePermit())

@@ -106,6 +106,7 @@ public class UserController {
     )
     @PostMapping("/notice")
     public ResponseEntity<CommonResponse> notice(){
+
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("알림 조회 성공")
                 .data(userService.getNotices())

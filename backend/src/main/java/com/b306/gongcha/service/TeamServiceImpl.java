@@ -145,14 +145,7 @@ public class TeamServiceImpl implements TeamService{
 
         userTeam = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"));
         User captain = userTeam.getUser();
-        Notice notice = Notice.builder()
-                .toUser(user)
-                .fromUser(captain)
-                .content("알림 테스트")
-                .noticeType(NoticeType.invite)
-                .readPermit(false)
-                .responsePermit(false)
-                .build();
+        Notice notice = Notice.createTeamNotice(captain, user);
         noticeRepository.save(notice);
         return seavedUserTeam.toUserTeamResponse();
     }
