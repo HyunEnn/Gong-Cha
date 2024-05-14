@@ -1,5 +1,6 @@
 package com.b306.gongcha.entity;
 
+import com.b306.gongcha.dto.request.UserTeamRequest;
 import com.b306.gongcha.dto.response.UserTeamResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -34,10 +35,36 @@ public class UserTeam extends BaseEntity {
     @JoinColumn(name = "team_id")
     private Team team;
 
-    public void acceptUser() {
+    public void changeRole(Role role) {
 
-        this.permit = true;
+        this.role = role;
     }
+
+    public void changePermit(Boolean permit) {
+
+        this.permit = permit;
+    }
+
+    public void changeUser(User user) {
+
+        this.user = user;
+    }
+
+    public void changeTeam(Team team) {
+
+        this.team = team;
+    }
+
+    public static UserTeam fromRequest(UserTeamRequest userTeamRequest) {
+
+        return UserTeam.builder()
+                .role(userTeamRequest.getRole())
+                .user(userTeamRequest.getUser())
+                .team(userTeamRequest.getTeam())
+                .permit(userTeamRequest.getPermit())
+                .build();
+    }
+
 
     public UserTeamResponse toUserTeamResponse() {
 
@@ -48,5 +75,4 @@ public class UserTeam extends BaseEntity {
                 .permit(permit)
                 .build();
     }
-
 }

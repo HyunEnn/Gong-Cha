@@ -21,6 +21,7 @@ public class User extends BaseEntity {
     private String email;
     private String role;
     private String provider;
+    private String phone;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
@@ -48,6 +49,10 @@ public class User extends BaseEntity {
 
     public void deleteClub() {
         this.club = null;
+    }
+
+    public void changePhone(String phone) {
+        this.phone = phone;
     }
 
     public void quitClub() {
