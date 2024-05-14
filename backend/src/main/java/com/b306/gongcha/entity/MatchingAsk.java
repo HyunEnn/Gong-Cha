@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Schema(description = "매칭 신청 Entity")
 public class MatchingAsk extends BaseEntity {
 
     @Id

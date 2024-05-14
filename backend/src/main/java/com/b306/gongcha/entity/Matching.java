@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Schema(description = "매칭 Entity")
 public class Matching extends BaseEntity {
 
     @Id
@@ -38,7 +39,7 @@ public class Matching extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty; // 경기 수준
 
-    @Schema(description = "매칭 성격", defaultValue = "매칭중", allowableValues = {"매칭중", "매칭완료"} )
+    @Schema(description = "매칭 성격", defaultValue = "매칭중", allowableValues = {"매칭중", "매칭완료", "경기종료"} )
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Status status = Status.valueOf("매칭중"); // 팀 상태 - 매칭중, 매칭완료
