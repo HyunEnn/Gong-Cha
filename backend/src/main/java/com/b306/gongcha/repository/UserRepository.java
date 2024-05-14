@@ -1,7 +1,6 @@
 package com.b306.gongcha.repository;
 
 import com.b306.gongcha.entity.User;
-import com.b306.gongcha.entity.num.ClubRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

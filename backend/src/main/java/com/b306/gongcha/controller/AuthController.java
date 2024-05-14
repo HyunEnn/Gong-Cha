@@ -3,10 +3,8 @@ package com.b306.gongcha.controller;
 import com.b306.gongcha.dto.request.PhoneRequest;
 import com.b306.gongcha.dto.request.VerifyCodeRequest;
 import com.b306.gongcha.dto.response.CommonResponse;
-import com.b306.gongcha.service.CustomLogoutService;
 import com.b306.gongcha.service.Oauth2TokenService;
 import com.b306.gongcha.service.SMSVerificationService;
-import com.b306.gongcha.util.JWTUtil;
 import com.b306.gongcha.util.SmsUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final SmsUtil smsUtil;
     private final Oauth2TokenService oauth2TokenService;
     private final SMSVerificationService smsVerificationService;
 
