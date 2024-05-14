@@ -29,6 +29,26 @@ public class TransferServiceImpl implements TransferService{
     private final UserTeamRepository userTeamRepository;
     private final TeamRepository teamRepository;
 
+    // 매칭 게시판에서 팀장인지 확인
+    public Long getTeamId(Long userId) {
+
+        List<UserTeam> userTeamList = userTeamRepository.findAllByUserIdAndRole(userId, Role.valueOf("팀장"));
+        Long teamId = 0L;
+        for(UserTeam u : userTeamList) {
+            // 모집중 상태인 팀 1개만 찾기
+            if(u.getTeam().getStatus() == Status.valueOf("모집중")) {
+                teamId = u.getTeam().getId();
+                break;
+            }
+        }
+        if(teamId != 0L) {
+            return teamId;
+        }
+        else {
+            throw new CustomException(ErrorCode.NO_AUTHORITY_MANAGER);
+        }
+    }
+
     // 이적시장 선수 전체 조회
     @Override
     @Transactional(readOnly = true)
@@ -95,10 +115,7 @@ public class TransferServiceImpl implements TransferService{
     public UserTransferResponse requestTransfer(Long transferId, Long userId) {
 
         // 팀장 여부 확인 - 팀장만 요청을 할 수 있음
-        UserTeam captain = userTeamRepository.findByUserIdAndRole(userId, Role.valueOf("팀장"));
-        if(captain == null) {
-            throw new CustomException(ErrorCode.NO_AUTHORITY_USER);
-        }
+        Long captainId = getTeamId(userId);
 
         // 이적시장 정보, 신청자 정보 받아오기
         Transfer transfer = transferRepository.findById(transferId)
@@ -162,11 +179,8 @@ public class TransferServiceImpl implements TransferService{
         transfer.updateJoin(true);
 
         // 선수에게 요청한 사람이 팀장인가 확인
-        UserTeam captain = userTeamRepository.findByUserIdAndRole(userId, Role.valueOf("팀장"));
-        if(captain == null) {
-            throw new CustomException(ErrorCode.NO_AUTHORITY_USER);
-        }
-        Team team = teamRepository.findById(captain.getTeam().getId())
+        Long captainTeamId = getTeamId(userId);
+        Team team = teamRepository.findById(captainTeamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
         User user = transferRepository.findById(transferId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getUser();
