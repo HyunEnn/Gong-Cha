@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Lottie from 'react-lottie';
-import { CardForm, CardContent } from '@/components/CardForm';
 import { FullpageContainer, FullpageSection } from '@shinyongjun/react-fullpage';
 import '@shinyongjun/react-fullpage/css';
+
+import { MdOutlineKeyboardDoubleArrowDown } from 'react-icons/md';
+
 import logo from '@/assets/icons/logo.svg';
 import clubFC from '@/assets/icons/clubFC.svg';
 import matchingVS from '@/assets/icons/matchingVS.svg';
@@ -52,7 +54,12 @@ function MainTestPage() {
     };
     return (
         <div className="w-full">
-            <FullpageContainer className="w-full " activeIndex={activeIndex} setActiveIndex={setActiveIndex}>
+            <FullpageContainer
+                className="w-full "
+                activeIndex={activeIndex}
+                setActiveIndex={setActiveIndex}
+                transitionDuration={500}
+            >
                 <FullpageSection>
                     <div className="w-full text-white bg-grass-pattern">
                         <img src={logo} alt="서비스 로고" className="pt-4 pl-4" />
@@ -71,6 +78,9 @@ function MainTestPage() {
                                 <p className="mt-2 text-lg font-gmarketSansBold">이적시장</p>
                                 <img className="right-0 inline" src={rArrowIcon} alt="오른쪽 화살표" />
                             </div>
+                        </div>
+                        <div className="flex justify-center mt-16 animate-bounce">
+                            <MdOutlineKeyboardDoubleArrowDown size={50} />
                         </div>
                     </div>
                 </FullpageSection>
@@ -102,6 +112,9 @@ function MainTestPage() {
                             <p className="mt-2 text-lg font-gmarketSansBold">매칭해요</p>
                             <img className="right-0 inline" src={rArrowIcon} alt="오른쪽 화살표" />
                         </div>
+                        <div className="flex justify-center mt-16 animate-bounce">
+                            <MdOutlineKeyboardDoubleArrowDown size={50} />
+                        </div>
                     </div>
                 </FullpageSection>
                 <FullpageSection>
@@ -132,6 +145,9 @@ function MainTestPage() {
                             <p className="mt-2 text-lg font-gmarketSansBold">클럽</p>
                             <img className="right-0 inline" src={rArrowIcon} alt="오른쪽 화살표" />
                         </div>
+                        <div className="flex justify-center mt-16 animate-bounce">
+                            <MdOutlineKeyboardDoubleArrowDown size={50} />
+                        </div>
                     </div>
                 </FullpageSection>
                 <FullpageSection>
@@ -155,6 +171,9 @@ function MainTestPage() {
                             <p className="mt-2 text-lg font-gmarketSansBold">현재 진행중인 팀</p>
                             <img className="right-0 inline" src={rArrowIcon} alt="오른쪽 화살표" />
                         </div>
+                        <div className="flex justify-center mt-16 animate-bounce">
+                            <MdOutlineKeyboardDoubleArrowDown size={50} />
+                        </div>
                     </div>
                 </FullpageSection>
                 <FullpageSection>
@@ -172,6 +191,9 @@ function MainTestPage() {
                             </div>
                             <p className="mt-2 text-lg font-gmarketSansBold">경기 내역</p>
                             <img className="right-0 inline" src={rArrowIcon} alt="오른쪽 화살표" />
+                        </div>
+                        <div className="flex justify-center mt-16 animate-bounce">
+                            <MdOutlineKeyboardDoubleArrowDown size={50} />
                         </div>
                     </div>
                 </FullpageSection>
@@ -203,6 +225,9 @@ function MainTestPage() {
                                 </div>
                                 <p className="mt-2 text-lg font-gmarketSansBold">내 선수카드</p>
                                 <img className="right-0 inline" src={rArrowIcon} alt="오른쪽 화살표" />
+                            </div>
+                            <div className="flex justify-center mt-16 animate-bounce">
+                                <MdOutlineKeyboardDoubleArrowDown size={50} />
                             </div>
                         </div>
                     </div>
