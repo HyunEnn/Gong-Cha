@@ -14,7 +14,7 @@ function FindMatchBoardPage() {
     return (
         <div className="px-2 mt-4">
             {/* 제목 */}
-            <p className="text-2xl font-ygJalnan">매칭해요</p>
+            <div className="mt-16 ml-4 text-xl font-ygJalnan">매칭해요</div>
             {/* 검색창 */}
             <div className="flex justify-end mt-4">
                 <InputWithButton />
