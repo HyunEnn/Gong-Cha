@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import MyPageWithTransition from '@/components/MyPageWithTransition';
 import ErrorPage from '@/pages/ErrorPage';
-import Test from '@/pages/Test';
-import OnBoardPage from '@/pages/OnBoardPage';
+import TestDiv from '@/pages/TestDiv';
 import LoginPage from '@/pages/LoginPage';
 import BottomNav from '@/nav/BottomNav';
 import MainPage from '@/pages/MainPage';
@@ -31,12 +30,8 @@ function App() {
             element: <Navigate to="/main" />,
         },
         {
-            path: '/test',
-            element: <Test />,
-        },
-        {
-            path: '/onboard',
-            element: <OnBoardPage />,
+            path: '/testdiv',
+            element: <TestDiv />,
         },
         {
             path: '/login',
