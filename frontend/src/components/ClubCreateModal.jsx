@@ -104,7 +104,7 @@ function ClubCreateModal({ isOpen, onClose }) {
                 <div className="flex justify-end mt-4 mr-6">
                     <button onClick={onClose}>⨉</button>
                 </div>
-                <div>
+                <div className="flex flex-col h-full justify-evenly">
                     {clubCreateIndex === 1 && (
                         <>
                             <div>
@@ -180,24 +180,20 @@ function ClubCreateModal({ isOpen, onClose }) {
                                 <div className="grid w-full gap-4 px-4 py-4">
                                     <div className="flex items-center justify-center">
                                         <Label htmlFor="activityEndTime" className="mr-4">
-                                            활동 시작 시간
+                                            활동 시간
                                         </Label>
                                         <TimePicker
                                             label="hh:mm aa"
                                             value={activityStartTime}
                                             onChange={(newValue) => setActivityStartTime(newValue)}
-                                            sx={{ width: 130 }}
+                                            sx={{ width: 100 }}
                                         />
-                                    </div>
-                                    <div className="flex items-center justify-center">
-                                        <Label htmlFor="activityEndTime" className="mr-4">
-                                            활동 종료 시간
-                                        </Label>
+                                        &nbsp;~&nbsp;
                                         <TimePicker
                                             label="hh:mm aa"
                                             value={activityEndTime}
                                             onChange={(newValue) => setActivityEndTime(newValue)}
-                                            sx={{ width: 130 }}
+                                            sx={{ width: 100 }}
                                         />
                                     </div>
                                 </div>

@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
+import lArrowIcon from '@/assets/icons/lArrow.svg';
 import DatePicker from '@/components/DatePicker';
 import { InputWithButton } from '@/components/InputWithButton';
 import { Button } from '@/components/ui/button';
@@ -8,11 +9,20 @@ import FindMatchBoard from '@/components/FindMatchBoard';
 
 function FindMatchBoardPage() {
     const navigate = useNavigate();
+    const handleBackClick = () => {
+        navigate('/main');
+    };
     const handleOpenFindMatchInput = () => {
         navigate('/findmatch/input');
     };
     return (
         <div className="px-2 mt-4">
+            <div
+                onClick={handleBackClick}
+                className="absolute left-[calc(.7rem)] top-[calc(2.0rem)] w-[calc(1.5625rem)] h-[calc(1.875rem)] cursor-pointer"
+            >
+                <img src={lArrowIcon} alt="돌아가기" />
+            </div>
             {/* 제목 */}
             <div className="mt-16 ml-4 text-xl font-ygJalnan">매칭해요</div>
             {/* 검색창 */}
