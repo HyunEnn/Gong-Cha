@@ -6,6 +6,19 @@ function PlayerCardCarousel({ player }) {
         return null;
     }
 
+    // 기존의 console.error 함수를 백업합니다.
+    const originalConsoleError = console.error;
+
+    console.error = (...args) => {
+        // 숨기고 싶은 오류 메시지가 포함된 경우, 로그를 출력하지 않습니다.
+        if (/Expected static flag was missing/.test(args[0])) {
+            return;
+        }
+
+        // 그 외의 경우에는 기존의 console.error 함수를 사용합니다.
+        originalConsoleError(...args);
+    };
+
     const value = parseInt((player.SHO + player.PAS + player.DRI + player.PAC + player.MAN) / 5);
 
     useEffect(() => {
