@@ -214,12 +214,8 @@ public class MatchingService {
         Long versusTeamId = matchingAskRepository.findById(matchingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM)).getVersusTeamId();
         if(teamRepository.findById(versusTeamId).isPresent()) {
-            List<CardResponse> cardResponseList = new ArrayList<>();
             List<Card> cardList = userTeamRepository.findCardsByTeamId(versusTeamId);
-            for(Card card : cardList) {
-                cardResponseList.add(CardResponse.fromEntity(card));
-            }
-            return cardResponseList;
+            return cardList.stream().map(CardResponse::fromEntity).toList();
         }
         else {
             throw new CustomException(ErrorCode.NOT_FOUND_TEAM);

@@ -231,12 +231,8 @@ public class TeamServiceImpl implements TeamService{
     public List<CardResponse> getCardsByTeam(Long teamId) {
 
         if(teamRepository.findById(teamId).isPresent()) {
-            List<CardResponse> cardResponseList = new ArrayList<>();
             List<Card> cardList = userTeamRepository.findCardsByTeamId(teamId);
-            for(Card card : cardList) {
-                cardResponseList.add(CardResponse.fromEntity(card));
-            }
-            return cardResponseList;
+            return cardList.stream().map(CardResponse::fromEntity).toList();
         }
         else {
             throw new CustomException(ErrorCode.NOT_FOUND_TEAM);
