@@ -7,8 +7,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRecruitRepository extends JpaRepository<UserRecruit, Long> {
+
     List<UserRecruit> findAllByRecruitId(Long recruitId);
+
     List<UserRecruit> findAllByUserId(Long userId);
+
     Optional<UserRecruit> findByRecruitIdAndUserId(Long recruitId, Long userId);
+
     void deleteAllByRecruitId(Long recruitId);
+
 }

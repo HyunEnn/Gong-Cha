@@ -212,4 +212,38 @@ public class TeamController {
                 .build(), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "팀원 정보 목록 조회",
+            description = "팀에서 팀원 정보 목록을 조회함"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "팀에서 팀원 정보 목록을 조회 성공"
+    )
+    @GetMapping("/{teamId}/teammates")
+    public ResponseEntity<CommonResponse> getTeammates(@PathVariable Long teamId) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("팀에서 팀원 정보 목록을 조회")
+                .data(teamService.getUsersByTeam(teamId))
+                .build(), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "팀원 카드 목록 조회",
+            description = "팀에서 팀원 카드 목록을 조회함"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "팀에서 팀원 카드 목록을 조회 성공"
+    )
+    @GetMapping("/{teamId}/teammates/cards")
+    public ResponseEntity<CommonResponse> getTeammateCards(@PathVariable Long teamId) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("팀에서 팀원 카드 목록을 조회")
+                .data(teamService.getCardsByTeam(teamId))
+                .build(), HttpStatus.OK);
+    }
+
 }
