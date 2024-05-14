@@ -94,6 +94,9 @@ module.exports = {
                     400: 'hsl(var(--brand400))',
                     500: 'hsl(var(--brand500))',
                 },
+                animation: {
+                    bounce: 'bounce 1s infinite', // 'bounce'는 @keyframes의 이름, 1s는 지속 시간, infinite는 무한 반복을 의미
+                },
             },
             fontFamily: {
                 pretendardRegular: ['Pretendard-Regular'], // Adds a new `font-display` class
