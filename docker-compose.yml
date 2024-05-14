@@ -25,17 +25,19 @@ services:
       S3_SECRET_KEY: ${S3_SECRET_KEY}
       PROD_REDIS_HOST: ${PROD_REDIS_HOST}
       PROD_REDIS_PORT: ${PROD_REDIS_PORT}
+      COOLSMS_API_KEY: ${COOLSMS_API_KEY}
+      COOLSMS_API_SECRET: ${COOLSMS_API_SECRET}
     networks:
       - gongcha-network
 
-  react-app:
-    container_name: frontend
-    image: gongcha-front
-    restart: unless-stopped
-    ports:
-      - 5173:5173
-    networks:
-      - gongcha-network
+  # react-app:
+  #   container_name: frontend
+  #   image: gongcha-front
+  #   restart: unless-stopped
+  #   ports:
+  #     - 5173:5173
+  #   networks:
+  #     - gongcha-network
 
       
 networks:
