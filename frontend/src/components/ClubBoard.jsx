@@ -80,6 +80,7 @@ function ClubBoard() {
     return (
         <div>
             {/* 클럽 게시판 UI 디자인 부분 */}
+            {/* index로 axios 요청해서 상태관리에 저장?해서 불러오기? */}
             {items.map((item, index) => (
                 <div
                     key={index}
