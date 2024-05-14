@@ -1,10 +1,7 @@
 package com.b306.gongcha.service;
 
-import com.b306.gongcha.dto.response.UserInfoResponse;
-import com.b306.gongcha.entity.User;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
-import com.b306.gongcha.global.GetCurrentUserId;
 import com.b306.gongcha.repository.RefreshTokenRepository;
 import com.b306.gongcha.repository.UserRepository;
 import com.b306.gongcha.util.JWTUtil;
@@ -25,15 +22,6 @@ public class Oauth2TokenService {
     private final UserRepository userRepository;
     private final RefreshTokenService refreshTokenService;
 
-    public UserInfoResponse getUserInfo() {
-
-        Long userId = GetCurrentUserId.currentUserId();
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID));
-
-        return UserInfoResponse.fromEntity(user);
-    }
     public void regenerateAccessToken(HttpServletRequest request, HttpServletResponse response) {
 
         //get refresh token

@@ -30,7 +30,7 @@ public class TeamController {
             responseCode = "200",
             description = "팀 목록 전체 조회 완료"
     )
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<CommonResponse> getAllTeams(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC, size = 10) Pageable pageable) {
 
@@ -84,7 +84,7 @@ public class TeamController {
             responseCode = "200",
             description = "팀 생성 완료"
     )
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<CommonResponse> createTeam(@RequestBody TeamRequest teamRequest) {
 
         return new ResponseEntity<>(CommonResponse.builder()
