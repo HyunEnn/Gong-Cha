@@ -126,6 +126,15 @@ module.exports = {
                 92: '.92',
                 98: '.98',
             },
+            // // 확장 설정
+            // utilities: {
+            //     '.snap-y': {
+            //         scrollSnapType: 'y mandatory  ',
+            //     },
+            //     '.snap-start': {
+            //         scrollSnapAlign: 'start',
+            //     },
+            // },
         },
     },
 };
