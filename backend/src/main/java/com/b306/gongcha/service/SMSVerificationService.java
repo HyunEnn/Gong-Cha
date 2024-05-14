@@ -12,6 +12,7 @@ import com.b306.gongcha.util.SmsUtil;
 import com.b306.gongcha.util.ValidationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +58,7 @@ public class SMSVerificationService {
         return savedSmsInfo.getVerificationCode().equals(verifyCode);
     }
 
+    @Transactional
     public void savePhoneNum(VerifyCodeRequest request) {
 
         String name = request.getName();
@@ -65,7 +67,11 @@ public class SMSVerificationService {
         User user = userRepository.findByName(name)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID));
 
+        // 유저의 핸드폰 번호 수정
         user.changePhone(phone);
+
+        // 유저 정보 재저장
+        userRepository.save(user);
     }
 
 
