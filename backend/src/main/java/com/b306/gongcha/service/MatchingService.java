@@ -34,27 +34,38 @@ public class MatchingService {
     private final MatchingAskRepository matchingAskRepository;
 
     // 매칭 게시판에서 팀장인지 확인
-    public Boolean isManager(Long userId) {
+    public Long getTeamId(Long userId) {
 
-        if(userTeamRepository.findByUserIdAndRole(userId, Role.valueOf("팀장"))==null) {
+        List<UserTeam> userTeamList = userTeamRepository.findAllByUserIdAndRole(userId, Role.valueOf("팀장"));
+        Long teamId = 0L;
+        for(UserTeam u : userTeamList) {
+            // 모집완료 상태인 팀 1개만 찾기
+            if(u.getTeam().getStatus() == Status.valueOf("모집완료")) {
+                teamId = u.getTeam().getId();
+                break;
+            }
+        }
+        if(teamId != 0L) {
+            return teamId;
+        }
+        else {
             throw new CustomException(ErrorCode.NO_AUTHORITY_MANAGER);
         }
-        return true;
     }
     
     // 매칭 게시판 작성
     @Transactional
     public void createMatching(MatchingRequest matchingRequest) {
 
+        // 현재 유저 정보 가져오기
         Long userId = GetCurrentUserId.currentUserId();
-        if(isManager(userId)) {
-            Matching matching = Matching.fromRequest(matchingRequest);
-            matchingRepository.save(matching);
-        }
+        // 현재 유저의 팀 중 "모집완료" 상태인 팀 id 가져오기
+        matchingRequest.updateMatchingTeamId(getTeamId(userId));
+        Matching matching = Matching.fromRequest(matchingRequest);
+        matchingRepository.save(matching);
 
-        // 팀 게시판의 상태 매칭중으로 변경하기 - 팀 목록으로 변경?
-        Long teamId = userTeamRepository.findByUserIdAndRole(userId, Role.valueOf("팀장")).getTeam().getId();
-        Team team = teamRepository.findById(teamId)
+        // 팀 게시판의 상태 매칭중으로 변경하기
+        Team team = teamRepository.findById(getTeamId(userId))
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
         team.updateStatus(Status.valueOf("매칭중"));
         teamRepository.save(team);
@@ -130,7 +141,7 @@ public class MatchingService {
     public List<MatchingAskResponse> getAllMatchingAsksByUserId() {
 
         Long userId = GetCurrentUserId.currentUserId();
-        Long teamId = userTeamRepository.findByUserIdAndRole(userId, Role.valueOf("팀장")).getId();
+        Long teamId = getTeamId(userId);
         List<MatchingAskResponse> matchingAskResponseList = new ArrayList<>();
         List<MatchingAsk> matchingAskList = matchingAskRepository.findByMatchingTeamIdAndPermitIsFalse(teamId);
         matchingAskList.forEach(ma -> matchingAskResponseList.add(MatchingAskResponse.fromEntity(ma)));

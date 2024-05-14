@@ -22,4 +22,9 @@ public class MatchingRequest {
     private Difficulty difficulty; // 경기 수준
     private Long matchingTeamId; // 작성자(팀장) id
 
+    public void updateMatchingTeamId(Long matchingTeamId) {
+
+        this.matchingTeamId = matchingTeamId;
+    }
+
 }
