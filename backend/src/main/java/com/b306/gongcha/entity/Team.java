@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Schema(description = "팀 관련 Entity")
 public class Team extends BaseEntity {
 
     @Id
@@ -50,7 +51,7 @@ public class Team extends BaseEntity {
     @Builder.Default
     private Status status = Status.valueOf("모집중"); // 팀 상태 - 모집중, 모집완료, 매칭중, 매칭완료
 
-    @Schema(description = "희망요일", example = "[월, 수, 금]")
+    @Schema(description = "희망요일", example = "['월', '수', '금']")
     @ElementCollection(fetch = FetchType.LAZY)
     private List<String> dayOfWeek;
 

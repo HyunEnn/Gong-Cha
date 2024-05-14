@@ -27,7 +27,7 @@ public class TeamRequest {
     @Schema(description = "희망 시작 시간", example = "9")
     private int startTime; // 희망 매치 시간 시작
 
-    @Schema(description = "희망 시작 시간", example = "18")
+    @Schema(description = "희망 종료 시간", example = "18")
     private int endTime; // 희망 매치 시간 종료
 
     @Schema(description = "희망요일", example = "[월, 수, 금]")
