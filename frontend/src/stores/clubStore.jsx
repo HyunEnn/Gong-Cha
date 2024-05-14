@@ -1,5 +1,8 @@
 import { create } from 'zustand';
 
+import playerImg1 from '@/data/dummyImages/dummyProfileImage2.png';
+import playerImg2 from '@/data/dummyImages/dummyProfileImage3.png';
+
 export const useClubStore = create((set) => ({
     dummyClubList: [
         {
@@ -36,4 +39,29 @@ export const useClubStore = create((set) => ({
         region: '',
         districts: '',
     },
+    myClubInfoReadResponse: {
+        clubName: '흥민풋살',
+        description: '가입 신청 문의 1588-1588',
+        activityStartTime: '09:00',
+        activityEndTime: '21:00',
+        skillLevel: '중급',
+        region: '대전',
+        districts: '유성구',
+    },
+    myClubListReadResponse: [
+        {
+            playerImg: playerImg1,
+            userId: '김싸피',
+            averageStat: '90',
+            phoneNumber: '010-1234-5678',
+            isMaster: true,
+        },
+        {
+            playerImg: playerImg2,
+            userId: '이싸피',
+            averageStat: '87',
+            phoneNumber: '010-1357-2468',
+            isMaster: false,
+        },
+    ],
 }));
