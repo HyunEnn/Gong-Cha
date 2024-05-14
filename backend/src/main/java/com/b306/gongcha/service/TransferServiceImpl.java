@@ -115,11 +115,7 @@ public class TransferServiceImpl implements TransferService{
     public UserTransferResponse requestTransfer(Long transferId, Long userId) {
 
         // 팀장 여부 확인 - 팀장만 요청을 할 수 있음
-//        UserTeam captain = userTeamRepository.findByUserIdAndRole(userId, Role.valueOf("팀장"));
         Long captainId = getTeamId(userId);
-//        if(captain == null) {
-//            throw new CustomException(ErrorCode.NO_AUTHORITY_USER);
-//        }
 
         // 이적시장 정보, 신청자 정보 받아오기
         Transfer transfer = transferRepository.findById(transferId)
@@ -183,10 +179,6 @@ public class TransferServiceImpl implements TransferService{
         transfer.updateJoin(true);
 
         // 선수에게 요청한 사람이 팀장인가 확인
-//        UserTeam captain = userTeamRepository.findByUserIdAndRole(userId, Role.valueOf("팀장"));
-//        if(captain == null) {
-//            throw new CustomException(ErrorCode.NO_AUTHORITY_USER);
-//        }
         Long captainTeamId = getTeamId(userId);
         Team team = teamRepository.findById(captainTeamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
