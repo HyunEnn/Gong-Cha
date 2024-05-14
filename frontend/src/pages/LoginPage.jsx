@@ -1,7 +1,7 @@
 function LoginPage() {
     return (
         <>
-            <p>로그인페이지</p>
+            <p>로그인페이지입니다.</p>
         </>
     );
 }
