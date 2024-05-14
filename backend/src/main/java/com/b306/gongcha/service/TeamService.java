@@ -1,8 +1,11 @@
 package com.b306.gongcha.service;
 
+import com.b306.gongcha.dto.UserDTO;
 import com.b306.gongcha.dto.request.TeamRequest;
+import com.b306.gongcha.dto.response.CardResponse;
 import com.b306.gongcha.dto.response.TeamResponse;
 import com.b306.gongcha.dto.response.UserTeamResponse;
+import com.b306.gongcha.entity.User;
 import com.b306.gongcha.entity.UserTeam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,5 +32,9 @@ public interface TeamService {
     Long rejectTeam(Long teamId, Long userId);
     // 선수 모집 완료하기
     TeamResponse endTeamRecruit(Long teamId);
+    // 선수 정보 불러오기
+    List<User> getUsersByTeam(Long teamId);
+    // 선수 카드 정보 불러오기
+    List<CardResponse> getCardsByTeam(Long teamId);
 
 }
