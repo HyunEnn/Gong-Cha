@@ -236,7 +236,7 @@ public class MatchingService {
         matchingRepository.save(matching);
 
         // 팀 게시판의 상태 매칭완료로 변경하기
-        MatchingAsk matchingAsk = matchingAskRepository.findByMatchingTeamIdAndPermitIsTrue(matchingId)
+        MatchingAsk matchingAsk = matchingAskRepository.findById(matchingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MATCHING));
         Long matchingTeamId = matchingAsk.getMatching().getMatchingTeamId();
         Team team = teamRepository.findById(matchingTeamId)
