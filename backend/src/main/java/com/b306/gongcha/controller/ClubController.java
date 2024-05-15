@@ -2,27 +2,25 @@ package com.b306.gongcha.controller;
 
 import com.b306.gongcha.dto.request.ClubMakeRequest;
 import com.b306.gongcha.dto.response.CommonResponse;
-import com.b306.gongcha.dto.response.CustomOAuth2User;
 import com.b306.gongcha.global.GetCurrentUserId;
 import com.b306.gongcha.service.ClubService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "Club", description = "Club 관련 API")
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/club")
 public class ClubController {
 
@@ -39,6 +37,7 @@ public class ClubController {
     @PostMapping("/create")
     public ResponseEntity<CommonResponse> createClub(@RequestBody ClubMakeRequest request) {
 
+        log.info("여기까지는 오는지?");
         clubService.createClub(request);
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("클럽 생성 완료")
