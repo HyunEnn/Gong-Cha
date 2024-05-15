@@ -13,6 +13,7 @@ import com.b306.gongcha.global.GetCurrentUserId;
 import com.b306.gongcha.repository.ClubRepository;
 import com.b306.gongcha.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ClubService {
 
@@ -37,6 +39,9 @@ public class ClubService {
 
         // 클럽 생성
         Club club = Club.fromRequest(clubMakeRequest);
+
+        log.info("club 이름 : {}", club.getName());
+        log.info("club 설명 : {}", club.getDescription());
 
         Long userId = GetCurrentUserId.currentUserId();
 
