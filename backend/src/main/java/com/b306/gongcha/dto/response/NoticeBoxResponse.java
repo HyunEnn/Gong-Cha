@@ -7,28 +7,35 @@ import com.b306.gongcha.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
 @Builder
 public class NoticeBoxResponse {
+
     private String content;
-    private String fromUser;
-    private String toUser;
+    private Long fromUserId;
+    private Long toUserId;
     private NoticeType noticeType;
     private Boolean readPermit;
     private Boolean responsePermit;
-    public static List<NoticeBoxResponse> fromEntity(User user) {
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
-        return user.getNoticeList().stream()
+    public static List<NoticeBoxResponse> fromEntity(List<Notice> notices) {
+
+        return notices.stream()
                 .map(notice -> NoticeBoxResponse.builder()
                         .content(notice.getContent())
-                        .fromUser(notice.getFromUser().getName())
-                        .toUser(notice.getToUser().getName())
+                        .fromUserId(notice.getFromUserId())
+                        .toUserId(notice.getToUserId())
                         .noticeType(notice.getNoticeType())
                         .readPermit(notice.getReadPermit())
                         .responsePermit(notice.getResponsePermit())
+                        .createdAt(notice.getCreatedAt())
+                        .modifiedAt(notice.getModifiedAt())
                         .build())
                 .collect(Collectors.toList());
     }

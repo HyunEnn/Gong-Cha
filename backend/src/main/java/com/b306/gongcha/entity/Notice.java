@@ -17,14 +17,10 @@ public class Notice extends BaseEntity{
     private Long id;
 
     @Schema(description = "알림 보내는 유저")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "from_user_id")
-    private User fromUser;
+    private Long fromUserId;
 
     @Schema(description = "알림 받는 유저")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "to_user_id")
-    private User toUser;
+    private Long toUserId;
 
     @Schema(description = "알림 내용", allowableValues = "..님으로 부터 팀 가입 요청이 도착했습니다.")
     private String content;
@@ -42,9 +38,9 @@ public class Notice extends BaseEntity{
     public static Notice createClubNotice(User applyUser, User user){
 
         return Notice.builder()
-                .toUser(applyUser)
-                .fromUser(user)
-                .content(applyUser.getName() + "님으로 부터 클럽 가입 요청이 도착했습니다.")
+                .toUserId(applyUser.getId())
+                .fromUserId(user.getId())
+                .content(applyUser.getName() + "님으로부터 클럽 가입 요청이 도착했습니다.")
                 .noticeType(NoticeType.invite)
                 .readPermit(false)
                 .responsePermit(false)
@@ -54,9 +50,9 @@ public class Notice extends BaseEntity{
     public static Notice createTeamNotice(User captain, User user){
 
         return Notice.builder()
-                .toUser(user)
-                .fromUser(captain)
-                .content(user.getName() + "님으로 부터 팀 가입 요청이 도착했습니다.")
+                .toUserId(user.getId())
+                .fromUserId(captain.getId())
+                .content(user.getName() + "님으로부터 팀 가입 요청이 도착했습니다.")
                 .noticeType(NoticeType.invite)
                 .readPermit(false)
                 .responsePermit(false)

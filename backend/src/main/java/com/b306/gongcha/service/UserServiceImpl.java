@@ -1,10 +1,12 @@
 package com.b306.gongcha.service;
 
 import com.b306.gongcha.dto.response.NoticeBoxResponse;
+import com.b306.gongcha.entity.Notice;
 import com.b306.gongcha.entity.User;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
 import com.b306.gongcha.global.GetCurrentUserId;
+import com.b306.gongcha.repository.NoticeRepository;
 import com.b306.gongcha.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
     private final FileUploadService fileUploadService;
+    private final NoticeRepository noticeRepository;
     @Override
     @Transactional
     public String updateProfile(MultipartFile file) {
@@ -37,11 +40,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<NoticeBoxResponse> getNotices() {
 
         Long userId = GetCurrentUserId.currentUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-        return NoticeBoxResponse.fromEntity(user);
+        List<Notice> notice = noticeRepository.findAllByFromUserId(user.getId());
+        return NoticeBoxResponse.fromEntity(notice);
     }
 }

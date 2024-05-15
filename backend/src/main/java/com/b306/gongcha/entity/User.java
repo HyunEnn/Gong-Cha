@@ -27,9 +27,6 @@ public class User extends BaseEntity {
     private String profile;
     private String firebaseToken;
 
-    @OneToMany(mappedBy = "toUser")
-    private List<Notice> noticeList = new ArrayList<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;

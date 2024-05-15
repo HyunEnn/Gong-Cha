@@ -34,13 +34,18 @@ public class NotificationService {
                     .setToken(user.getFirebaseToken())
                     .setNotification(notification)
                     .build();
-
-            try {
+            try{
                 firebaseMessaging.send(message);
-                System.out.println("알림 전송 성공");
             } catch (FirebaseMessagingException e) {
-                System.out.println("알림 전송 실패");
+                throw new RuntimeException(e);
             }
+//            try {
+//                firebaseMessaging.send(message);
+//                System.out.println("알림 전송 성공");
+//            } catch (FirebaseMessagingException e) {
+//
+//                System.out.println("알림 전송 실패");
+//            }
         }
         else {
             throw new CustomException(ErrorCode.NOT_FOUND_FIREBASE_TOKEN);

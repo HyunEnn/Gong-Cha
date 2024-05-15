@@ -9,6 +9,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -104,8 +107,8 @@ public class UserController {
             responseCode = "200",
             description = "알림 조회에 성공했습니다."
     )
-    @PostMapping("/notice")
-    public ResponseEntity<CommonResponse> notice(){
+    @GetMapping("/notice")
+    public ResponseEntity<CommonResponse> notice() {
 
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("알림 조회 성공")
