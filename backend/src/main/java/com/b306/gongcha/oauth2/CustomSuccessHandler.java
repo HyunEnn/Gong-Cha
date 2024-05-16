@@ -5,12 +5,14 @@ import com.b306.gongcha.entity.User;
 import com.b306.gongcha.repository.UserRepository;
 import com.b306.gongcha.service.RefreshTokenService;
 import com.b306.gongcha.util.JWTUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -19,6 +21,8 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -54,9 +58,19 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         refreshTokenService.addRefreshToken(byUserInfo.getId(), refresh);
 
         response.setHeader("Authorization", access);
+//        response.addCookie(createCookie("Authorization", access));
         response.addCookie(createCookie("refresh", refresh));
         response.setStatus(HttpStatus.OK.value());
-        response.sendRedirect("http://localhost:5173");
+        response.sendRedirect("http://localhost:5173/kakao/callback");
+
+//        Map<String, Object> map = new LinkedHashMap<>();
+//        map.put("code", HttpStatus.OK);
+//        map.put("message", "로그인 성공함");
+//        map.put("data", access);
+//        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//        response.setStatus(HttpStatus.OK.value());
+//        response.getWriter().write(new ObjectMapper().writeValueAsString(map));
+//        response.sendRedirect("http://localhost:5173/kakao/callback");
     }
 
     private Cookie createCookie(String key, String value) {
