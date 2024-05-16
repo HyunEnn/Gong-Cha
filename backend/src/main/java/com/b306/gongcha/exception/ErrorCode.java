@@ -41,6 +41,7 @@ public enum ErrorCode {
     AlREADY_CLUB_APPLY(HttpStatus.BAD_REQUEST, "클럽 신청이 이미 존재합니다."),
 
     NOT_FOUND_TEAM(HttpStatus.NOT_FOUND, "팀 정보를 찾을 수 없습니다."),
+    ALREADY_TEAM_EXIST(HttpStatus.BAD_REQUEST, "이미 모집중인 팀이 있습니다."),
     MEMBER_ALREADY_ACCEPTED(HttpStatus.BAD_REQUEST, "이미 팀원으로 추가되었습니다."),
     MEMBER_LIMIT_EXCEEDED(HttpStatus.BAD_REQUEST, "최대 팀원 인원수를 초과하였습니다."),
 

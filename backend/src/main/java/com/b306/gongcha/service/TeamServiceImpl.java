@@ -82,6 +82,22 @@ public class TeamServiceImpl implements TeamService{
     @Transactional
     public TeamResponse createTeam(TeamRequest teamRequest) {
 
+        // 이미 "모집중" 상태인 팀의 팀장인 경우 팀 생성 불가능
+        List<UserTeam> userTeamList = userTeamRepository.findAllByUserIdAndRole(teamRequest.getWriterId(), Role.valueOf("팀장"));
+        boolean makeTeam = true;
+        for(UserTeam ut : userTeamList) {
+            Team team = teamRepository.findById(ut.getTeam().getId()).orElse(null);
+            if(team != null) {
+                if(team.getStatus().equals(Status.valueOf("모집중"))) {
+                    makeTeam = false;
+                    break;
+                }
+            }
+        }
+        if(!makeTeam) {
+            throw new CustomException(ErrorCode.ALREADY_TEAM_EXIST);
+        }
+
         // 팀 정보 저장
         Team team = Team.fromTeamRequest(teamRequest);
         Team savedTeam = teamRepository.save(team);
