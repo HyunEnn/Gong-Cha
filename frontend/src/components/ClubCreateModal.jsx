@@ -13,6 +13,8 @@ import timeAnimation from '@/assets/lotties/timeAnimation';
 import placeAnimation from '@/assets/lotties/placeAnimation';
 import playerAnimation from '@/assets/lotties/playerAnimation';
 
+import { postClubCreate } from '@/apis/api/club';
+
 function ClubCreateModal({ isOpen, onClose }) {
     const { clubCreateRequest } = useClubStore();
     const { regions } = useRegionStore();
@@ -52,16 +54,20 @@ function ClubCreateModal({ isOpen, onClose }) {
             alert('활동 시간을 설정 해주세요!');
         } else {
             setClubCreateIndex(index);
-            clubCreateRequest.activityStartTime = activityStartTime.format('HH:mm');
-            clubCreateRequest.activityEndTime = activityEndTime.format('HH:mm');
+            clubCreateRequest.activityStartTime.hour = activityStartTime.format('HH');
+            clubCreateRequest.activityStartTime.minute = activityStartTime.format('mm');
+            clubCreateRequest.activityEndTime.hour = activityEndTime.format('HH');
+            clubCreateRequest.activityEndTime.minute = activityEndTime.format('mm');
             console.log(clubCreateRequest);
         }
     };
 
     const handleChangeContentThirdPrev = (index) => {
         setClubCreateIndex(index);
-        clubCreateRequest.activityStartTime = '';
-        clubCreateRequest.activityEndTime = '';
+        clubCreateRequest.activityStartTime.hour = '';
+        clubCreateRequest.activityStartTime.minute = '';
+        clubCreateRequest.activityEndTime.hour = '';
+        clubCreateRequest.activityEndTime.minute = '';
     };
 
     const handleChangeContentThirdNext = (index) => {
@@ -82,9 +88,18 @@ function ClubCreateModal({ isOpen, onClose }) {
     };
 
     const handleCreateClub = () => {
-        // 여기에 axios 클럽 생성 요청 보내기
         clubCreateRequest.skillLevel = clublevel;
         console.log(clubCreateRequest);
+        // 여기에 axios 클럽 생성 요청 보내기
+        postClubCreate(
+            clubCreateRequest,
+            (success) => {
+                console.log('클럽 생성 성공', success);
+            },
+            (fail) => {
+                console.log('클럽 생성 실패', fail);
+            }
+        );
         onClose();
     };
 
