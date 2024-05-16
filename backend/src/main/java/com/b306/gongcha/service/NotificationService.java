@@ -24,7 +24,7 @@ public class NotificationService {
 
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-
+        System.out.println(user.getId());
         if(user.getFirebaseToken() != null){
             Notification notification = Notification.builder()
                     .setTitle(request.getTitle())
@@ -39,13 +39,6 @@ public class NotificationService {
             } catch (FirebaseMessagingException e) {
                 throw new RuntimeException(e);
             }
-//            try {
-//                firebaseMessaging.send(message);
-//                System.out.println("알림 전송 성공");
-//            } catch (FirebaseMessagingException e) {
-//
-//                System.out.println("알림 전송 실패");
-//            }
         }
         else {
             throw new CustomException(ErrorCode.NOT_FOUND_FIREBASE_TOKEN);

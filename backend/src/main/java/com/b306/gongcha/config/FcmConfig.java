@@ -19,8 +19,9 @@ public class FcmConfig {
     FirebaseMessaging firebaseMessaging() throws IOException {
 
         // Firebase Admin SDK의 서비스 계정 키 파일 위치를 지정
-        ClassPathResource resource = new ClassPathResource("gongcha-bb1b7-firebase-adminsdk-4z6ru-a4b9f47da7.json");
+        ClassPathResource resource = new ClassPathResource("gongcha-adminsdk.json");
 
+        // 서비스 계정 키 파일을 읽어옴
         InputStream refreshToken = resource.getInputStream();
 
         FirebaseApp firebaseApp = null;
@@ -31,13 +32,14 @@ public class FcmConfig {
            for (FirebaseApp app : firebaseAppList){
                if(app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)){
                    firebaseApp = app;  // 기존 인스턴스를 사용
+                   break;
                }
            }
         }
         // 등록된 FirebaseApp 인스턴스가 없으면 새 인스턴스를 생성.
         else {
             FirebaseOptions options = FirebaseOptions.builder()
-                    .setCredentials(GoogleCredentials.fromStream(refreshToken))  // 서비스 계정 키로 인증 정보를 설정합니다.
+                    .setCredentials(GoogleCredentials.fromStream(refreshToken))  // 서비스 계정 키로 인증 정보를 설정.
                     .build();
             firebaseApp = FirebaseApp.initializeApp(options);
         }
