@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "User", description = "FCM 알림 관련 API")
+@Tag(name = "User", description = "유저 관련 API")
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -79,6 +79,24 @@ public class UserController {
         cardService.userRating(cardRequest);
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("선수 평가 성공")
+                .build(), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "프로필 사진 조회",
+            description = "유저 프로필 사진을 조회함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "프로필 사진 조회에 성공했습니다."
+    )
+    @GetMapping("/profile")
+    public ResponseEntity<CommonResponse> getProfile(
+            HttpServletRequest request){
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("프로필 사진 조회 성공")
+                .data(userService.getProfile(request))
                 .build(), HttpStatus.OK);
     }
 
