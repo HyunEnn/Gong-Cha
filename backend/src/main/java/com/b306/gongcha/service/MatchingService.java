@@ -60,7 +60,7 @@ public class MatchingService {
         // 현재 유저 정보 가져오기
         Long userId = GetCurrentUserId.currentUserId();
         // 현재 유저의 팀 중 "모집완료" 상태인 팀 id 가져오기
-//        matchingRequest.updateMatchingTeamId(getTeamId(userId));
+        matchingRequest.updateMatchingTeamId(getTeamId(userId));
         Matching matching = Matching.fromRequest(matchingRequest);
         matchingRepository.save(matching);
 
