@@ -4,6 +4,9 @@ import com.b306.gongcha.entity.num.ClubRole;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
@@ -21,6 +24,8 @@ public class User extends BaseEntity {
     private String email;
     private String role;
     private String provider;
+    private String profile;
+    private String firebaseToken;
     private String phone;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,6 +42,10 @@ public class User extends BaseEntity {
 
     public void updateEmail(String email) {
         this.email = email;
+    }
+
+    public void updateProfile(String profile) {
+        this.profile = profile;
     }
 
     public void changeRole(ClubRole clubRole) {

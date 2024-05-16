@@ -2,14 +2,13 @@ package com.b306.gongcha.service;
 
 import com.b306.gongcha.dto.request.ClubApplyRequest;
 import com.b306.gongcha.dto.response.ClubApplyResponse;
-import com.b306.gongcha.entity.Club;
-import com.b306.gongcha.entity.ClubApply;
-import com.b306.gongcha.entity.User;
+import com.b306.gongcha.entity.*;
 import com.b306.gongcha.entity.num.ClubRole;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
 import com.b306.gongcha.repository.ClubApplyRepository;
 import com.b306.gongcha.repository.ClubRepository;
+import com.b306.gongcha.repository.NoticeRepository;
 import com.b306.gongcha.repository.UserRepository;
 import com.b306.gongcha.util.JWTUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +25,7 @@ public class ClubApplyService {
     private final ClubApplyRepository clubApplyRepository;
     private final UserRepository userRepository;
     private final ClubRepository clubRepository;
+    private final NoticeRepository noticeRepository;
 
     /**
      * 1. 어떤 유저가 어떤 클럽에 신청을 했는 지에 대한 요청 필요
@@ -53,6 +53,10 @@ public class ClubApplyService {
 
             // db 에 저장
             clubApplyRepository.save(clubApply);
+
+            User user = userRepository.findByClubIdAndClubRole(clubId, ClubRole.valueOf("MASTER"));
+            Notice notice = Notice.createClubNotice(applyUser, user);
+            noticeRepository.save(notice);
         }
     }
 
