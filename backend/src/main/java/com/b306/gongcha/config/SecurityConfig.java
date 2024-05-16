@@ -78,6 +78,9 @@ public class SecurityConfig {
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) -> auth
                 .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/api/kakao/callback").permitAll()
+                .requestMatchers("/api/google/callback").permitAll()
+                .requestMatchers("/api/club/clubs").permitAll()
                 .requestMatchers("/my").permitAll()
                 .requestMatchers("/reissue").permitAll()
                 .anyRequest().authenticated());

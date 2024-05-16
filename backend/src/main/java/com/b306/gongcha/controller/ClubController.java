@@ -7,6 +7,7 @@ import com.b306.gongcha.service.ClubService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -35,10 +36,11 @@ public class ClubController {
         description = "클럽이 정상적으로 생성되었습니다."
     )
     @PostMapping("/create")
-    public ResponseEntity<CommonResponse> createClub(@RequestBody ClubMakeRequest request) {
+    public ResponseEntity<CommonResponse> createClub(
+            HttpServletRequest httpServletRequest,
+            @RequestBody ClubMakeRequest request) {
 
-        log.info("여기까지는 오는지?");
-        clubService.createClub(request);
+        clubService.createClub(httpServletRequest, request);
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("클럽 생성 완료")
                 .build(), HttpStatus.OK);
@@ -72,10 +74,10 @@ public class ClubController {
             description = "클럽 삭제가 정상 처리되었습니다."
     )
     @DeleteMapping("/delete/{clubId}")
-    public ResponseEntity<CommonResponse> deleteClub(@PathVariable Long clubId) {
+    public ResponseEntity<CommonResponse> deleteClub(@PathVariable Long clubId,
+                                                     HttpServletRequest request) {
 
-        Long userId = GetCurrentUserId.currentUserId();
-        clubService.deleteClub(userId, clubId);
+        clubService.deleteClub(request, clubId);
 
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("삭제가 처리되었습니다.")
@@ -128,11 +130,12 @@ public class ClubController {
     @PatchMapping("/{clubId}/logo")
     public ResponseEntity<CommonResponse> updateLogo(
             @PathVariable Long clubId,
+            HttpServletRequest request,
             @RequestPart(value = "file", required = false)MultipartFile file) {
 
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("클럽 로고 수정 완료")
-                .data(clubService.updateLogo(clubId, file))
+                .data(clubService.updateLogo(request, clubId, file))
                 .build(), HttpStatus.OK);
     }
 

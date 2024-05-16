@@ -5,7 +5,6 @@ import com.b306.gongcha.dto.request.VerifyCodeRequest;
 import com.b306.gongcha.dto.response.CommonResponse;
 import com.b306.gongcha.service.Oauth2TokenService;
 import com.b306.gongcha.service.SMSVerificationService;
-import com.b306.gongcha.util.SmsUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,9 +42,11 @@ public class AuthController {
 
 
     @PostMapping("/phone")
-    public ResponseEntity<CommonResponse> sendAuthCode(@RequestBody PhoneRequest request) {
+    public ResponseEntity<CommonResponse> sendAuthCode(
+            HttpServletRequest httpServletRequest,
+            @RequestBody PhoneRequest request) {
 
-        smsVerificationService.sendSmsToUser(request);
+        smsVerificationService.sendSmsToUser(httpServletRequest, request);
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("휴대폰 번호로 인증번호 전송")
                 .build(), HttpStatus.OK);

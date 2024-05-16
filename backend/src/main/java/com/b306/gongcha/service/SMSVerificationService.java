@@ -8,8 +8,10 @@ import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
 import com.b306.gongcha.repository.SmsInfoRepository;
 import com.b306.gongcha.repository.UserRepository;
+import com.b306.gongcha.util.JWTUtil;
 import com.b306.gongcha.util.SmsUtil;
 import com.b306.gongcha.util.ValidationUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,13 +20,20 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SMSVerificationService {
 
+    private final JWTUtil jwtUtil;
     private final UserRepository userRepository;
     private final SmsInfoRepository smsInfoRepository;
     private final SmsUtil smsUtil;
 
-    public void sendSmsToUser(PhoneRequest request) {
+    public void sendSmsToUser(HttpServletRequest httpServletRequest, PhoneRequest request) {
+
+        User user = jwtUtil.getUserFromAccessToken(httpServletRequest);
 
         String name = request.getName();
+
+        if(user.getName().equals(name)) {
+            throw new CustomException(ErrorCode.NOT_FOUND_ID);
+        }
 
         // 휴대폰 번호에 '-' 제거
         String phoneNum = request.getNumber().replaceAll("-", "");
