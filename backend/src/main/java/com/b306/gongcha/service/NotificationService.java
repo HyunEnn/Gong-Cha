@@ -24,7 +24,7 @@ public class NotificationService {
 
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
-        System.out.println(user.getId());
+
         if(user.getFirebaseToken() != null){
             Notification notification = Notification.builder()
                     .setTitle(request.getTitle())

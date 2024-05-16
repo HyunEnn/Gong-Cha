@@ -3,6 +3,7 @@ package com.b306.gongcha.entity;
 import com.b306.gongcha.entity.num.ClubRole;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,9 @@ public class User extends BaseEntity {
     private String profile;
     private String firebaseToken;
     private String phone;
+
+    @ColumnDefault("50")
+    private int manner;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
