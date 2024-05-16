@@ -176,18 +176,18 @@ function PlayHistoryPage() {
     
         return (
             <Modal show={!!selectedPlayer} onClose={handleClosePlayerCard}>
-                <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center" onClick={handleClosePlayerCard}>
-                    <div className="absolute top-0 bg-white rounded-lg shadow-lg max-w-md mx-auto mt-[calc(11.6875rem)]" onClick={e => e.stopPropagation()}
-                         onTouchStart={handleTouchStart}
-                         onTouchMove={handleTouchMove}
-                         onTouchEnd={handleTouchEnd}
-                         style={{ transform: `translateY(${translateY}px)` }}>
+                <div className="fixed inset-0 flex items-center justify-center" onClick={handleClosePlayerCard}>
+                    <div className="absolute top-0 bg-white rounded-lg shadow-lg max-w-md mx-auto mt-[calc(4.0rem)]" onClick={e => e.stopPropagation()}
+                            onTouchStart={handleTouchStart}
+                            onTouchMove={handleTouchMove}
+                            onTouchEnd={handleTouchEnd}
+                            style={{ transform: `translateY(${translateY}px)` }}>
                         {/* 닫기 바 */}
                         <div className="absolute w-full h-4 cursor-pointer">
-                            <div className="absolute transform -translate-x-1/2 -translate-y-1/2 w-24 h-1 bg-gray-500 rounded"></div>
+                            <div className="expand-animation absolute transform -translate-x-1/2 -translate-y-1/2 w-24 h-1 bg-gray-500 rounded"></div>
                         </div>
                         {/* PlayerCard */}
-                        <PlayerCard player={selectedPlayer}/>
+                        <PlayerCard player={selectedPlayer} className={'flip-enter'}/>
                     </div>
                 </div>
             </Modal>
@@ -195,22 +195,22 @@ function PlayHistoryPage() {
     };
 
     return (
-        <>
-            <>
+        <div className="absolute flex flex-col items-center justify-center">
+            <div>
                 <div onClick={handleBackClick} className="absolute left-[calc(.7rem)] top-[calc(2.0rem)] w-[calc(1.5625rem)] h-[calc(1.875rem)] cursor-pointer">
                     <img src={lArrowIcon} alt="돌아가기" />
                 </div>
-                <div className="page-title">경기내역</div>
-                <div className="absolute inset-x-0 flex items-center justify-center top-[calc(8.9375rem)] text-sm">
-                    <div className="flex flex-col items-center justify-center">
+                <div className="page-title w-[calc(10rem)]">경기내역</div>
+                <div className="relative top-[calc(8.9375rem)]">
+                    <div className="absolute flex flex-col items-center justify-center left-1/2 w-[calc(22.5rem)]">
                         <span className="font-pretendardBold">
                             지난 경기 내역
                         </span>
                     </div>
                 </div>
-                <div className="absolute left-0 top-[calc(10.6875rem)] border-[calc(.01875rem)] w-full z-0"></div>
-            </>
-            <>
+                <div className="absolute left-0 top-[calc(10.6875rem)] border-[calc(.01875rem)] w-[calc(22.5rem)] z-0"></div>
+            </div>
+            <div className="absolute flex flex-col items-center justify-center">
                 {playHistoryData.length === 0 ? (
                     <div className="absolute flex justify-center left-1/2 top-[calc(15rem)] transform -translate-x-1/2 p-0 w-[calc(6rem)] h-[calc(6rem)]">
                         <img src={emptyGhostIcon} alt="지난 경기 내역이 없습니다" />
@@ -224,7 +224,7 @@ function PlayHistoryPage() {
                                     {data[0].date}
                                 </CardHeader>
                                 <CardContent key={uuidv4()} className="flex items-center p-0">
-                                    <div className="absolute left-[calc(0.8125rem)] w-[calc(3.0625rem)] font-pretendardBold text-lg">{data[0].time}</div>
+                                    <div className="absolute left-[calc(1.8125rem)] w-[calc(3.0625rem)] font-pretendardBold text-lg">{data[0].time}</div>
                                     <div className="absolute flex items-center left-[calc(7.0rem)] top-[calc(1.4rem)]">
                                         <CardTitle className="text-[calc(1.0rem)] text-sm">{data[0].writer.name} FC</CardTitle>
                                         <span className="mx-1 font-pretendardRegular text-base">VS</span>
@@ -259,10 +259,13 @@ function PlayHistoryPage() {
                                 >
                                     &times;
                                 </button>
+                                <div className="absolute flex flex-col items-center justify-center mt-5">
+                                        <p className="font-pretendardBlack">{playHistoryData[0][0].writer.name} FC VS {playHistoryData[0][1].writer.name} FC</p>
+                                </div>
                                 {/* team info content */}
-                                <div className="flex flex-col items-start justify-center mt-10 bg-stone-200 relative">
-                                    <div className="mb-0 w-[calc(20rem)]">
-                                        <img className="w-full mt-[calc(4rem)] transform inset-0 bg-gradient-to-b from-transparent to-black x-" src={playGroundIcon} alt="경기장 배경" />
+                                <div className="flex flex-col items-start justify-center mt-5 bg-stone-200 relative">
+                                    <div className="mb-0 w-[calc(18rem)]">
+                                        <img className="rounded-sm w-full mt-[calc(0rem)] transform inset-0 bg-gradient-to-b from-transparent to-black x-" src={playGroundIcon} alt="경기장 배경" />
                                     </div>
                                     <div className="flex justify-center w-full absolute bottom-1.5/2">
                                         {playHistoryData.map((teamList, index) => (
@@ -272,7 +275,7 @@ function PlayHistoryPage() {
                                                         <React.Fragment key={team.key}>
                                                             {teamIndex !== 0 && (
                                                                 <div className="w-full mb-4 flex items-center justify-center">
-                                                                    <span className="font-pretendardRegular text-2xl mx-2">VS</span>
+                                                                    <span className="font-pretendardRegular text-2xl mx-2 mt-3">🆚</span>
                                                                 </div>
                                                             )}
                                                             {team.players.map((player, playerIndex) => (
@@ -281,7 +284,21 @@ function PlayHistoryPage() {
                                                                         src={player.profileImage} 
                                                                         alt="프로필 사진"
                                                                         style={{ width: '2rem', height: '2rem', objectFit: 'contain' }} />
-                                                                    <p className="font-pretendardBold text-white text-[calc(0.7rem)]" style={{ alignSelf: 'flex-start' }}>{player.name}</p>
+                                                                    <div className="relative font-pretendardBold text-white text-[calc(0.7rem)] w-[calc(3rem)]" style={{ alignSelf: 'flex-start' }}>
+                                                                        <p className="ml-2">{player.name}</p>
+                                                                        {selectedPlayer === null && (
+                                                                            <div className="absolute -mt-5 ml-[calc(2.5rem)]">
+                                                                                <img 
+                                                                                    src={reportIcon} 
+                                                                                    alt="리포트 아이콘" 
+                                                                                    width={30} 
+                                                                                    height={30} 
+                                                                                    onClick={openReportModal}/>
+                                                                                <p className="text-center text-[calc(0.2rem)] -ml-1 font-pretendardBold">신고하기</p>
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                    
                                                                 </div>
                                                             ))}
                                                             {showReportModal && (
@@ -308,29 +325,18 @@ function PlayHistoryPage() {
                                                 width={25} 
                                                 height={25} 
                                                 onClick={openEvaluationModal}/>
-                                            <p className="text-center text-[calc(0.3rem)] mt-1 mr-0 font-pretendardBold">평가하기</p>
+                                            <p className="text-center text-[calc(0.3rem)] mt-1 mr-0 font-pretendardBlack text-white">평가하기</p>
                                     </div>
                                 )}
-                                {selectedPlayer === null && (
-                                <div className="absolute top-0 right-0 mt-[calc(5.5rem)] mr-2">
-                                    <img 
-                                        src={reportIcon} 
-                                        alt="리포트 아이콘" 
-                                        width={30} 
-                                        height={30} 
-                                        onClick={openReportModal}/>
-                                    <p className="text-center text-[calc(0.3rem)] mr-2 font-pretendardBold">신고하기</p>
-                                </div>
-                                )}
                                 {showEvaluationModal && (
-                                    <EvaluationModal onClose={closeEvaluationModal} />
+                                    <EvaluationModal players={playHistoryData[0][0].players} onClose={closeEvaluationModal} />
                                 )}
                             </div>
                         </div>
                     </Modal>
                 )}
-            </>
-        </>
+            </div>
+        </div>
     );
 }
 

@@ -6,7 +6,7 @@ import Modal from '@/components/Modal';
 import TeamInfo from '@/components/TeamInfo';
 import emptyGhostIcon from '@/assets/icons/emptyGhost.svg';
 import rArrowIcon from '@/assets/icons/rArrow.svg';
-import { TeamListDummyData } from '@/data/dummyData'; // dummy data
+import { getTeamList } from '@/apis/api/team';
 
 const regions = [
     { id: 1, region: '서울', districts: ['강남구', '송파구', '강서구', '마포구', '종로구', '중구', '용산구', '성동구', '광진구', '동대문구', '중랑구', '성북구', '강북구', '도봉구', '노원구', '은평구', '서대문구', '구로구', '금천구', '영등포구', '동작구', '관악구', '서초구', '강동구'] },
@@ -40,33 +40,31 @@ function TeamList() {
     });
     const [filterState, setFilterState] = useState([false, false, false, false]);
     const [checked, setChecked] = useState(false);
-    
-    useEffect(() => {
-        setTeamListData(    // dummy data
-            TeamListDummyData,
-        );
-    }, []);
 
     useEffect(() => {
-        /* axios for db connection
-        getMyTeamInfo(
-            key,
+        // axios for db connection
+        getTeamList(
             (success) => {
-                setMyTeamInfoData({
-                    ...success,
-                });
+                console.log(success.data.data);
+                if (success.data.data.content.length !== 0) {
+                    console.log(success.data.data.content.length);
+                    setTeamListData(
+                        success.data.data.content,
+                    );
+                }
             },
             (fail) => {
-                
+                console.log(fail);
             }
         );
         return () => {
             
         };
-        */
+
     }, []);
 
     const handleTeamInfoClick = (key) => {
+        console.log("씨발아");
         setDetailKey({ key });
         setShowDetailModal(true);
     };
@@ -161,7 +159,7 @@ function TeamList() {
     
 
     return (
-        <>
+        <div className="absolute">
             {teamListData.length === 0 ? (
                 <div className="absolute flex justify-center left-1/2 top-[calc(15rem)] transform -translate-x-1/2 p-0 w-[calc(6rem)] h-[calc(6rem)]">
                     <img src={emptyGhostIcon} alt="팀 목록이 없습니다" />
@@ -299,12 +297,23 @@ function TeamList() {
                                 </button>
                             </div>
                         </div>
-                        <div className="absolute flex flex-col justify-start left-[calc(1.13125rem)] top-[calc(15.5rem)] w-[calc(20.2rem)] bg-gray-200">
+                        <div className="absolute flex flex-col justify-start left-[calc(1.13125rem)] top-[calc(15.5rem)] w-[calc(20.2rem)] rounded bg-slate-200">
                             {teamListData.map((data) => (
-                                    <div key={uuidv4()} className="border-b-[calc(0.05rem)] border-white" onClick={() => handleTeamInfoClick(data.key)}>
-                                        <div className="mt-3 ml-1">
-                                            <p>{data.writer.name} FC</p>
-
+                                    <div key={uuidv4()} className="border-b-[calc(0.05rem)] border-white transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handleTeamInfoClick(data.key)}>
+                                        <div className="absolute mt-2 ml-4 text-[calc(.6rem)]">
+                                            <p className="font-pretendardBlack">{data.startTime}:00</p>
+                                            <p className='ml-2'>~</p>
+                                            <p className="font-pretendardBlack">{data.endTime}:00</p>
+                                        </div>
+                                        <div className="mt-2 ml-[calc(5rem)] mb-3">
+                                            {/* <p>{data.writer.name} FC</p> */}
+                                            <p>테스트 FC</p>
+                                            <p className="mt-1 text-[calc(.5rem)]">
+                                                {data.region} {data.district}
+                                                &nbsp;&nbsp;{data.difficulty}
+                                                {/* &nbsp;&nbsp;현재 {data.players.length}명 */}
+                                                &nbsp;&nbsp;현재 5명
+                                            </p>
                                             {/* 친선전: ENUM
                                                 location: 부산시
                                                 district: 남구
@@ -321,39 +330,39 @@ function TeamList() {
                             )}
                         </div>
                         {showDetailModal && (
-                        <Modal show={showDetailModal} onClose={closeModal}>
-                            {/* Modal content */}
-                            <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center " onClick={handleOutsideClick}>
-                                <div
-                                    className="relative flex flex-col items-center justify-start bg-stone-100 w-[calc(20.5rem)] h-[calc(31.25rem)] rounded-xl overflow-x-hidden overflow-y-auto" 
-                                    onClick={e => e.stopPropagation()}
-                                >
-                                    {/* close button */}
-                                    <button
-                                        onClick={closeModal} 
-                                        className="self-start mt-2 mb-2 ml-2 w-5 h-5 bg-[#FF5F51] rounded-full shadow-sm font-bold text-white flex items-center justify-center"
+                            <Modal show={showDetailModal} onClose={closeModal}>
+                                {/* Modal content */}
+                                <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center " onClick={handleOutsideClick}>
+                                    <div
+                                        className="relative flex flex-col items-center justify-start bg-stone-100 w-[calc(20.5rem)] h-[calc(31.25rem)] rounded-xl overflow-x-hidden overflow-y-auto" 
+                                        onClick={e => e.stopPropagation()}
                                     >
-                                        &times;
-                                    </button>
-                                    <div className="absolute w-full mt-10">
-                                        <TeamInfo></TeamInfo>
-                                        <div className="absolute flex flex-col items-center justify-center w-full mt-5">
-                                            <button
-                                                className="w-4/5 bg-blue-500 text-white rounded-md font-bold mb-4"
-                                                onClick={handleSubmit}
-                                            >
-                                                신청하기
-                                            </button>
+                                        {/* close button */}
+                                        <button
+                                            onClick={closeModal} 
+                                            className="self-start mt-2 mb-2 ml-2 w-5 h-5 bg-[#FF5F51] rounded-full shadow-sm font-bold text-white flex items-center justify-center"
+                                        >
+                                            &times;
+                                        </button>
+                                        <div className="absolute w-full mt-10">
+                                            <TeamInfo></TeamInfo>
+                                            <div className="absolute flex flex-col items-center justify-center w-full mt-5">
+                                                <button
+                                                    className="w-4/5 bg-blue-500 text-white rounded-md font-bold mb-4"
+                                                    onClick={handleSubmit}
+                                                >
+                                                    신청하기
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </Modal>
+                            </Modal>
                         )}
                     </>
                 )
             }
-        </>
+        </div>
     );
 }
 

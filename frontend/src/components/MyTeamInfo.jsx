@@ -127,37 +127,43 @@ function MyTeamInfo() {
     };
 
     return (
-        <>
+        <div className="absolute flex flex-col items-center justify-center">
             {/* create team button */}
-            <div className="absolute flex items-center justify-center right-[calc(-1rem)] top-[calc(11.5rem)] transform -translate-x-1/2 p-0 w-[calc(5rem)] h-[calc(2rem)] rounded-full border-[calc(.1rem)] border-gray-100">
-                {myTeamInfoData.length === 0 ? (
+            <div className="absolute flex flex-col left-[calc(9rem)]">
+                <div className="absolute flex items-center justify-center top-[calc(11.5rem)] w-[calc(20.25rem)]">
+                    {myTeamInfoData.length === 0 ? (
+                            <button
+                                className="w-[calc(4rem)] h-[calc(2rem)] text-gray-700 rounded-full border-[calc(.1rem)] border-gray-100 font-bold text-[calc(.6rem)]"
+                                onClick={handleCreateButton}
+                            >
+                                팀 생성하기
+                            </button>
+                    ) : (
                         <button
-                            className="w-[calc(4rem)] h-[calc(1rem)] text-gray-700 rounded-md font-bold text-[calc(.6rem)]"
-                            onClick={handleCreateButton}
+                        className="w-[calc(4rem)] h-[calc(2rem)] text-gray-700 rounded-full border-[calc(.1rem)] border-gray-100 font-bold text-[calc(.6rem)]"
+                        onClick={handleLeftButton}
                         >
-                            팀 생성하기
+                            팀 나가기
                         </button>
-                ) : (
-                    <button
-                    className="w-[calc(4rem)] h-[calc(1rem)] text-gray-700 rounded-md font-bold text-[calc(.6rem)]"
-                    onClick={handleLeftButton}
-                    >
-                        팀 나가기
-                    </button>
-                    )}
+                        )}
+                </div>
             </div>
-            {/* team info */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 top-[30%] w-[85%] rounded bg-slate-50">
-                {myTeamInfoData.length === 0 ? (
-                    <div className="absolute flex justify-center left-1/2 top-[calc(10rem)] transform -translate-x-1/2 p-0 w-[calc(6rem)] h-[calc(6rem)]">
-                        <img src={emptyGhostIcon} alt="나의 팀이 없습니다" />
-                        <p className="absolute top-[calc(7rem)] font-pretendardBlack text-[calc(0.4rem)] text-gray-500">나의 팀이 없어요</p>
+            <>
+                {/* team info */}
+                <div className="relative w-full left-[calc(1.13125rem)]">
+                    <div className="absolute left-1/2 top-[calc(15rem)] w-[calc(20.25rem)] rounded bg-slate-50">
+                        {myTeamInfoData.length === 0 ? (
+                            <div className="absolute flex justify-center top-[calc(10rem)] transform -translate-x-1/2 p-0 w-[calc(6rem)] h-[calc(6rem)]">
+                                <img src={emptyGhostIcon} alt="나의 팀이 없습니다" />
+                                <p className="absolute top-[calc(7rem)] font-pretendardBlack text-[calc(0.4rem)] text-gray-500">나의 팀이 없어요</p>
+                            </div>
+                        ) : (
+                            <TeamInfo></TeamInfo>
+                        )}
+                        <div className="mb-[calc(10rem)]"></div>
                     </div>
-                ) : (
-                    <TeamInfo></TeamInfo>
-                )}
-                <div className="mb-[calc(10rem)]"></div>
-            </div>
+                </div>
+            </>
             {/* create team modal */}
             {showModal && (
                 <Modal show={showModal} onClose={closeModal}>
@@ -272,7 +278,7 @@ function MyTeamInfo() {
                     </div>
                 </Modal>
             )}
-        </>
+        </div>
     );
 }
 

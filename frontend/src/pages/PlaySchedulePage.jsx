@@ -94,24 +94,22 @@ function PlaySchedulePage() {
     };
 
     return (
-        <>
+        <div className="absolute flex flex-col items-center justify-center">
             <>
                 <div onClick={handleBackClick} className="absolute left-[calc(.7rem)] top-[calc(2.0rem)] w-[calc(1.5625rem)] h-[calc(1.875rem)] cursor-pointer">
                     <img src={lArrowIcon} alt="돌아가기" />
                 </div>
-                <div className="page-title">현재 진행중인 팀</div>
-                <div className="absolute inset-x-0 flex items-center justify-center top-[calc(8.9375rem)] text-sm">
-                    <div className="flex flex-col items-center justify-center">
-                        <span className="font-pretendardBold">
-                            나의 팀 보기
-                        </span>
-                    </div>
+                <div className="page-title w-[calc(19.875rem)]">현재 진행중인 팀</div>
+                <div className="absolute flex flex-col items-center justify-center left-1/2 top-[calc(8.9375rem)] w-[calc(22.5rem)]">
+                    <span className="font-pretendardBold">
+                        나의 팀 보기
+                    </span>
                 </div>
-                <div className="absolute left-0 top-[calc(10.6875rem)] border-[calc(.01875rem)] w-full z-0"></div>
+                <div className="absolute left-0 top-[calc(10.6875rem)] border-[calc(.01875rem)] w-[calc(22.5rem)] z-0"></div>
             </>
             <>
                 {/* team info */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 top-[30%] w-[85%] rounded bg-slate-50">
+                <div className="absolute left-0 top-[calc(12.6875rem)] w-[calc(22.5rem)] rounded bg-slate-50">
                     {myTeamInfoData.length === 0 ? (
                         <div className="absolute flex justify-center left-1/2 top-[calc(10rem)] transform -translate-x-1/2 p-0 w-[calc(6rem)] h-[calc(6rem)]">
                             <img src={emptyGhostIcon} alt="나의 팀이 없습니다" />
@@ -123,7 +121,7 @@ function PlaySchedulePage() {
                     <div className="mb-[calc(10rem)]"></div>
                 </div>
             </>
-        </>
+        </div>
     );
 }
 

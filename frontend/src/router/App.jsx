@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import MyPageWithTransition from '@/components/MyPageWithTransition';
 import ErrorPage from '@/pages/ErrorPage';
@@ -22,8 +22,48 @@ import PlaySchedulePage from '@/pages/PlaySchedulePage';
 import PlayerCardPage from '@/pages/PlayerCardPage';
 import AlarmPage from '@/pages/AlarmPage';
 import { Toaster } from '@/components/ui/sonner';
+import FirebaseComponent from '@/firebase/firebaseConfig';
+import { testStore } from '@/stores/testStore';
+import { toast } from "sonner"
 
 function App() {
+    const { token, payload } = testStore();
+    const [localToken, setLocalToken] = useState(token);
+    const [localPayload, setLocalPayload] = useState(payload);
+  
+    useEffect(() => {
+    const test = token;
+      setLocalToken(token);
+    }, [token]);
+    useEffect(() => {
+        const test = localToken;
+        console.log(test);
+        setLocalToken(token);
+        toast("token", {
+        description: test,
+        className: 'toaster',
+        action: {
+            label: "확인",
+            onClick: () => console.log("이벤트 확인"),
+        },
+    });
+    }, [localToken]);
+    useEffect(() => {
+        if(payload !== null) {
+            const title = payload.notification.title;
+            const body = payload.notification.body;
+            setLocalPayload(payload);
+            toast(title, {
+            description: body,
+            className: 'toaster',
+            action: {
+                label: "확인",
+                onClick: () => console.log("이벤트 확인"),
+            },
+        });
+        }
+      }, [payload]);
+
     const router = createBrowserRouter([
         // {
         //     path: '/',
@@ -123,6 +163,7 @@ function App() {
 
     return (
         <>
+            <FirebaseComponent/>
             <Toaster />
             <RouterProvider router={router}></RouterProvider>
         </>

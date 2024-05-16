@@ -1,176 +1,100 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import React, { useEffect, useRef } from "react";
+import { getTeamInfo, setTeamInfo } from '@/apis/api/test';
 
-const Test = () => {
-  const { scrollY } = useScroll();
-  const divRefs = useRef([]);
+const onNaverLogin = () => {
+  window.location.href = "http://k10b306.p.ssafy.io:8081/api/oauth2/authorization/naver";
+};
 
-  const scale = useTransform(scrollY, [0, 200], [0.5, 1]);
-  const opacity = useTransform(scrollY, [0, 200], [0, 1]);
+const onKakakoLogin = () => {
+  window.location.href = "http://k10b306.p.ssafy.io:8081/api/oauth2/authorization/kakao";
+};
 
-  useEffect(() => {
-    const handleScroll = () => {
-      divRefs.current.forEach((ref, index) => {
-        if (ref) {
-          const { top, bottom } = ref.getBoundingClientRect();
-          const viewportHeight = window.innerHeight;
-          if (top < viewportHeight && bottom >= 0) {
-            // Check if in viewport
-            ref.style.transform = "scale(1)";
-            ref.style.opacity = "1";
-            ref.style.transition = "transform 0.2s ease-out, opacity 0.5s ease-out";
-          } else {
-            ref.style.transform = "scale(0.5)";
-            ref.style.opacity = "0";
-          }
-        }
-      });
-    };
+const onGoogleLogin = () => {
+  window.location.href = "http://k10b306.p.ssafy.io:8081/api/oauth2/authorization/google";
+};
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+const getData = () => {
+        console.log("엄");
+        // axios for db connection
+        getTeamInfo(
+            1,
+            (success) => {
+                console.log(success.data.data.content[0]);
+            },
+            (fail) => {
+                
+            }
+        );
+        // setTeamInfo(
+        //   {
+        //     "matchType": "내전",
+        //     "region": "강원도",
+        //     "district": "양양시",
+        //     "startTime": 9,
+        //     "endTime": 18,
+        //     "dayOfWeek": ["월", "수", "목", "금"],
+        //     "difficulty": "초급",
+        //     "userList": [3],
+        //     "writerId": 1
+        //   },
+        //   (success) => {
+        //       console.log(success.data);
+        //   },
+        //   (fail) => {
+              
+        //   }
+        // );
+};
 
-  return (
-    <div style={{ height: "200vh", overflow: "scroll" }}>
-      <motion.div
-        ref={(el) => (divRefs.current[0] = el)}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        style={{
-          backgroundColor: "hsl(0, 50%, 50%)",
-          height: "200px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "2rem",
-          color: "white",
-        }}
-      >
-        Div 1
-      </motion.div>
-      <motion.div
-        ref={(el) => (divRefs.current[1] = el)}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        style={{
-          backgroundColor: "hsl(120, 50%, 50%)",
-          height: "200px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "2rem",
-          color: "white",
-        }}
-      >
-        Div 2
-      </motion.div>
-      <motion.div
-        ref={(el) => (divRefs.current[2] = el)}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        style={{
-          backgroundColor: "hsl(240, 50%, 50%)",
-          height: "200px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "2rem",
-          color: "white",
-        }}
-      >
-        Div 3
-      </motion.div>
-      <motion.div
-        ref={(el) => (divRefs.current[3] = el)}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        style={{
-          backgroundColor: "hsl(30, 50%, 50%)",
-          height: "200px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "2rem",
-          color: "white",
-        }}
-      >
-        Div 4
-      </motion.div>
-      <motion.div
-        ref={(el) => (divRefs.current[4] = el)}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        style={{
-          backgroundColor: "hsl(0, 50%, 50%)",
-          height: "200px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "2rem",
-          color: "white",
-        }}
-      >
-        Div 5
-      </motion.div>
-      <motion.div
-        ref={(el) => (divRefs.current[5] = el)}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        style={{
-          backgroundColor: "hsl(120, 50%, 50%)",
-          height: "200px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "2rem",
-          color: "white",
-        }}
-      >
-        Div 6
-      </motion.div>
-      <motion.div
-        ref={(el) => (divRefs.current[6] = el)}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        style={{
-          backgroundColor: "hsl(240, 50%, 50%)",
-          height: "200px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "2rem",
-          color: "white",
-        }}
-      >
-        Div 7
-      </motion.div>
-      <motion.div
-        ref={(el) => (divRefs.current[7] = el)}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        style={{
-          backgroundColor: "hsl(30, 50%, 50%)",
-          height: "200px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          fontSize: "2rem",
-          color: "white",
-        }}
-      >
-        Div 8
-      </motion.div>
-    </div>
+const getDat2a = () => {
+  const data = {
+    "matchType": "내전",
+    "region": "강원도",
+    "district": "양양시",
+    "startTime": 9,
+    "endTime": 18,
+    "dayOfWeek": ["월", "수", "목", "금"],
+    "difficulty": "초급",
+    "userList": [3],
+    "writerId": 1
+  };
+  console.log("엄2");
+  // axios for db connection
+  setTeamInfo(
+    data,
+    (success) => {
+        console.log(success.data);
+    },
+    (fail) => {
+        
+    }
   );
 };
+
+// const logOutData = () => {
+//   fetch("http://localhost:8080/logout"), {
+//     method: "POST",
+//     credentials: "include",
+//     headers: {
+//       "Authorization": `Bearer ${accessToken}`
+//     }
+//   }
+// }
+
+function Test() {
+  return (
+    <>
+      <h2>NAVER</h2>
+      <button onClick={onNaverLogin}>NAVER LOGIN</button>
+      <br></br>
+      <h2>KAKAO</h2>
+      <button onClick={onKakakoLogin}>KAKAO LOGIN</button>
+      <br></br>
+      <h2>GOOGLE</h2>
+      <button onClick={onGoogleLogin}>GOOGLE LOGIN</button>
+      <br></br>
+      <button onClick={getDat2a}>GET DATA</button>
+    </>
+  );
+}
 
 export default Test;

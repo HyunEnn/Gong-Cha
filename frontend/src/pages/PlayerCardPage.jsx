@@ -45,24 +45,24 @@ function PlayerCardPage() {
     }
 
     return (
-        <>
+        <div className="absolute flex items-center justify-center">
             <div onClick={handleBackClick} className="absolute left-[calc(.7rem)] top-[calc(2.0rem)] w-[calc(1.5625rem)] h-[calc(1.875rem)] cursor-pointer">
                 <img src={lArrowIcon} alt="돌아가기" />
             </div>
-            <div className="page-title">내 선수카드</div>
-            <div className="absolute inset-x-0 flex items-center justify-center top-[calc(8.9375rem)] text-sm">
-                    <div className="flex flex-col items-center justify-center">
-                        <span className="font-pretendardBold">
-                            선수 카드
-                        </span>
-                    </div>
+            <div className="page-title w-[calc(10rem)]">내 선수카드</div>
+            <div className="relative top-[calc(8.9375rem)]">
+                <div className="absolute flex flex-col items-center justify-center left-1/2 w-[calc(22.5rem)]">
+                    <span className="font-pretendardBold">
+                        선수카드
+                    </span>
                 </div>
-            <div className="absolute left-0 top-[calc(10.6875rem)] border-[calc(.01875rem)] w-full z-0"></div>
-            <div className="absolute left-1/2 top-0 mt-[calc(11.6875rem)]">
+            </div>
+            <div className="absolute left-0 top-[calc(10.6875rem)] border-[calc(.01875rem)] w-[calc(22.5rem)] z-0"></div>
+            <div className="absolute flex justify-center items-center top-0 left-[11.25rem] mt-[calc(11.6875rem)]">
                 {/* PlayerCard */}
                 {renderPlayerCard(profileData)}
             </div>
-        </>
+        </div>
     );
 }
 
