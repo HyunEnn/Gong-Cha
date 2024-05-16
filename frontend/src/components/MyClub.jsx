@@ -23,9 +23,11 @@ function MyClub() {
         positionDivRefs.current.forEach((ref, index) => {
             if (ref) {
                 const rect = ref.getBoundingClientRect();
-                console.log(`Element ${index} - Top: ${rect.top}, Left: ${rect.left}`);
+                //console.log(`Element ${index} - Top: ${rect.top}, Left: ${rect.left}`);
             }
         });
+
+        // 내 클럽 정보 조회 axios
     }, []); // 의존성 배열이 빈 배열이므로 컴포넌트 마운트 시에만 실행됩니다.
 
     const handleOpenApplyList = () => {
