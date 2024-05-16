@@ -83,6 +83,24 @@ public class UserController {
     }
 
     @Operation(
+            summary = "프로필 사진 조회",
+            description = "유저 프로필 사진을 조회함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "프로필 사진 조회에 성공했습니다."
+    )
+    @GetMapping("/profile")
+    public ResponseEntity<CommonResponse> getProfile(
+            HttpServletRequest request){
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("프로필 사진 조회 성공")
+                .data(userService.getProfile(request))
+                .build(), HttpStatus.OK);
+    }
+
+    @Operation(
             summary = "프로필 사진 변경",
             description = "유저 프로필 사진을 변경함."
     )

@@ -1,6 +1,7 @@
 package com.b306.gongcha.service;
 
 import com.b306.gongcha.dto.response.NoticeBoxResponse;
+import com.b306.gongcha.dto.response.ProfileResponse;
 import com.b306.gongcha.entity.Notice;
 import com.b306.gongcha.entity.User;
 import com.b306.gongcha.exception.CustomException;
@@ -25,6 +26,15 @@ public class UserServiceImpl implements UserService{
     private final FileUploadService fileUploadService;
     private final NoticeRepository noticeRepository;
     private final JWTUtil jwtUtil;
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProfileResponse getProfile(HttpServletRequest request) {
+
+        User user = jwtUtil.getUserFromAccessToken(request);
+        return ProfileResponse.fromEntity(user.getProfile());
+    }
+
     @Override
     @Transactional
     public String updateProfile(MultipartFile file, HttpServletRequest request) {
