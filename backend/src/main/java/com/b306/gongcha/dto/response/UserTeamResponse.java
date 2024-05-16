@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Getter
 @Builder
 @Schema(description = "팀 유저 정보 응답 DTO")
-public class UserTeamResponse extends BaseEntity {
+public class UserTeamResponse {
 
     @Schema(description = "소속 역할", allowableValues = { "팀장", "팀원" }, example = "팀원")
     private Role role;
