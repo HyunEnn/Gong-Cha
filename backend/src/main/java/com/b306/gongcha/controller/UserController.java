@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "User", description = "FCM 알림 관련 API")
+@Tag(name = "User", description = "유저 관련 API")
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor

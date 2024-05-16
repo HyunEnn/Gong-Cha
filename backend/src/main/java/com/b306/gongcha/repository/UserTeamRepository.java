@@ -28,8 +28,6 @@ public interface UserTeamRepository extends JpaRepository<UserTeam, Long> {
 
     UserTeam findByUserIdAndRole(Long userId, Role role);
 
-    UserTeam findByTeamIdAndRole(Long teamId, Role role);
-
     // 팀 id로 유저 정보 목록 불러오기
     @Query("select u from User u left outer join UserTeam ut on u.id = ut.user.id where ut.team.id = :teamId")
     List<User> findUsersByTeamId(Long teamId);
