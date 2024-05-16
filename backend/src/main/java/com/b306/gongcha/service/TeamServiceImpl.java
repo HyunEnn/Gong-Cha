@@ -39,7 +39,9 @@ public class TeamServiceImpl implements TeamService{
     public Page<TeamResponse> getAllTeams(Pageable pageable) {
 
         Page<Team> teams = teamRepository.findAll(pageable);
-        return teams.map(TeamResponse::fromEntity);
+        Page<TeamResponse> teamResponses = teams.map(TeamResponse::fromEntity);
+//        teamResponses.forEach(t -> t.updateCaptainName());
+        return teamResponses;
     }
 
     // 팀 게시글 상세 조회
