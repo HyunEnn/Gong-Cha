@@ -3,20 +3,29 @@ package com.b306.gongcha.controller;
 import com.b306.gongcha.dto.request.UserRatingRequest;
 import com.b306.gongcha.dto.response.CommonResponse;
 import com.b306.gongcha.service.CardServiceImpl;
+import com.b306.gongcha.service.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+@Tag(name = "User", description = "FCM 알림 관련 API")
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final CardServiceImpl cardService;
+    private final UserServiceImpl userService;
 
     @Operation(
             summary = "유저 선수 카드 조회",
@@ -46,12 +55,12 @@ public class UserController {
             responseCode = "200",
             description = "내 선수 카드 조회에 성공했습니다."
     )
-    @GetMapping("my-page/card")
-    public ResponseEntity<CommonResponse> getMyCard(){
+    @GetMapping("/card")
+    public ResponseEntity<CommonResponse> getMyCard(HttpServletRequest request){
 
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("내 선수 카드 조회 성공")
-                .data(cardService.getMyCard())
+                .data(cardService.getMyCard(request))
                 .build(), HttpStatus.OK);
     }
 
@@ -64,7 +73,7 @@ public class UserController {
             responseCode = "200",
             description = "선수 평가에 성공했습니다."
     )
-    @PatchMapping("/card")
+    @PatchMapping("/rating")
     public ResponseEntity<CommonResponse> userRating(@RequestBody UserRatingRequest cardRequest){
 
         cardService.userRating(cardRequest);
@@ -72,4 +81,41 @@ public class UserController {
                 .message("선수 평가 성공")
                 .build(), HttpStatus.OK);
     }
+
+    @Operation(
+            summary = "프로필 사진 변경",
+            description = "유저 프로필 사진을 변경함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "프로필 사진 변경에 성공했습니다."
+    )
+    @PatchMapping("/profile")
+    public ResponseEntity<CommonResponse> updateProfile(
+            @RequestPart(value = "file", required = false) MultipartFile file
+            , HttpServletRequest request){
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("프로필 사진 변경 성공")
+                .data(userService.updateProfile(file, request))
+                .build(), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "알림 메세지 조회",
+            description = "유저가 받은 알림을 조회함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "알림 조회에 성공했습니다."
+    )
+    @GetMapping("/notice")
+    public ResponseEntity<CommonResponse> notice(HttpServletRequest request) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("알림 조회 성공")
+                .data(userService.getNotices(request))
+                .build(), HttpStatus.OK);
+    }
 }
+
