@@ -35,6 +35,7 @@ public enum ErrorCode {
     BOARD_REQUEST_FAIL(HttpStatus.BAD_REQUEST, "신청에 실패하였습니다."),
     BOARD_REQUEST_DUPLICATE(HttpStatus.BAD_REQUEST, "이미 신청이 완료되었습니다."),
 
+    ALREADY_TRANSFER_APPLY(HttpStatus.BAD_REQUEST, "이미 이적시장에 신청하였습니다."),
 
     NOT_FOUND_CLUB(HttpStatus.BAD_REQUEST, "존재하지 않는 클럽입니다."),
     NOT_FOUND_APPLY(HttpStatus.BAD_REQUEST, "클럽 신청이 존재하지 않습니다."),

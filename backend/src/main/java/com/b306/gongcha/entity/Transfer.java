@@ -97,7 +97,8 @@ public class Transfer extends BaseEntity {
                 .dayOfWeek(dayOfWeek)
                 .info(info)
                 .isJoined(isJoined)
-                .user(user)
+                .userId(user.getId())
+                .userName(user.getName())
                 .build();
     }
 
