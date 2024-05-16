@@ -6,6 +6,7 @@ import com.b306.gongcha.service.ClubApplyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +31,10 @@ public class ClubApplyController {
     @PostMapping("/{clubId}")
     public ResponseEntity<CommonResponse> applyClub(
             @PathVariable Long clubId,
+            HttpServletRequest httpServletRequest,
             @RequestBody ClubApplyRequest request) {
 
-        clubApplyService.applyClub(clubId, request);
+        clubApplyService.applyClub(httpServletRequest, clubId, request);
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("클럽 신청 완료")
                 .build(), HttpStatus.OK);
@@ -48,11 +50,12 @@ public class ClubApplyController {
     )
     @GetMapping("/{clubId}")
     public ResponseEntity<CommonResponse> getClubApplies(
+            HttpServletRequest httpServletRequest,
             @PathVariable Long clubId) {
 
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("클럽 신청 목록 조회 완료")
-                .data(clubApplyService.getAllClubApplies(clubId))
+                .data(clubApplyService.getAllClubApplies(httpServletRequest, clubId))
                 .build(), HttpStatus.OK);
     }
 
@@ -65,10 +68,12 @@ public class ClubApplyController {
             description = "클럽 신청이 완료되었습니다."
     )
     @PostMapping("/{clubId}/{applyId}/permit")
-    public ResponseEntity<CommonResponse> permitApply(@PathVariable Long clubId,
-                                                      @PathVariable Long applyId) {
+    public ResponseEntity<CommonResponse> permitApply(
+            HttpServletRequest httpServletRequest,
+            @PathVariable Long clubId,
+            @PathVariable Long applyId) {
 
-        clubApplyService.permitApply(clubId, applyId);
+        clubApplyService.permitApply(httpServletRequest, clubId, applyId);
 
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("클럽 신청이 승인되었습니다.")
@@ -84,10 +89,12 @@ public class ClubApplyController {
             description = "클럽 신청이 거부가 완료되었습니다."
     )
     @PostMapping("/{clubId}/{applyId}/deny")
-    public ResponseEntity<CommonResponse> deniedApply(@PathVariable Long clubId,
-                                                      @PathVariable Long applyId) {
+    public ResponseEntity<CommonResponse> deniedApply(
+            HttpServletRequest request,
+            @PathVariable Long clubId,
+            @PathVariable Long applyId) {
 
-        clubApplyService.deniedApply(clubId, applyId);
+        clubApplyService.deniedApply(request, clubId, applyId);
 
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("클럽 신청이 거부되었습니다.")

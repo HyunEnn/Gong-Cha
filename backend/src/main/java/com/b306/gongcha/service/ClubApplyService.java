@@ -6,11 +6,12 @@ import com.b306.gongcha.entity.*;
 import com.b306.gongcha.entity.num.ClubRole;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
-import com.b306.gongcha.global.GetCurrentUserId;
 import com.b306.gongcha.repository.ClubApplyRepository;
 import com.b306.gongcha.repository.ClubRepository;
 import com.b306.gongcha.repository.NoticeRepository;
 import com.b306.gongcha.repository.UserRepository;
+import com.b306.gongcha.util.JWTUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ClubApplyService {
 
+    private final JWTUtil jwtUtil;
     private final ClubApplyRepository clubApplyRepository;
     private final UserRepository userRepository;
     private final ClubRepository clubRepository;
@@ -30,16 +32,12 @@ public class ClubApplyService {
      * 2. 클럽 마스터가 해당 요청을 승인하면 팀에 추가하고 삭제, 거절하면 그대로 삭제
      */
 
-    public void applyClub(Long clubId, ClubApplyRequest request) {
+    public void applyClub(HttpServletRequest httpServletRequest, Long clubId, ClubApplyRequest request) {
 
-        Long userId = GetCurrentUserId.currentUserId();
-
-        // 유효성 검사
-        User applyUser = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID));
+        User applyUser = jwtUtil.getUserFromAccessToken(httpServletRequest);
 
         // 이미 클럽 신청한 기록이 있으면 더 이상 신청이 불가능 해야함
-        if(clubApplyRepository.findByUserId(userId).isPresent()) {
+        if(clubApplyRepository.findByUserId(applyUser.getId()).isPresent()) {
             throw new CustomException(ErrorCode.AlREADY_CLUB_APPLY);
         }
 
@@ -62,12 +60,9 @@ public class ClubApplyService {
         }
     }
 
-    public List<ClubApplyResponse> getAllClubApplies(Long clubId) {
+    public List<ClubApplyResponse> getAllClubApplies(HttpServletRequest request, Long clubId) {
 
-        Long userId = GetCurrentUserId.currentUserId();
-
-        User clubMaster = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID));
+        User clubMaster = jwtUtil.getUserFromAccessToken(request);
 
         clubRepository.findById(clubId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
@@ -87,12 +82,9 @@ public class ClubApplyService {
 
     }
 
-    public void permitApply(Long clubId, Long applyId) {
+    public void permitApply(HttpServletRequest request, Long clubId, Long applyId) {
 
-        Long userId = GetCurrentUserId.currentUserId();
-
-        User masterUser = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        User masterUser = jwtUtil.getUserFromAccessToken(request);
 
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
@@ -119,12 +111,9 @@ public class ClubApplyService {
         }
     }
 
-    public void deniedApply(Long clubId, Long applyId) {
+    public void deniedApply(HttpServletRequest request, Long clubId, Long applyId) {
 
-        Long userId = GetCurrentUserId.currentUserId();
-
-        User masterUser = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        User masterUser = jwtUtil.getUserFromAccessToken(request);
 
         clubRepository.findById(clubId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));

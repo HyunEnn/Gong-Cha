@@ -53,6 +53,9 @@ dependencies {
 
     // FCM
     implementation 'com.google.firebase:firebase-admin:9.1.1'
+
+    // Cool Sms
+    implementation 'net.nurigo:sdk:4.3.0'
 }
 
 tasks.named('test') {

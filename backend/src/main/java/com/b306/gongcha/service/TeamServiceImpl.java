@@ -1,12 +1,15 @@
 package com.b306.gongcha.service;
 
+import com.b306.gongcha.dto.UserDTO;
 import com.b306.gongcha.dto.request.TeamRequest;
+import com.b306.gongcha.dto.response.CardResponse;
 import com.b306.gongcha.dto.response.TeamResponse;
 import com.b306.gongcha.dto.response.UserTeamResponse;
 import com.b306.gongcha.entity.*;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
 import com.b306.gongcha.repository.NoticeRepository;
+import com.b306.gongcha.repository.MatchingAskRepository;
 import com.b306.gongcha.repository.TeamRepository;
 import com.b306.gongcha.repository.UserRepository;
 import com.b306.gongcha.repository.UserTeamRepository;
@@ -29,6 +32,7 @@ public class TeamServiceImpl implements TeamService{
     private final UserTeamRepository userTeamRepository;
     private final UserRepository userRepository;
     private final NoticeRepository noticeRepository;
+    private final MatchingAskRepository matchingAskRepository;
 
     // 팀 목록 게시글 전체 조회
     @Override
@@ -56,6 +60,9 @@ public class TeamServiceImpl implements TeamService{
         List<UserTeamResponse> userTeamResponseList = new ArrayList<>();
         List<UserTeam> userTeamList = userTeamRepository.findAllByTeamIdAndPermitIsTrue(teamId);
         userTeamList.forEach(u -> userTeamResponseList.add(u.toUserTeamResponse()));
+        userTeamResponseList.forEach(u -> u.updateGames(
+                matchingAskRepository.countAllByTeamIdAndStatus(u.getUserId())
+                        + matchingAskRepository.countAllByVersusTeamIdAndStatus(u.getUserId())));
         return userTeamResponseList;
     }
 
@@ -145,7 +152,6 @@ public class TeamServiceImpl implements TeamService{
 
         userTeam = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"));
         User captain = userTeam.getUser();
-//        Notice notice = (Notice) noticeRepository.findAll();
         Notice notice = Notice.createTeamNotice(captain, user);
         noticeRepository.save(notice);
         return seavedUserTeam.toUserTeamResponse();
@@ -212,4 +218,32 @@ public class TeamServiceImpl implements TeamService{
         team.updateStatus(Status.valueOf("모집완료"));
         return team.toTeamResponse();
     }
+
+    // 선수 정보 불러오기
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> getUsersByTeam(Long teamId) {
+
+        if(teamRepository.findById(teamId).isPresent()) {
+            return userTeamRepository.findUsersByTeamId(teamId);
+        }
+        else {
+            throw new CustomException(ErrorCode.NOT_FOUND_TEAM);
+        }
+    }
+
+    // 선수 카드 정보 불러오기
+    @Override
+    @Transactional(readOnly = true)
+    public List<CardResponse> getCardsByTeam(Long teamId) {
+
+        if(teamRepository.findById(teamId).isPresent()) {
+            List<Card> cardList = userTeamRepository.findCardsByTeamId(teamId);
+            return cardList.stream().map(CardResponse::fromEntity).toList();
+        }
+        else {
+            throw new CustomException(ErrorCode.NOT_FOUND_TEAM);
+        }
+    }
+
 }

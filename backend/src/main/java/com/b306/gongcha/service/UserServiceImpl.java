@@ -8,6 +8,8 @@ import com.b306.gongcha.exception.ErrorCode;
 import com.b306.gongcha.global.GetCurrentUserId;
 import com.b306.gongcha.repository.NoticeRepository;
 import com.b306.gongcha.repository.UserRepository;
+import com.b306.gongcha.util.JWTUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,13 +24,12 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final FileUploadService fileUploadService;
     private final NoticeRepository noticeRepository;
+    private final JWTUtil jwtUtil;
     @Override
     @Transactional
-    public String updateProfile(MultipartFile file) {
+    public String updateProfile(MultipartFile file, HttpServletRequest request) {
 
-        Long userId = GetCurrentUserId.currentUserId();
-
-        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        User user = jwtUtil.getUserFromAccessToken(request);
         if(!(user.getProfile() == null || user.getProfile().isEmpty())) {
             fileUploadService.delete(user.getProfile());
         }
@@ -41,11 +42,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<NoticeBoxResponse> getNotices() {
+    public List<NoticeBoxResponse> getNotices(HttpServletRequest request) {
 
-        Long userId = GetCurrentUserId.currentUserId();
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        User user = jwtUtil.getUserFromAccessToken(request);
         List<Notice> notice = noticeRepository.findAllByFromUserId(user.getId());
         return NoticeBoxResponse.fromEntity(notice);
     }

@@ -4,6 +4,7 @@ import com.b306.gongcha.entity.BaseEntity;
 import com.b306.gongcha.entity.Role;
 import com.b306.gongcha.entity.Team;
 import com.b306.gongcha.entity.UserTeam;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.util.List;
@@ -11,12 +12,28 @@ import java.util.stream.Collectors;
 
 @Getter
 @Builder
+@Schema(description = "팀 유저 정보 응답 DTO")
 public class UserTeamResponse extends BaseEntity {
 
+    @Schema(description = "소속 역할", allowableValues = { "팀장", "팀원" }, example = "팀원")
     private Role role;
+
+    @Schema(description = "소속 팀원 유저 id", example = "1L")
     private Long userId;
+
+    @Schema(description = "소속 팀원 유저 이름", example = "박하윤")
     private String userName;
+
+    @Schema(description = "팀 승인 여부", allowableValues = { "true", "false" }, deprecated = false)
     private Boolean permit;
+
+    @Schema(description = "선수 참여 경기 수", example = "20")
+    private int games;
+
+    public void updateGames(int games) {
+
+        this.games = games;
+    }
 
     public static List<UserTeamResponse> fromEntity(Team team) {
 
