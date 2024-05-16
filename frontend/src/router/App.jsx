@@ -20,45 +20,50 @@ import AlarmPage from '@/pages/AlarmPage';
 import { Toaster } from '@/components/ui/sonner';
 import FirebaseComponent from '@/firebase/firebaseConfig';
 import { testStore } from '@/stores/testStore';
-import { toast } from "sonner"
+import { toast } from 'sonner';
+
+import ProtectedRoute from '@/router/ProtectedRoute';
+const { VITE_AUTH_URL } = import.meta.env;
 
 function App() {
     const { token, payload } = testStore();
     const [localToken, setLocalToken] = useState(token);
     const [localPayload, setLocalPayload] = useState(payload);
-  
+
     useEffect(() => {
-    const test = token;
-      setLocalToken(token);
+        const test = token;
+        setLocalToken(token);
     }, [token]);
     useEffect(() => {
         const test = localToken;
         console.log(test);
         setLocalToken(token);
-        toast("token", {
-        description: test,
-        className: 'toaster',
-        action: {
-            label: "확인",
-            onClick: () => console.log("이벤트 확인"),
-        },
-    });
+        toast('token', {
+            description: test,
+            className: 'toaster',
+            action: {
+                label: '확인',
+                onClick: () => console.log('이벤트 확인'),
+            },
+        });
     }, [localToken]);
     useEffect(() => {
-        if(payload !== null) {
+        if (payload !== null) {
             const title = payload.notification.title;
             const body = payload.notification.body;
             setLocalPayload(payload);
             toast(title, {
-            description: body,
-            className: 'toaster',
-            action: {
-                label: "확인",
-                onClick: () => console.log("이벤트 확인"),
-            },
-        });
+                description: body,
+                className: 'toaster',
+                action: {
+                    label: '확인',
+                    onClick: () => console.log('이벤트 확인'),
+                },
+            });
         }
-      }, [payload]);
+    }, [payload]);
+
+    const user = true;
 
     const router = createBrowserRouter([
         // {
@@ -93,7 +98,11 @@ function App() {
                 },
                 {
                     path: '/mypage',
-                    element: <MyPageWithTransition />,
+                    element: (
+                        <ProtectedRoute user={user}>
+                            <MyPageWithTransition />
+                        </ProtectedRoute>
+                    ),
                     children: [
                         {
                             index: true,
@@ -155,7 +164,7 @@ function App() {
 
     return (
         <>
-            <FirebaseComponent/>
+            <FirebaseComponent />
             <Toaster />
             <RouterProvider router={router}></RouterProvider>
         </>

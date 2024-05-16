@@ -26,8 +26,64 @@ import pastRecord from '@/assets/images/mainpage/pastRecord.png';
 import myPlayerCard from '@/assets/images/mainpage/myPlayerCard.png';
 import alarmAnimation from '@/assets/lotties/alarmAnimation';
 
+const { VITE_AUTH_URL } = import.meta.env;
+
 function MainTestPage() {
     const [activeIndex, setActiveIndex] = useState(0);
+
+    // const setAccessToken = async () => {
+    //     try {
+    //         let response = await fetch(`${VITE_AUTH_URL}/kakao`);
+    //         if (!response.ok) {
+    //             throw new Error('Network response was not ok');
+    //         }
+    //         const authorizationHeader = response.headers.get('Authorization');
+    //         localStorage.setItem('accessToken', authorizationHeader);
+    //         console.log(authorizationHeader);
+    //     } catch (error) {
+    //         console.error('There has been a problem with your fetch operation: ', error);
+    //     }
+    // };
+    // setAccessToken();
+
+    // let response = fetch(
+    //     `http://k10b306.p.ssafy.io:8081/api/login/oauth2/code/kakao?code=TbMTeM4jbH29C8H4LMzwA_JF03PcVDmoQcmxjrf3RudA80ZMzUQQxwAAAAQKKiVQAAABj38H64tV7imzm104lw&state=qvKba3X_92t0YAqOiuUBU4tIE7d6p24ogUOoUwqjy3s%3D`
+    // );
+    // console.log(response);
+    // const authorizationHeader = response.headers.get('Authorization');
+    // console.log(authorizationHeader);
+
+    useEffect(() => {
+        fetch(`http://localhost:8081/api/oauth2/authorization/kakao`, {
+            method: 'GET', // or 'POST'
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': 'Bearer your-token' (if needed)
+            },
+        })
+            .then((response) => {
+                // Get a specific header from the response
+                const contentType = response.headers.get('Content-Type');
+                console.log('===========1==========');
+                console.log(response.headers);
+                // Get all headers from the response
+                const headers = Array.from(response.headers.entries());
+                const authorizationHeader = response.headers.get('Authorization');
+                console.log('===========2==========');
+                console.log('Content-Type:', contentType);
+                console.log('===========3==========');
+                console.log('All headers:', headers);
+                console.log('===========4==========');
+                console.log('authorizationHeader:', authorizationHeader);
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }, []);
 
     const navigate = useNavigate();
 
@@ -52,6 +108,7 @@ function MainTestPage() {
     const handleAlarmClick = () => {
         navigate('/alarm');
     };
+
     return (
         <div className="w-full">
             <FullpageContainer

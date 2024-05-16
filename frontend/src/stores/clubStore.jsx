@@ -33,8 +33,18 @@ export const useClubStore = create((set) => ({
     clubCreateRequest: {
         clubName: '',
         description: '',
-        activityStartTime: '',
-        activityEndTime: '',
+        activityStartTime: {
+            hour: '',
+            minute: '',
+            second: 0,
+            nano: 0,
+        },
+        activityEndTime: {
+            hour: '',
+            minute: '',
+            second: 0,
+            nano: 0,
+        },
         skillLevel: '',
         region: '',
         districts: '',

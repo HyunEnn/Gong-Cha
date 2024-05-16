@@ -2,12 +2,13 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 
 import { useClubStore } from '@/stores/clubStore';
 
-import { Button } from '@/components/ui/button';
 import JoinClubDialog from '@/components/JoinClubDialog';
 
 import ManchesterCity from '@/assets/examples/manchester-city.svg';
 import TottenhamHotspur from '@/assets/examples/tottenham-hotspur.svg';
 import ClubDetailModal from '@/components/ClubDetailModal';
+
+import { getClubDetail, getClubLists } from '@/apis/api/club';
 
 function ClubBoard() {
     const { dummyClubList } = useClubStore();
@@ -18,6 +19,17 @@ function ClubBoard() {
     const [startIndex, setStartIndex] = useState(0); // 시작 인덱스를 관리하는 상태 추가
     const [selectedClub, setSelectedClub] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    useEffect(() => {
+        getClubLists(
+            (success) => {
+                console.log('클럽 전체 조회 성공', success);
+            },
+            (fail) => {
+                console.log('클럽 전체 조회 실패', fail);
+            }
+        );
+    }, []);
 
     // 마지막 요소를 추적하기 위한 ref 생성
     const observer = useRef();
