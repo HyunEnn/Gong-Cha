@@ -8,6 +8,7 @@ import com.b306.gongcha.dto.response.UserTeamResponse;
 import com.b306.gongcha.entity.*;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
+import com.b306.gongcha.global.GetCurrentUserId;
 import com.b306.gongcha.repository.NoticeRepository;
 import com.b306.gongcha.repository.MatchingAskRepository;
 import com.b306.gongcha.repository.TeamRepository;
@@ -60,9 +61,21 @@ public class TeamServiceImpl implements TeamService{
         List<UserTeamResponse> userTeamResponseList = new ArrayList<>();
         List<UserTeam> userTeamList = userTeamRepository.findAllByTeamIdAndPermitIsTrue(teamId);
         userTeamList.forEach(u -> userTeamResponseList.add(u.toUserTeamResponse()));
+
+        // 경기수 세기
         userTeamResponseList.forEach(u -> u.updateGames(
                 matchingAskRepository.countAllByTeamIdAndStatus(u.getUserId())
                         + matchingAskRepository.countAllByVersusTeamIdAndStatus(u.getUserId())));
+
+        // 팀장인 경우 전화번호 보여주기
+        Long userId = GetCurrentUserId.currentUserId();
+        Long managerId = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"))
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getUser().getId();
+        if(userId.equals(managerId)) {
+            userTeamResponseList.forEach(utr -> utr.updatePhone(
+                    userRepository.findById(utr.getUserId())
+                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getPhone()));
+        }
         return userTeamResponseList;
     }
 
@@ -70,6 +83,22 @@ public class TeamServiceImpl implements TeamService{
     @Override
     @Transactional
     public TeamResponse createTeam(TeamRequest teamRequest) {
+
+        // 이미 "모집중" 상태인 팀의 팀장인 경우 팀 생성 불가능
+        List<UserTeam> userTeamList = userTeamRepository.findAllByUserIdAndRole(teamRequest.getWriterId(), Role.valueOf("팀장"));
+        boolean makeTeam = true;
+        for(UserTeam ut : userTeamList) {
+            Team team = teamRepository.findById(ut.getTeam().getId()).orElse(null);
+            if(team != null) {
+                if(team.getStatus().equals(Status.valueOf("모집중"))) {
+                    makeTeam = false;
+                    break;
+                }
+            }
+        }
+        if(!makeTeam) {
+            throw new CustomException(ErrorCode.ALREADY_TEAM_EXIST);
+        }
 
         // 팀 정보 저장
         Team team = Team.fromTeamRequest(teamRequest);
@@ -174,6 +203,22 @@ public class TeamServiceImpl implements TeamService{
         List<UserTeamResponse> userTeamResponseList = new ArrayList<>();
         List<UserTeam> userTeamList = userTeamRepository.findAllByTeamId(teamId);
         userTeamList.forEach(u -> userTeamResponseList.add(u.toUserTeamResponse()));
+
+        // 경기수 세기
+        userTeamResponseList.forEach(u -> u.updateGames(
+                matchingAskRepository.countAllByTeamIdAndStatus(u.getUserId())
+                        + matchingAskRepository.countAllByVersusTeamIdAndStatus(u.getUserId())));
+
+        // 팀장인 경우 전화번호 보여주기
+        Long userId = GetCurrentUserId.currentUserId();
+        Long managerId = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"))
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getUser().getId();
+        if(userId.equals(managerId)) {
+            userTeamResponseList.forEach(utr -> utr.updatePhone(
+                    userRepository.findById(utr.getUserId())
+                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getPhone()));
+        }
+
         return userTeamResponseList;
     }
 
@@ -217,19 +262,6 @@ public class TeamServiceImpl implements TeamService{
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
         team.updateStatus(Status.valueOf("모집완료"));
         return team.toTeamResponse();
-    }
-
-    // 선수 정보 불러오기
-    @Override
-    @Transactional(readOnly = true)
-    public List<User> getUsersByTeam(Long teamId) {
-
-        if(teamRepository.findById(teamId).isPresent()) {
-            return userTeamRepository.findUsersByTeamId(teamId);
-        }
-        else {
-            throw new CustomException(ErrorCode.NOT_FOUND_TEAM);
-        }
     }
 
     // 선수 카드 정보 불러오기

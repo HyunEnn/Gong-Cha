@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Getter
 @Builder
 @Schema(description = "팀 유저 정보 응답 DTO")
-public class UserTeamResponse extends BaseEntity {
+public class UserTeamResponse {
 
     @Schema(description = "소속 역할", allowableValues = { "팀장", "팀원" }, example = "팀원")
     private Role role;
@@ -30,9 +30,16 @@ public class UserTeamResponse extends BaseEntity {
     @Schema(description = "선수 참여 경기 수", example = "20")
     private int games;
 
+    private String phone;
+
     public void updateGames(int games) {
 
         this.games = games;
+    }
+
+    public void updatePhone(String phone) {
+
+        this.phone = phone;
     }
 
     public static List<UserTeamResponse> fromEntity(Team team) {

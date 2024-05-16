@@ -32,8 +32,6 @@ public interface TeamService {
     Long rejectTeam(Long teamId, Long userId);
     // 선수 모집 완료하기
     TeamResponse endTeamRecruit(Long teamId);
-    // 선수 정보 불러오기
-    List<User> getUsersByTeam(Long teamId);
     // 선수 카드 정보 불러오기
     List<CardResponse> getCardsByTeam(Long teamId);
 
