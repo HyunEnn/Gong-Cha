@@ -325,17 +325,17 @@
 }
 .fade-in {
     opacity: 0;
-    animation: fadeIn 0.5s ease-out forwards; 
+    animation: fadeIn 0.5s ease-out forwards;
 }
 
 @keyframes slideDown {
     0% {
-      transform: translateY(-100%);
-      opacity: 0;
+        transform: translateY(-100%);
+        opacity: 0;
     }
     100% {
-      transform: translateY(0);
-      opacity: 1;
+        transform: translateY(0);
+        opacity: 1;
     }
 }
 .toaster {
@@ -372,6 +372,16 @@
 }
 .expand-animation {
     animation: expand 0.5s forwards;
+}
+
+@keyframes bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
 }
 
 footer {

@@ -2,16 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import MyPageWithTransition from '@/components/MyPageWithTransition';
 import ErrorPage from '@/pages/ErrorPage';
-import Test from '@/pages/Test';
-import OnBoardPage from '@/pages/OnBoardPage';
+import TestDiv from '@/pages/TestDiv';
 import LoginPage from '@/pages/LoginPage';
 import BottomNav from '@/nav/BottomNav';
 import MainPage from '@/pages/MainPage';
 import ClubPage from '@/pages/ClubPage';
 import MyPage from '@/pages/MyPage';
-import FindPlayerBoardPage from '@/pages/FindPlayerBoardPage';
-import FindPlayerInputPage from '@/pages/FindPlayerInputPage';
-import FindPlayerDetailPage from '@/pages/FindPlayerDetailPage';
 import FindMatchBoardPage from '@/pages/FindMatchBoardPage';
 import MarketBoardPage from '@/pages/MarketBoardPage';
 import ProfilePage from '@/pages/ProfilePage';
@@ -74,12 +70,8 @@ function App() {
             element: <Navigate to="/main" />,
         },
         {
-            path: '/test',
-            element: <Test />,
-        },
-        {
-            path: '/onboard',
-            element: <OnBoardPage />,
+            path: '/testdiv',
+            element: <TestDiv />,
         },
         {
             path: '/login',

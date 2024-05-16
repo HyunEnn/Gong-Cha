@@ -1,7 +1,7 @@
 function ErrorPage() {
     return (
         <>
-            <p>에러페이지</p>
+            <p>에러페이지입니다.</p>
         </>
     );
 }

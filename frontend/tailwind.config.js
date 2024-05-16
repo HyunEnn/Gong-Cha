@@ -97,7 +97,6 @@ module.exports = {
                 animation: {
                     bounce: 'bounce 1s infinite', // 'bounce'는 @keyframes의 이름, 1s는 지속 시간, infinite는 무한 반복을 의미
                 },
-
             },
             fontFamily: {
                 pretendardRegular: ['Pretendard-Regular'], // Adds a new `font-display` class
@@ -130,6 +129,15 @@ module.exports = {
                 92: '.92',
                 98: '.98',
             },
+            // // 확장 설정
+            // utilities: {
+            //     '.snap-y': {
+            //         scrollSnapType: 'y mandatory  ',
+            //     },
+            //     '.snap-start': {
+            //         scrollSnapAlign: 'start',
+            //     },
+            // },
         },
     },
 };
