@@ -20,7 +20,7 @@ function MarketBoardPage() {
                 <img src={lArrowIcon} alt="돌아가기" />
             </div>
             {/* page title */}
-            <div className="page-title">이적 시장</div>
+            <div className="page-title w-[calc(10rem)]">이적 시장</div>
             {/* page tab */}
             <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center top-[calc(7.5rem)] p-0 w-[calc(20.25rem)] h-[calc(2.86rem)] bg-gray-100 rounded-sm text-[calc(0.8rem)]">
                 <div
@@ -63,7 +63,7 @@ function MarketBoardPage() {
             {/* Render component based on activeTab */}
             {activeTab === 'tab2' && <MyTeamInfo />}
             {activeTab === 'tab3' && <TeamList />}
-        </>
+        </div>
     );
 }
 

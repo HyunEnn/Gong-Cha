@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import dummySilverLeager from '@/data/dummyImages/dummySilverLeager.png';
+import bronzeLeager from '@/assets/images/bronzeLeager.png';
+import silverLeager from '@/assets/images/silverLeager.png';
+import goldLeager from '@/assets/images/goldLeager.png';
 
 function PlayerCard({ player, className }) {
     if (!player || Object.keys(player).length === 0) {
@@ -14,6 +16,16 @@ function PlayerCard({ player, className }) {
         setShine(true);
     }, []);
 
+    let cardImage;
+
+    if (value <= 69) {
+        cardImage = bronzeLeager;
+    } else if (value >= 70 && value <= 79) {
+        cardImage = silverLeager;
+    } else if (value >= 80) {
+        cardImage = goldLeager;
+    }
+
     return (
         <div className={`parentWithShadow ${className}`}>
             <div
@@ -22,7 +34,7 @@ function PlayerCard({ player, className }) {
                     shine ? 'shine' : ''
                 }`}
             >
-                <img className="absolute rounded-t-lg" src={dummySilverLeager} alt="카드" />
+                <img className="absolute rounded-t-lg" src={cardImage} alt="카드" />
                 <div className="absolute flex flex-col items-center justify-center w-full h-full">
                     <img
                         className="absolute left-20 bottom-[10.5rem] mx-auto max-w-[10rem] max-h-[10rem]"

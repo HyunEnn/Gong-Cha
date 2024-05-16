@@ -4,11 +4,16 @@ import PlayerCard from '@/components/PlayerCard';
 import teamBackground from '@/assets/images/FieldBackground.png';
 import squareIcon from '@/assets/images/squareIcon.png';
 import hexagonIcon from '@/assets/images/hexagonIcon.png';
+import { getTeamInfo, getPlayerList } from '@/apis/api/team';
 import { myTeamInfoDummyData } from '@/data/dummyData'; // dummy data
 
 function TeamInfo() {
-    const [myTeamInfoData, setMyTeamInfoData] = useState([]);
+    const teamId = 10;
+    const [myTeamInfoData, setMyTeamInfoData] = useState(null);
+    const [myTeamInfo, setMyTeamInfo] = useState(null);
     const [teamInfo, setTeamInfo] = useState({});
+    const [detailKey, setDetailKey] = useState({ key: '' });
+    const [showDetailModal, setShowDetailModal] = useState(false);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
     const [startY, setStartY] = useState(0);
     const [dragging, setDragging] = useState(false);
@@ -33,23 +38,68 @@ function TeamInfo() {
     }, []);
 
     useEffect(() => {
-        /* axios for db connection
-        getMyTeamInfo(
-            key,
+        // 팀 정보
+        getTeamInfo(
+            teamId,
             (success) => {
-                setMyTeamInfoData({
-                    ...success,
-                });
+                setMyTeamInfo(
+                    success.data.data,
+                );
             },
             (fail) => {
-                
+                console.log(fail);
             }
         );
         return () => {
             
         };
-        */
-    }, []);
+    }, [teamId]);
+
+    useEffect(() => {
+        // 팀원 리스트
+        getPlayerList(
+            teamId,
+            (success) => {
+                console.log(myTeamInfo);
+                // setMyTeamInfo((prevData) => ({
+                //     ...prevData,
+                //     players: success.data.data,
+                //   }));
+                console.log(success.data.data);
+                // setMyTeamInfoData({
+                //     ...success,
+                // });
+            },
+            (fail) => {
+                console.log(fail);
+            }
+        );
+        return () => {
+            
+        };
+    }, [myTeamInfo]);
+
+    useEffect(() => {
+        // 팀원 정보
+        console.log(myTeamInfo);
+    }, [myTeamInfo]);
+
+    const handleTeamInfoClick = (key) => {
+        setDetailKey({ key });
+        setShowDetailModal(true);
+    };
+
+    const closeModal = () => {
+        setShowDetailModal(false);
+    };
+
+    const handleOutsideClick = () => {
+        closeModal();
+    };
+
+    const handleSubmit = () => {
+        closeModal();
+    };
 
     const getBackgroundColor = (arr) => {
         const MAX = Math.max(arr[0], arr[1], arr[2], arr[3]);
@@ -112,10 +162,10 @@ function TeamInfo() {
     // PlayerCard modal rendering
     const renderPlayerCardModal = () => {
         if (!selectedPlayer) return null;
-    
+
         return (
             <Modal show={!!selectedPlayer} onClose={handleClosePlayerCard}>
-                <div className="fixed inset-0 flex items-center justify-center" onClick={handleClosePlayerCard}>
+                <div className="fixed inset-0 flex items-center justify-center mt-[calc(10rem)]" onClick={handleClosePlayerCard}>
                     <div className="absolute top-0 bg-white rounded-lg shadow-lg max-w-md mx-auto mt-[calc(4.0rem)]" onClick={e => e.stopPropagation()}
                             onTouchStart={handleTouchStart}
                             onTouchMove={handleTouchMove}
@@ -135,7 +185,7 @@ function TeamInfo() {
 
     return (
         <>
-            {myTeamInfoData.length === 0 ? (
+            {myTeamInfoData === null ? (
                 <div></div>
             ) : (
                 <>
@@ -149,6 +199,9 @@ function TeamInfo() {
                     </div>
                     <div className="absolute mt-0 right-0 px-3 text-[calc(.5rem)] top-[calc(1.5rem)]">
                         <button className="rounded w-[calc(4rem)] h-5 text-[calc(.5rem)] bg-green-500" onClick={handleFinishButton}>모집 완료하기</button>
+                    </div>
+                    <div className="absolute mt-5 right-[calc(0rem)] px-3 text-[calc(.5rem)] top-[calc(1.5rem)]">
+                        <button className="rounded w-[calc(3rem)] h-5 text-[calc(.5rem)]" onClick={handleTeamInfoClick}>상대팀 보기</button>
                     </div>
                     {/* team analysis */}
                     <div>
@@ -212,10 +265,10 @@ function TeamInfo() {
                         <div className="ml-4 h-full w-1/6 font-pretendardBlack">
                             전력
                         </div>
-                        <div className="relative left-10 w-[87%]">
+                        <div className="relative left-10 w-[88%]">
                             {myTeamInfoData.players.map((player, playerIndex) => (
                                 <div key={playerIndex} className={"" + (player.stateus ? "" : " opacity-20")}>
-                                    <div className="relative flex justify-start border-b-[calc(0.05rem)] w-[calc(16rem)]">
+                                    <div className="relative flex justify-start border-b-[calc(0.05rem)] w-full">
                                     <div className="absolute -left-6 mt-5">
                                         <div className={`absolute w-1 h-5 ${getBackgroundColor([player.SHO, player.PAS, player.DRI, player.PAC])}`}></div>
                                             <p className="ml-2 -mt-[calc(.15rem)] font-pretendardBlack">
@@ -243,13 +296,45 @@ function TeamInfo() {
                                         <div className={"absolute flex flex-col items-center mt-[calc(3.3rem)] ml-[calc(6.5rem)] w-4 h-3" + (player.MAN > 59 ? " bg-[#D6D6DA]" : " bg-[#CF946E]") + (player.MAN > 79 ? " bg-[#d6b534]" : "")}>
                                             <p className="absolute font-pretendardBlack text-gray-500 text-[calc(0.5rem)]">{player.MAN}</p>
                                         </div>
-                                        <p className="absolute mt-[calc(2.5rem)] ml-[calc(13.2rem)] font-pretendardRegular text-gray-500 text-[calc(0.5rem)]">선수 가치</p>
-                                        <p className="absolute mt-[calc(3.1rem)] ml-[calc(13.8rem)] font-pretendardBlack text-black text-[calc(0.7rem)]">{parseInt((player.SHO + player.PAS + player.DRI + player.PAC) / 4)}</p>
+                                        <div className='asbolute flex justify-end'>
+                                        <p className="absolute mt-[calc(2.5rem)] right-2 font-pretendardRegular text-gray-500 text-[calc(0.5rem)]">선수 가치</p>
+                                        <p className="absolute mt-[calc(3.1rem)] right-4 font-pretendardBlack text-black text-[calc(0.7rem)]">{parseInt((player.SHO + player.PAS + player.DRI + player.PAC) / 4)}</p>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
+                    {showDetailModal && (
+                        <Modal show={showDetailModal} onClose={closeModal}>
+                            {/* Modal content */}
+                            <div className="fixed inset-0 bg-black bg-opacity-60 flex items-start justify-center" onClick={handleOutsideClick}>
+                                <div
+                                    className="relative flex flex-col items-center justify-start bg-stone-100 w-[calc(20.5rem)] h-[calc(31.25rem)] rounded-xl overflow-x-hidden overflow-y-auto mt-[calc(7rem)]" 
+                                    onClick={e => e.stopPropagation()}
+                                >
+                                    {/* close button */}
+                                    <button
+                                        onClick={closeModal}
+                                        className="self-start mt-2 mb-2 ml-2 w-5 h-5 bg-[#FF5F51] rounded-full shadow-sm font-bold text-white flex items-center justify-center"
+                                    >
+                                        &times;
+                                    </button>
+                                    <div className="absolute w-full mt-10">
+                                        <TeamInfo></TeamInfo>
+                                        <div className="absolute flex flex-col items-center justify-center w-full mt-5">
+                                            <button
+                                                className="w-4/5 bg-blue-500 text-white rounded-md font-bold mb-4"
+                                                onClick={handleSubmit}
+                                            >
+                                                닫기
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Modal>
+                    )}
                 </>
             )}
         </>

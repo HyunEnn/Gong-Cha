@@ -13,8 +13,8 @@ function BottomNav() {
             <div className="mx-4 overflow-x-hidden overflow-y-auto h-[calc(100vh-96px)] min-w-[calc(360px)]">
                 <Outlet />
             </div>
-            <footer className="fixed bottom-0 flex items-center justify-center w-full bg-white border-black shadow-inner shadow-brand-400/10 min-h-24">
-                <div className="flex flex-row items-center w-full justify-evenly">
+            <footer className="fixed bottom-0 flex items-center justify-center w-full bg-white border-black shadow-top min-h-18 mb-0">
+                <div className="flex flex-row items-center w-full justify-evenly mt-1">
                     <Link to="/main">
                         <img className={`p-3 ${isActive('/main')}`} src={homeIcon} alt="홈 아이콘" />
                     </Link>

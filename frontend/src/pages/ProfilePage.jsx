@@ -128,22 +128,24 @@ function ProfilePage() {
     };
 
     return (
-        <>
+        <div className="absolute flex flex-col items-center justify-center">
             <>
-                <div onClick={handleBackClick} className="absolute left-[calc(.7rem)] top-[calc(2.0rem)] w-[calc(1.5625rem)] h-[calc(1.875rem)] cursor-pointer">
+                <div onClick={handleBackClick} className="absolute top-[calc(2.0rem)] -ml-[calc(8rem)]">
                     <img src={lArrowIcon} alt="돌아가기" />
                 </div>
-                <div className="absolute top-[calc(5.1875rem)] pl-[calc(1.5rem)]">
+                <div className="relative top-[calc(5.1875rem)] pl-[calc(1.5rem)]">
                     <Lottie className="-mt-5 -ml-[calc(1rem)] w-[calc(5rem)] h-[calc(5rem)]" animationData={pencilAnimation} loop={false} autoplay={true} />
                     <div className="w-[10rem]">
                         <span className="pl-[calc(0.5rem)] page-title">프로필 편집</span>
                     </div>
                 </div>
-                <div className="absolute inset-x-0 flex items-center justify-center top-[calc(13rem)] text-sm" onClick={handleManualClick}>
-                    <div className="flex flex-col items-start justify-center w-[calc(19rem)] h-[calc(4.375rem)] rounded-xl bg-[#404040]">
-                        <span className="absolute -mt-[calc(1rem)] ml-5 text-[calc(0.8rem)] text-[#FF8615]">이미지 변경 팁!</span>
-                        <span className="absolute ml-5 mt-[calc(1.7rem)] text-white text-[calc(0.8rem)] text-[#]">선수 카드를 위한 이미지 변경 팁을 확인하세요</span>
-                        <img className="absolute right-0 inline mr-10" src={rArrowIcon} alt="들어가기" />
+                <div className='absolute ml-[calc(11rem)]'>
+                    <div className="relative inset-x-0 flex items-center justify-center top-[calc(13rem)] text-sm" onClick={handleManualClick}>
+                        <div className="absolute flex flex-col items-start justify-center w-[calc(19rem)] h-[calc(4.375rem)] rounded-xl bg-[#404040]">
+                            <span className="absolute -mt-[calc(1rem)] ml-5 text-[calc(0.8rem)] text-[#FF8615]">이미지 변경 팁!</span>
+                            <span className="absolute ml-5 mt-[calc(1.7rem)] text-white text-[calc(0.8rem)] text-[#]">선수 카드를 위한 이미지 변경 팁을 확인하세요</span>
+                            <img className="absolute right-0 inline mr-[calc(1rem)]" src={rArrowIcon} alt="들어가기" />
+                        </div>
                     </div>
                 </div>
             </>
@@ -177,12 +179,14 @@ function ProfilePage() {
             <>
                 <Drawer show={showNicknameDrawer} onClose={() => setShowNicknameDrawer(false)}>
                     <DrawerTrigger>
-                        <div className="absolute inset-x-0 flex justify-start ml-[calc(1.8rem)] top-[calc(20rem)] w-[calc(19rem)] h-[calc(7rem)] text-sm rounded-xl bg-gray-100">
-                            <div className="absolute mt-[calc(1.5rem)] transform transition duration-100 ease-in-out active:scale-95" 
-                                onClick={() => setShowNicknameDrawer(true)}
-                            >
-                                <span className="ml-5 font-pretendardBold">닉네임 바꾸기</span>
-                                <img className="absolute left-[calc(17rem)] inline" src={rArrowIcon} alt="들어가기" />
+                        <div className="flex flex-col items-center justify-center">
+                            <div className="absolute inset-x-0 flex justify-start ml-[calc(1.8rem)] top-[calc(20rem)] w-[calc(19rem)] h-[calc(7rem)] text-sm rounded-xl bg-gray-100">
+                                <div className="absolute mt-[calc(1.5rem)] ml-3 transform transition duration-100 ease-in-out active:scale-95" 
+                                    onClick={() => setShowNicknameDrawer(true)}
+                                >
+                                    <span className="pl-[calc(1.0rem)] font-pretendardBold">닉네임 바꾸기</span>
+                                    <img className="absolute left-[calc(16.2rem)] inline" src={rArrowIcon} alt="들어가기" />
+                                </div>
                             </div>
                         </div>
                     </DrawerTrigger>
@@ -216,10 +220,10 @@ function ProfilePage() {
                 <Drawer show={showProfileImageDrawer} onClose={() => setShowProfileImageDrawer(false)}>
                     <DrawerTrigger>
                         <div className="absolute inset-x-0 flex justify-start ml-[calc(1.8rem)] top-[calc(20rem)] text-sm rounded-xl">
-                            <div className="absolute mt-[calc(4.5rem)] transform transition duration-100 ease-in-out active:scale-95" 
+                            <div className="absolute mt-[calc(4.5rem)] w-[calc(10rem)] h-[calc(2.1rem)] transform transition duration-100 ease-in-out active:scale-95" 
                                 onClick={() => setShowProfileImageDrawer(true)}
                             >
-                                <span className="ml-5 font-pretendardBold">프로필 이미지 바꾸기</span>
+                                <span className="pl-[calc(1.0rem)] font-pretendardBold">프로필 이미지 바꾸기</span>
                                 <img className="absolute left-[calc(17rem)] inline" src={rArrowIcon} alt="들어가기" />
                             </div>
                         </div>
@@ -256,7 +260,7 @@ function ProfilePage() {
                     </DrawerContent>
                 </Drawer>
             </>
-        </>
+        </div>
     );
 }
 

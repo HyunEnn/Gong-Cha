@@ -15,6 +15,7 @@ import playHistoryIcon from '@/assets/icons/playHistory.svg';
 import alarmIcon from '@/assets/icons/alarm.svg';
 import Lottie from 'lottie-react';
 import playerCardAnimation from '@/assets/lottie/playercard';
+import cardMenu from '@/assets/lotties/cardMenu';
 import { myPageDummyData } from '@/data/dummyData'; // dummy data
 
 function MyPage() {
@@ -70,10 +71,10 @@ function MyPage() {
     };
 
     return (
-        <>
+        <div className="absolute flex items-center justify-center">
             <>
                 {/* page title */}
-                <div className="page-title">마이페이지</div>
+                <div className="page-title w-[calc(10rem)]">마이페이지</div>
             </>
             <>
                 {/* profile content */}
@@ -120,10 +121,10 @@ function MyPage() {
                     </CardForm>
                     <span className="relative left-[calc(0.8125rem)] pt-[calc(0.1rem)] font-pretendardBlack">내 선수카드</span>
                     <img className="absolute right-0 inline" src={rArrowIcon} alt="들어가기" />
-                    <div className='w-[calc(2rem)] h-[calc(2rem)] -ml-[calc(6.4rem)] -mt-[calc(0.15rem)]'>
+                    <div className='w-[calc(2rem)] h-[calc(2rem)] -ml-[calc(6.4rem)] -mt-[calc(0.0rem)]'>
                         <Lottie
-                            animationData={playerCardAnimation}
-                            loop={false}
+                            animationData={cardMenu}
+                            loop={true}
                             autoplay={true}
                         />
                     </div>
@@ -141,7 +142,7 @@ function MyPage() {
                     </div>
                 </div>
             </>
-        </>
+        </div>
     );
 }
 
