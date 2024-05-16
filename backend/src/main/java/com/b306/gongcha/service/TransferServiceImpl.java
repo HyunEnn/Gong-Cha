@@ -74,6 +74,11 @@ public class TransferServiceImpl implements TransferService{
     @Transactional
     public TransferResponse createTransfer(TransferRequest transferRequest) {
 
+        // 이미 이적시장에 정보 등록 시 중복등록 방지
+        if(transferRepository.findByUserId(transferRequest.getWriterId()).isPresent()) {
+            throw new CustomException(ErrorCode.ALREADY_TRANSFER_APPLY);
+        }
+
         Transfer transfer = transferRequest.toTransfer();
         User user = userRepository.findById(transferRequest.getWriterId())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
