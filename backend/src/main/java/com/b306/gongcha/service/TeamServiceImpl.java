@@ -180,6 +180,22 @@ public class TeamServiceImpl implements TeamService{
         List<UserTeamResponse> userTeamResponseList = new ArrayList<>();
         List<UserTeam> userTeamList = userTeamRepository.findAllByTeamId(teamId);
         userTeamList.forEach(u -> userTeamResponseList.add(u.toUserTeamResponse()));
+
+        // 경기수 세기
+        userTeamResponseList.forEach(u -> u.updateGames(
+                matchingAskRepository.countAllByTeamIdAndStatus(u.getUserId())
+                        + matchingAskRepository.countAllByVersusTeamIdAndStatus(u.getUserId())));
+
+        // 팀장인 경우 전화번호 보여주기
+        Long userId = GetCurrentUserId.currentUserId();
+        Long managerId = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"))
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getUser().getId();
+        if(userId.equals(managerId)) {
+            userTeamResponseList.forEach(utr -> utr.updatePhone(
+                    userRepository.findById(utr.getUserId())
+                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getPhone()));
+        }
+
         return userTeamResponseList;
     }
 
