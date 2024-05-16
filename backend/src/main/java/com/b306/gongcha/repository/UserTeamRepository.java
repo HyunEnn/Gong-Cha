@@ -41,7 +41,4 @@ public interface UserTeamRepository extends JpaRepository<UserTeam, Long> {
     // 유저 id와 역할로 찾기
     List<UserTeam> findAllByUserIdAndRole(Long userId, Role role);
 
-    // 팀 id와 역할로 찾기 - 팀장 찾을 때 사용
-    UserTeam findByTeamIdAndRole(Long teamId, Role role);
-
 }
