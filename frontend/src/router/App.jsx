@@ -19,7 +19,12 @@ import PlayerCardPage from '@/pages/PlayerCardPage';
 import AlarmPage from '@/pages/AlarmPage';
 import { Toaster } from '@/components/ui/sonner';
 
+import ProtectedRoute from '@/router/ProtectedRoute';
+const { VITE_AUTH_URL } = import.meta.env;
+
 function App() {
+    const user = true;
+
     const router = createBrowserRouter([
         // {
         //     path: '/',
@@ -53,7 +58,11 @@ function App() {
                 },
                 {
                     path: '/mypage',
-                    element: <MyPageWithTransition />,
+                    element: (
+                        <ProtectedRoute user={user}>
+                            <MyPageWithTransition />
+                        </ProtectedRoute>
+                    ),
                     children: [
                         {
                             index: true,
