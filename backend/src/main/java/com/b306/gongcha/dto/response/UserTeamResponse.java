@@ -30,9 +30,16 @@ public class UserTeamResponse extends BaseEntity {
     @Schema(description = "선수 참여 경기 수", example = "20")
     private int games;
 
+    private String phone;
+
     public void updateGames(int games) {
 
         this.games = games;
+    }
+
+    public void updatePhone(String phone) {
+
+        this.phone = phone;
     }
 
     public static List<UserTeamResponse> fromEntity(Team team) {

@@ -59,24 +59,6 @@ public class TeamController {
     }
 
     @Operation(
-            summary = "팀의 팀원 조회",
-            description = "팀의 팀원들 조회"
-    )
-    @ApiResponse(
-            responseCode = "200",
-            description = "팀원들이 정상적으로 조회되었습니다."
-    )
-    @GetMapping("/{teamId}/teamUsers")
-    public ResponseEntity<CommonResponse> getTeamUsers(@PathVariable Long teamId) {
-
-        return new ResponseEntity<>(CommonResponse.builder()
-                .message("팀원 조회 성공")
-                .data(teamService.getTeamUsers(teamId))
-                .build(), HttpStatus.OK);
-    }
-
-
-    @Operation(
             summary = "팀 생성",
             description = "유저가 팀 생성"
     )
@@ -225,7 +207,7 @@ public class TeamController {
 
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("팀에서 팀원 정보 목록을 조회")
-                .data(teamService.getUsersByTeam(teamId))
+                .data(teamService.getTeamUsers(teamId))
                 .build(), HttpStatus.OK);
     }
 
