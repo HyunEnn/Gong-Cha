@@ -40,7 +40,8 @@ public class TeamServiceImpl implements TeamService{
 
         Page<Team> teams = teamRepository.findAll(pageable);
         Page<TeamResponse> teamResponses = teams.map(TeamResponse::fromEntity);
-//        teamResponses.forEach(t -> t.updateCaptainName());
+        teamResponses.forEach(t -> t.updateCaptainName(
+                userTeamRepository.findByTeamIdAndRole(t.getId(), Role.valueOf("팀장")).getUser().getName()));
         return teamResponses;
     }
 
@@ -69,13 +70,16 @@ public class TeamServiceImpl implements TeamService{
 
         // 팀장인 경우 전화번호 보여주기
         Long userId = GetCurrentUserId.currentUserId();
-        Long managerId = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"))
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getUser().getId();
-        if(userId.equals(managerId)) {
-            userTeamResponseList.forEach(utr -> utr.updatePhone(
-                    userRepository.findById(utr.getUserId())
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getPhone()));
+        UserTeam userTeam = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"));
+        if(userTeam != null) {
+            Long managerId = userTeam.getUser().getId();
+            if(userId.equals(managerId)) {
+                userTeamResponseList.forEach(utr -> utr.updatePhone(
+                        userRepository.findById(utr.getUserId())
+                                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getPhone()));
+            }
         }
+
         return userTeamResponseList;
     }
 
@@ -206,12 +210,14 @@ public class TeamServiceImpl implements TeamService{
 
         // 팀장인 경우 전화번호 보여주기
         Long userId = GetCurrentUserId.currentUserId();
-        Long managerId = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"))
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getUser().getId();
-        if(userId.equals(managerId)) {
-            userTeamResponseList.forEach(utr -> utr.updatePhone(
-                    userRepository.findById(utr.getUserId())
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getPhone()));
+        UserTeam userTeam = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"));
+        if(userTeam != null) {
+            Long managerId = userTeam.getUser().getId();
+            if(userId.equals(managerId)) {
+                userTeamResponseList.forEach(utr -> utr.updatePhone(
+                        userRepository.findById(utr.getUserId())
+                                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getPhone()));
+            }
         }
 
         return userTeamResponseList;
