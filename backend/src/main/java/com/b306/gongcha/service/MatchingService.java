@@ -240,12 +240,21 @@ public class MatchingService {
         team.updateStatus(Status.valueOf("경기종료"));
         teamRepository.save(team);
 
+        // 매칭 완료한 선수의 경기 수 1 증가
+        List<UserTeam> userTeamList = userTeamRepository.findAllByTeamId(matchingTeamId);
+        userTeamList.forEach(ut -> ut.getUser().addGames());
+
         // 상대팀도 동일하게 매칭완료로 변경
         Long versusTeamId = matchingAsk.getVersusTeamId();
         Team versusTeam = teamRepository.findById(versusTeamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
         versusTeam.updateStatus(Status.valueOf("경기종료"));
         teamRepository.save(versusTeam);
+
+        // 매칭 완료한 상대팀의 경기 수 1 증가
+        List<UserTeam> versusUserTeamList = userTeamRepository.findAllByTeamId(versusTeamId);
+        versusUserTeamList.forEach(ut -> ut.getUser().addGames());
+
     }
 
     // (매칭 시간 + 2시간)이 현재 시간보다 빠르면 매칭 종료 - @Scheduled로 1시간마다 실행

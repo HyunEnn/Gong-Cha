@@ -66,9 +66,10 @@ public class TeamServiceImpl implements TeamService{
         userTeamList.forEach(u -> userTeamResponseList.add(u.toUserTeamResponse()));
 
         // 경기수 세기
-        userTeamResponseList.forEach(u -> u.updateGames(
-                matchingAskRepository.countAllByTeamIdAndStatus(u.getUserId())
-                        + matchingAskRepository.countAllByVersusTeamIdAndStatus(u.getUserId())));
+//        userTeamResponseList.forEach(u -> u.updateGames(
+//                matchingAskRepository.countAllByTeamIdAndStatus(u.getUserId())
+//                        + matchingAskRepository.countAllByVersusTeamIdAndStatus(u.getUserId())));
+        userTeamResponseList.forEach(u -> u.updateGames(u.getGames()));
 
         // 팀장인 경우 전화번호 보여주기
         Long userId = GetCurrentUserId.currentUserId();
@@ -211,9 +212,10 @@ public class TeamServiceImpl implements TeamService{
         userTeamList.forEach(u -> userTeamResponseList.add(u.toUserTeamResponse()));
 
         // 경기수 세기
-        userTeamResponseList.forEach(u -> u.updateGames(
-                matchingAskRepository.countAllByTeamIdAndStatus(u.getUserId())
-                        + matchingAskRepository.countAllByVersusTeamIdAndStatus(u.getUserId())));
+//        userTeamResponseList.forEach(u -> u.updateGames(
+//                matchingAskRepository.countAllByTeamIdAndStatus(u.getUserId())
+//                        + matchingAskRepository.countAllByVersusTeamIdAndStatus(u.getUserId())));
+        userTeamResponseList.forEach(u -> u.updateGames(u.getGames()));
 
         // 팀장인 경우 전화번호 보여주기
         Long userId = GetCurrentUserId.currentUserId();
