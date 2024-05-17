@@ -31,7 +31,7 @@ public class CardServiceImpl implements CardService{
     public CardResponse getCard(Long userId) {
 
         Card card = cardRepository.findByUserId(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CARD));
         return CardResponse.fromEntity(card);
     }
 
@@ -40,7 +40,7 @@ public class CardServiceImpl implements CardService{
 
         User user = jwtUtil.getUserFromAccessToken(request);
         Card card = cardRepository.findByUserId(user.getId())
-                .orElseThrow(()->new CustomException(ErrorCode.NOT_FOUND_USER));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CARD));
         return CardResponse.fromEntity(card);
     }
 

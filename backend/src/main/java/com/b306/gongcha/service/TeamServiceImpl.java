@@ -86,6 +86,7 @@ public class TeamServiceImpl implements TeamService{
             }
         }
 
+
         return userTeamResponseList;
     }
 
@@ -189,7 +190,8 @@ public class TeamServiceImpl implements TeamService{
                 .build();
         UserTeam seavedUserTeam = userTeamRepository.save(userTeam);
 
-        userTeam = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"));
+        userTeam = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"))
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
         User captain = userTeam.getUser();
         Notice notice = Notice.createTeamNotice(captain, user);
         noticeRepository.save(notice);
@@ -229,6 +231,7 @@ public class TeamServiceImpl implements TeamService{
                                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getPhone()));
             }
         }
+
 
         return userTeamResponseList;
     }
