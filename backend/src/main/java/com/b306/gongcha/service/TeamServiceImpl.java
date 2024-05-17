@@ -190,8 +190,7 @@ public class TeamServiceImpl implements TeamService{
                 .build();
         UserTeam seavedUserTeam = userTeamRepository.save(userTeam);
 
-        userTeam = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"))
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+        userTeam = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"));
         User captain = userTeam.getUser();
         Notice notice = Notice.createTeamNotice(captain, user);
         noticeRepository.save(notice);
