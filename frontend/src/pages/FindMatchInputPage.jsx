@@ -21,6 +21,8 @@ import InputAndDelete from '@/components/InputAndDelete';
 import ChooseBadges from '@/components/ChooseBadges';
 import PlayerRegistration from '@/components/PlayerRegistration';
 
+import { postMatchingCreate } from '@/apis/api/match';
+
 function FindMatchInputPage() {
     const navigate = useNavigate();
     const { regions } = useRegionStore();
@@ -51,12 +53,21 @@ function FindMatchInputPage() {
     };
 
     const handleCreateMatchBoard = () => {
-        MatchingBoardCreateRequest.date = `${date} ${time}`;
+        MatchingBoardCreateRequest.date = `${format(date, 'yyyy-MM-dd')} ${time.format('HH:mm')}`;
         MatchingBoardCreateRequest.region = selectedRegion;
         MatchingBoardCreateRequest.districts = selectedDistrict;
         MatchingBoardCreateRequest.info = text;
         MatchingBoardCreateRequest.difficulty = level;
-        MatchingBoardCreateRequest.matchingTeamId = '';
+        console.log(MatchingBoardCreateRequest);
+        postMatchingCreate(
+            MatchingBoardCreateRequest,
+            (success) => {
+                console.log('매칭 게시판 생성 성공', success);
+            },
+            (fail) => {
+                console.log('매칭 게시판 생성 실패', fail);
+            }
+        );
     };
 
     // useEffect(() => {
@@ -181,16 +192,15 @@ function FindMatchInputPage() {
                     </AccordionContent>
                 </AccordionItem>
                 {/* 경기 선수 등록 */}
-                <AccordionItem value="item-6">
+                {/*  <AccordionItem value="item-6">
                     <AccordionTrigger>
                         <span>경기선수</span>
-                        {/* TODO */}
                         <span>{level ? level : '경기선수를 선택해주세요'}</span>
                     </AccordionTrigger>
                     <AccordionContent className="flex justify-center p-2">
                         <PlayerRegistration />
                     </AccordionContent>
-                </AccordionItem>
+                </AccordionItem> */}
             </Accordion>
             <div className="flex justify-center mt-8">
                 <Button variant="default" className="w-40" onClick={() => handleCreateMatchBoard()}>

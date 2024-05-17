@@ -23,6 +23,7 @@ import { testStore } from '@/stores/testStore';
 import { toast } from 'sonner';
 
 import ProtectedRoute from '@/router/ProtectedRoute';
+import Redirection from '@/router/Redirection';
 const { VITE_AUTH_URL } = import.meta.env;
 
 function App() {
@@ -82,7 +83,10 @@ function App() {
             path: '/login',
             element: <LoginPage />,
         },
-
+        {
+            path: '/kakao/callback',
+            element: <Redirection />,
+        },
         {
             path: '/',
             element: <BottomNav />,

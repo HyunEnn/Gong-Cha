@@ -5,6 +5,8 @@ import { useFindMatchBoardStore } from '@/stores/findMatchBoardStore';
 import ManchesterCity from '@/assets/examples/manchester-city.svg';
 import TottenhamHotspur from '@/assets/examples/tottenham-hotspur.svg';
 
+import { getMatchingList } from '@/apis/api/match';
+
 function FindMatchBoard() {
     const navigate = useNavigate();
     const { dummyFindMatchList } = useFindMatchBoardStore();
@@ -13,9 +15,19 @@ function FindMatchBoard() {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(false);
     const [startIndex, setStartIndex] = useState(0); // 시작 인덱스를 관리하는 상태 추가
-
     // 마지막 요소를 추적하기 위한 ref 생성
     const observer = useRef();
+
+    useEffect(() => {
+        getMatchingList(
+            (success) => {
+                console.log('매칭 게시판 전체 조회 성공', success);
+            },
+            (fail) => {
+                console.log('매칭 게시판 전체 조회 실패', fail);
+            }
+        );
+    }, []);
 
     const lastItemRef = useCallback(
         (node) => {

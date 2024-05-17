@@ -31,6 +31,5 @@ export const useFindMatchBoardStore = create((set) => ({
         districts: '',
         info: '',
         difficulty: '',
-        matchingTeamId: '',
     },
 }));
