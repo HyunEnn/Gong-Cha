@@ -6,6 +6,7 @@ import com.b306.gongcha.service.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -135,11 +136,11 @@ public class TeamController {
             description = "팀이 받은 요청 목록 조회 성공"
     )
     @GetMapping("/request/{teamId}")
-    public ResponseEntity<CommonResponse> getTeamRequest(@PathVariable Long teamId) {
+    public ResponseEntity<CommonResponse> getTeamRequest(HttpServletRequest httpServletRequest, @PathVariable Long teamId) {
 
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("팀장이 팀이 받은 요청 목록 조회")
-                .data(teamService.getUserTeamByTeam(teamId))
+                .data(teamService.getUserTeamByTeam(httpServletRequest, teamId))
                 .build(), HttpStatus.OK);
     }
 
@@ -203,11 +204,11 @@ public class TeamController {
             description = "팀에서 팀원 정보 목록을 조회 성공"
     )
     @GetMapping("/{teamId}/teammates")
-    public ResponseEntity<CommonResponse> getTeammates(@PathVariable Long teamId) {
+    public ResponseEntity<CommonResponse> getTeammates(HttpServletRequest httpServletRequest, @PathVariable Long teamId) {
 
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("팀에서 팀원 정보 목록을 조회")
-                .data(teamService.getTeamUsers(teamId))
+                .data(teamService.getTeamUsers(httpServletRequest, teamId))
                 .build(), HttpStatus.OK);
     }
 

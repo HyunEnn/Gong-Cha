@@ -7,6 +7,7 @@ import com.b306.gongcha.dto.response.TeamResponse;
 import com.b306.gongcha.dto.response.UserTeamResponse;
 import com.b306.gongcha.entity.User;
 import com.b306.gongcha.entity.UserTeam;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,7 +17,7 @@ public interface TeamService {
 
     public Page<TeamResponse> getAllTeams(Pageable pageable);
     TeamResponse getTeam(Long teamId);
-    public List<UserTeamResponse> getTeamUsers(Long teamId);
+    public List<UserTeamResponse> getTeamUsers(HttpServletRequest httpServletRequest, Long teamId);
     TeamResponse createTeam(TeamRequest teamRequest);
     TeamResponse updateTeam(Long teamId, TeamRequest teamRequest);
     Long deleteTeam(Long teamId);
@@ -25,7 +26,7 @@ public interface TeamService {
     // 신청자 기준으로 신청한 목록 조회
     List<UserTeamResponse> getUserTeamByUser(Long userId);
     // 팀 기준으로 신청 받은 목록 조회
-    List<UserTeamResponse> getUserTeamByTeam(Long teamId);
+    List<UserTeamResponse> getUserTeamByTeam(HttpServletRequest httpServletRequest, Long teamId);
     // 팀장이 선수의 신청 수락
     UserTeamResponse acceptTeam(Long teamId, Long userId);
     // 팀장이 선수의 신청 거절
