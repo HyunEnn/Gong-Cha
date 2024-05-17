@@ -71,20 +71,25 @@ public class TeamServiceImpl implements TeamService{
         userTeamList.forEach(u -> userTeamResponseList.add(u.toUserTeamResponse()));
 
         // 경기수 세기
-        userTeamResponseList.forEach(u -> u.updateGames(userRepository.findById(u.getUserId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getGames()));
+        userTeamResponseList.forEach( ut -> userRepository.findById(ut.getUserId())
+                .ifPresent(user -> ut.updateGames(user.getGames())));
 
         // 팀장인 경우 전화번호 보여주기
         User user = jwtUtil.getUserFromAccessToken(httpServletRequest);
         Long userId = user.getId();
-        Long managerId = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"))
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getUser().getId();
-        if(userId.equals(managerId)) {
-            userTeamResponseList.forEach(utr -> utr.updatePhone(
-                    userRepository.findById(utr.getUserId())
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getPhone()));
+
+        // 매니저 정보 가져오기
+        Long managerId = 0L;
+        UserTeam manager = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장")).orElse(null);
+        if(manager != null) {
+            managerId = manager.getId();
         }
 
+        // 현재 유저가 매니저인지 확인하기
+        if(userId.equals(managerId)) {
+            userTeamResponseList.forEach(utr -> userRepository.findById(utr.getUserId())
+                    .ifPresent(currentUser -> utr.updatePhone(currentUser.getPhone())));
+        }
 
         return userTeamResponseList;
     }
@@ -221,12 +226,18 @@ public class TeamServiceImpl implements TeamService{
         // 팀장인 경우 전화번호 보여주기
         User user = jwtUtil.getUserFromAccessToken(httpServletRequest);
         Long userId = user.getId();
-        Long managerId = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"))
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getUser().getId();
+
+        // 매니저 정보 가져오기
+        Long managerId = 0L;
+        UserTeam manager = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장")).orElse(null);
+        if(manager != null) {
+            managerId = manager.getId();
+        }
+
+        // 현재 유저가 매니저인지 확인하기
         if(userId.equals(managerId)) {
-            userTeamResponseList.forEach(utr -> utr.updatePhone(
-                    userRepository.findById(utr.getUserId())
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getPhone()));
+            userTeamResponseList.forEach(utr -> userRepository.findById(utr.getUserId())
+                    .ifPresent(currentUser -> utr.updatePhone(currentUser.getPhone())));
         }
 
 
