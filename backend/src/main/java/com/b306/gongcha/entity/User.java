@@ -1,5 +1,6 @@
 package com.b306.gongcha.entity;
 
+import com.b306.gongcha.dto.request.DeviceTokenRequest;
 import com.b306.gongcha.entity.num.ClubRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -66,6 +67,14 @@ public class User extends BaseEntity {
 
     public void changePhone(String phone) {
         this.phone = phone;
+    }
+
+    public void updateToken(DeviceTokenRequest dto){
+        this.firebaseToken = dto.getToken();
+    }
+
+    public void deleteToken(){
+        this.firebaseToken = null;
     }
 
     public void quitClub() {
