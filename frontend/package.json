@@ -35,7 +35,7 @@
         "clsx": "^2.1.1",
         "dayjs": "^1.11.11",
         "embla-carousel-react": "^8.0.2",
-        "firebase": "^10.11.1",
+        "firebase": "^10.12.0",
         "framer-motion": "^11.1.9",
         "localforage": "^1.10.0",
         "lottie-react": "^2.4.0",
