@@ -10,8 +10,13 @@ function serverAxios() {
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json;charset=utf-8',
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            //Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
+    });
+
+    instance.interceptors.request.use((config) => {
+        config.headers['authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+        return config;
     });
 
     return instance;
