@@ -76,6 +76,8 @@ public class TeamServiceImpl implements TeamService{
                     userRepository.findById(utr.getUserId())
                             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getPhone()));
         }
+
+
         return userTeamResponseList;
     }
 
@@ -219,6 +221,7 @@ public class TeamServiceImpl implements TeamService{
                     userRepository.findById(utr.getUserId())
                             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getPhone()));
         }
+
 
         return userTeamResponseList;
     }

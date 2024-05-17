@@ -55,7 +55,9 @@ public enum ErrorCode {
 
     NO_AUTHORITY_USER(HttpStatus.BAD_REQUEST, "팀장만 사용할 수 있습니다."),
     BAD_REQUEST_APPLY(HttpStatus.BAD_REQUEST, "본인의 게시글에 신청할 수 없습니다."),
-    NOT_FOUND_NUMBER(HttpStatus.BAD_REQUEST, "존재하지 않는 휴대폰입니다.");
+    NOT_FOUND_NUMBER(HttpStatus.BAD_REQUEST, "존재하지 않는 휴대폰입니다."),
+
+    NOT_FOUND_CARD(HttpStatus.NOT_FOUND, "선수카드를 찾을 수 없습니다.");
 
 
     private final HttpStatus httpStatus;
