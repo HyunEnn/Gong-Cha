@@ -1,5 +1,6 @@
 package com.b306.gongcha.service;
 
+import com.b306.gongcha.dto.response.AccessResponse;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
 import com.b306.gongcha.repository.RefreshTokenRepository;
@@ -22,7 +23,7 @@ public class Oauth2TokenService {
     private final UserRepository userRepository;
     private final RefreshTokenService refreshTokenService;
 
-    public void regenerateAccessToken(HttpServletRequest request, HttpServletResponse response) {
+    public AccessResponse regenerateAccessToken(HttpServletRequest request, HttpServletResponse response) {
 
         //get refresh token
         String refresh = null;
@@ -75,11 +76,12 @@ public class Oauth2TokenService {
         refreshTokenService.addRefreshToken(userId, newRefresh);
 
         // 응답
-        response.setHeader("Authorization", newAccess);
         response.addCookie(createCookie("refresh", newRefresh));
 
         response.setStatus(HttpStatus.OK.value());
-        return;
+        return AccessResponse.builder()
+                .AccessToken(newAccess)
+                .build();
     }
 
     private Cookie createCookie(String key, String value) {
@@ -87,7 +89,8 @@ public class Oauth2TokenService {
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(60*60*24);
         cookie.setPath("/");
-        cookie.setHttpOnly(true);
+        // httpOnly 가 true 면, 클라이언트에서 조회가 불가능해짐
+        cookie.setHttpOnly(false);
 
         return cookie;
     }

@@ -34,9 +34,10 @@ public class AuthController {
     )
     @PostMapping("/regenerate")
     public ResponseEntity<CommonResponse> reissue(HttpServletRequest request, HttpServletResponse response) {
-        oauth2TokenService.regenerateAccessToken(request, response);
+
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("access token regenerate success")
+                .data(oauth2TokenService.regenerateAccessToken(request, response))
                 .build(), HttpStatus.OK);
     }
 
