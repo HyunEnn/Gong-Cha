@@ -82,7 +82,7 @@ public class TeamServiceImpl implements TeamService{
         Long managerId = 0L;
         UserTeam manager = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장")).orElse(null);
         if(manager != null) {
-            managerId = manager.getId();
+            managerId = manager.getUser().getId();
         }
 
         // 현재 유저가 매니저인지 확인하기
@@ -231,7 +231,7 @@ public class TeamServiceImpl implements TeamService{
         Long managerId = 0L;
         UserTeam manager = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장")).orElse(null);
         if(manager != null) {
-            managerId = manager.getId();
+            managerId = manager.getUser().getId();
         }
 
         // 현재 유저가 매니저인지 확인하기
