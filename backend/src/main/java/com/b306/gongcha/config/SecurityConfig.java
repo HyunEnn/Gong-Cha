@@ -17,11 +17,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -63,12 +65,16 @@ public class SecurityConfig {
         //Form 로그아웃 방식 disable
 //        http.logout((auth) -> auth.disable());
 
+        List<AntPathRequestMatcher> excludedPaths = List.of(
+                new AntPathRequestMatcher("/api/auth/regenerate")
+        );
 
         //HTTP Basic 인증 방식 disable
         http.httpBasic((auth) -> auth.disable());
 
+
         //JWTFilter 추가
-        http.addFilterAfter(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(new JWTFilter(jwtUtil, excludedPaths), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(new CustomLogoutService(jwtUtil, refreshRepository), LogoutFilter.class);
 
         //oauth2
@@ -81,6 +87,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth) -> auth
                 .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/kakao/callback").permitAll()
+                .requestMatchers("/api/auth/regenerate").permitAll()
                 .requestMatchers("/google/callback").permitAll()
                 .requestMatchers("/api/club/clubs").permitAll()
                 .requestMatchers("/my").permitAll()

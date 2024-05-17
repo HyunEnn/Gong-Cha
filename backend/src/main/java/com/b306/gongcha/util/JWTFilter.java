@@ -14,22 +14,33 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 @Slf4j
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
-    public JWTFilter(JWTUtil jwtUtil) {
+    private final List<AntPathRequestMatcher> excludedPaths;
 
+    public JWTFilter(JWTUtil jwtUtil, List<AntPathRequestMatcher> excludedPaths) {
         this.jwtUtil = jwtUtil;
+        this.excludedPaths = excludedPaths;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        for (AntPathRequestMatcher excludedPath : excludedPaths) {
+            if (excludedPath.matches(request)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+        }
 
         // 헤더에서 access키에 담긴 토큰을 꺼냄
         String accessToken = request.getHeader("Authorization");
