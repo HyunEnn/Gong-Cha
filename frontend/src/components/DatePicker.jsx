@@ -6,7 +6,14 @@ function DatePicker() {
     const { dateList } = useDateStore();
 
     const handleCardContent = (event) => {
-        console.log('클릭', event.target);
+        // 클릭된 요소의 innerHTML을 가져옵니다.
+        let htmlContent = event.target.innerHTML;
+
+        // innerHTML에서 HTML 태그를 제거하고 줄바꿈을 공백으로 치환합니다.
+        let textContent = htmlContent.replace(/<br\s*\/?>/gi, ' ').replace(/<\/?[^>]+(>|$)/g, '');
+
+        console.log('클릭', textContent.trim());
+        // console.log('클릭', event.target);
     };
     return (
         <div className="flex justify-center">
