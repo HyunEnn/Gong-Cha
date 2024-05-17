@@ -17,6 +17,8 @@ public class ClubInfoResponse {
     private String region;
     private String districts;
     private String skillLevel; // 게임 수준
+    private String description;
+    private int clubUsers;
     private LocalTime startTime;
     private LocalTime endTime;
 
@@ -31,6 +33,8 @@ public class ClubInfoResponse {
                 .skillLevel(club.getSkillLevel())
                 .startTime(club.getActivityStartTime())
                 .endTime(club.getActivityEndTime())
+                .description(club.getDescription())
+                .clubUsers(club.getClubUser().size())
                 .build();
     }
 }
