@@ -16,6 +16,9 @@ public class TeamResponse {
     @Schema(description = "팀 id", example = "1L")
     private Long id;
 
+    @Schema(description = "팀장 이름", example = "박하윤")
+    private String captainName;
+
     @Schema(description = "매치 성격", allowableValues = { "친선", "내전" }, example = "내전")
     private MatchType matchType;
 
@@ -39,6 +42,11 @@ public class TeamResponse {
 
     @Schema(description = "매칭 성격", defaultValue = "모집중", allowableValues = { "모집중", "모집완료", "매칭중", "매칭완료", "경기종료" } )
     private Status status;
+
+    public void updateCaptainName(String captainName) {
+
+        this.captainName = captainName;
+    }
 
     public static TeamResponse fromEntity(Team team) {
 

@@ -60,7 +60,7 @@ public class MatchingService {
         // 현재 유저 정보 가져오기
         Long userId = GetCurrentUserId.currentUserId();
         // 현재 유저의 팀 중 "모집완료" 상태인 팀 id 가져오기
-//        matchingRequest.updateMatchingTeamId(getTeamId(userId));
+        matchingRequest.updateMatchingTeamId(getTeamId(userId));
         Matching matching = Matching.fromRequest(matchingRequest);
         matchingRepository.save(matching);
 
@@ -231,21 +231,31 @@ public class MatchingService {
         matching.updateStatus(Status.valueOf("경기종료"));
         matchingRepository.save(matching);
 
-        // 팀 게시판의 상태 매칭완료로 변경하기
         MatchingAsk matchingAsk = matchingAskRepository.findById(matchingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MATCHING));
+
+        // 매칭 완료한 선수의 경기 수 1 증가
         Long matchingTeamId = matchingAsk.getMatching().getMatchingTeamId();
+        List<UserTeam> userTeamList = userTeamRepository.findAllByTeamId(matchingTeamId);
+        userTeamList.forEach(ut -> ut.getUser().addGames());
+
+        // 팀 게시판의 상태 매칭완료로 변경하기
         Team team = teamRepository.findById(matchingTeamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
         team.updateStatus(Status.valueOf("경기종료"));
         teamRepository.save(team);
 
-        // 상대팀도 동일하게 매칭완료로 변경
+        // 매칭 완료한 상대팀의 경기 수 1 증가
         Long versusTeamId = matchingAsk.getVersusTeamId();
+        List<UserTeam> versusUserTeamList = userTeamRepository.findAllByTeamId(versusTeamId);
+        versusUserTeamList.forEach(ut -> ut.getUser().addGames());
+
+        // 상대팀도 동일하게 매칭완료로 변경
         Team versusTeam = teamRepository.findById(versusTeamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
         versusTeam.updateStatus(Status.valueOf("경기종료"));
         teamRepository.save(versusTeam);
+
     }
 
     // (매칭 시간 + 2시간)이 현재 시간보다 빠르면 매칭 종료 - @Scheduled로 1시간마다 실행

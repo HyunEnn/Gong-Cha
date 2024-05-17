@@ -14,6 +14,8 @@ import com.b306.gongcha.repository.MatchingAskRepository;
 import com.b306.gongcha.repository.TeamRepository;
 import com.b306.gongcha.repository.UserRepository;
 import com.b306.gongcha.repository.UserTeamRepository;
+import com.b306.gongcha.util.JWTUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,13 +37,18 @@ public class TeamServiceImpl implements TeamService{
     private final NoticeRepository noticeRepository;
     private final MatchingAskRepository matchingAskRepository;
 
+    private final JWTUtil jwtUtil;
+
     // 팀 목록 게시글 전체 조회
     @Override
     @Transactional(readOnly = true)
     public Page<TeamResponse> getAllTeams(Pageable pageable) {
 
         Page<Team> teams = teamRepository.findAll(pageable);
-        return teams.map(TeamResponse::fromEntity);
+        Page<TeamResponse> teamResponses = teams.map(TeamResponse::fromEntity);
+        teamResponses.forEach(t -> t.updateCaptainName(
+                userTeamRepository.findByTeamIdAndRole(t.getId(), Role.valueOf("팀장")).getUser().getName()));
+        return teamResponses;
     }
 
     // 팀 게시글 상세 조회
@@ -56,25 +63,27 @@ public class TeamServiceImpl implements TeamService{
     // 승인된 팀원 목록 조회
     @Override
     @Transactional(readOnly = true)
-    public List<UserTeamResponse> getTeamUsers(Long teamId) {
+    public List<UserTeamResponse> getTeamUsers(HttpServletRequest httpServletRequest, Long teamId) {
 
         List<UserTeamResponse> userTeamResponseList = new ArrayList<>();
         List<UserTeam> userTeamList = userTeamRepository.findAllByTeamIdAndPermitIsTrue(teamId);
         userTeamList.forEach(u -> userTeamResponseList.add(u.toUserTeamResponse()));
 
         // 경기수 세기
-        userTeamResponseList.forEach(u -> u.updateGames(
-                matchingAskRepository.countAllByTeamIdAndStatus(u.getUserId())
-                        + matchingAskRepository.countAllByVersusTeamIdAndStatus(u.getUserId())));
+        userTeamResponseList.forEach(u -> u.updateGames(userRepository.findById(u.getUserId())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getGames()));
 
         // 팀장인 경우 전화번호 보여주기
-        Long userId = GetCurrentUserId.currentUserId();
-        Long managerId = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"))
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getUser().getId();
-        if(userId.equals(managerId)) {
-            userTeamResponseList.forEach(utr -> utr.updatePhone(
-                    userRepository.findById(utr.getUserId())
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getPhone()));
+        User user = jwtUtil.getUserFromAccessToken(httpServletRequest);
+        Long userId = user.getId();
+        UserTeam userTeam = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"));
+        if(userTeam != null) {
+            Long managerId = userTeam.getUser().getId();
+            if(userId.equals(managerId)) {
+                userTeamResponseList.forEach(utr -> utr.updatePhone(
+                        userRepository.findById(utr.getUserId())
+                                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getPhone()));
+            }
         }
 
 
@@ -201,25 +210,26 @@ public class TeamServiceImpl implements TeamService{
 
     // 팀 정보로 신청 목록 확인
     @Override
-    public List<UserTeamResponse> getUserTeamByTeam(Long teamId) {
+    public List<UserTeamResponse> getUserTeamByTeam(HttpServletRequest httpServletRequest, Long teamId) {
 
         List<UserTeamResponse> userTeamResponseList = new ArrayList<>();
         List<UserTeam> userTeamList = userTeamRepository.findAllByTeamId(teamId);
         userTeamList.forEach(u -> userTeamResponseList.add(u.toUserTeamResponse()));
 
         // 경기수 세기
-        userTeamResponseList.forEach(u -> u.updateGames(
-                matchingAskRepository.countAllByTeamIdAndStatus(u.getUserId())
-                        + matchingAskRepository.countAllByVersusTeamIdAndStatus(u.getUserId())));
+        userTeamResponseList.forEach(u -> u.updateGames(u.getGames()));
 
         // 팀장인 경우 전화번호 보여주기
-        Long userId = GetCurrentUserId.currentUserId();
-        Long managerId = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"))
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getUser().getId();
-        if(userId.equals(managerId)) {
-            userTeamResponseList.forEach(utr -> utr.updatePhone(
-                    userRepository.findById(utr.getUserId())
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getPhone()));
+        User user = jwtUtil.getUserFromAccessToken(httpServletRequest);
+        Long userId = user.getId();
+        UserTeam userTeam = userTeamRepository.findByTeamIdAndRole(teamId, Role.valueOf("팀장"));
+        if(userTeam != null) {
+            Long managerId = userTeam.getUser().getId();
+            if(userId.equals(managerId)) {
+                userTeamResponseList.forEach(utr -> utr.updatePhone(
+                        userRepository.findById(utr.getUserId())
+                                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER)).getPhone()));
+            }
         }
 
 
