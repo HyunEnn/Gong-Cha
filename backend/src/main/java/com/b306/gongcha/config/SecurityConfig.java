@@ -22,7 +22,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -65,8 +64,10 @@ public class SecurityConfig {
         //Form 로그아웃 방식 disable
 //        http.logout((auth) -> auth.disable());
 
+        // JWT Filter 안거칠 API
         List<AntPathRequestMatcher> excludedPaths = List.of(
-                new AntPathRequestMatcher("/auth/regenerate")
+                new AntPathRequestMatcher("/auth/regenerate"),
+                new AntPathRequestMatcher("/club/clubs")
         );
 
         //HTTP Basic 인증 방식 disable
