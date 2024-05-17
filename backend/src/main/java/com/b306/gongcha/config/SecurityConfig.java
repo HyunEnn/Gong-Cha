@@ -17,11 +17,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -43,6 +45,8 @@ public class SecurityConfig {
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration configuration = new CorsConfiguration();
                 configuration.setAllowedOrigins(Arrays.asList("http://localhost:8081", "http://localhost:5173", "https://gongcha.site",
+                        "http://localhost:8081/api",
+                        "http://localhost:5173/kakao/callback",
                         "http://k10b306.p.ssafy.io:8081", "http://k10b306.p.ssafy.io:5173"));
                 configuration.setAllowedMethods(Arrays.asList("*"));
                 configuration.setAllowCredentials(true);
@@ -61,12 +65,16 @@ public class SecurityConfig {
         //Form 로그아웃 방식 disable
 //        http.logout((auth) -> auth.disable());
 
+        List<AntPathRequestMatcher> excludedPaths = List.of(
+                new AntPathRequestMatcher("/auth/regenerate")
+        );
 
         //HTTP Basic 인증 방식 disable
         http.httpBasic((auth) -> auth.disable());
 
+
         //JWTFilter 추가
-        http.addFilterAfter(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(new JWTFilter(jwtUtil, excludedPaths), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(new CustomLogoutService(jwtUtil, refreshRepository), LogoutFilter.class);
 
         //oauth2
@@ -78,9 +86,10 @@ public class SecurityConfig {
         //경로별 인가 작업
         http.authorizeHttpRequests((auth) -> auth
                 .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .requestMatchers("/api/kakao/callback").permitAll()
-                .requestMatchers("/api/google/callback").permitAll()
-                .requestMatchers("/api/club/clubs").permitAll()
+                .requestMatchers("/kakao/callback").permitAll()
+                .requestMatchers("/auth/regenerate").permitAll()
+                .requestMatchers("/google/callback").permitAll()
+                .requestMatchers("/club/clubs").permitAll()
                 .requestMatchers("/my").permitAll()
                 .requestMatchers("/reissue").permitAll()
                 .anyRequest().authenticated());

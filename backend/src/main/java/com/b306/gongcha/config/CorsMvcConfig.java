@@ -13,6 +13,7 @@ public class CorsMvcConfig implements WebMvcConfigurer {
         corsRegistry.addMapping("/**")
                 .exposedHeaders("Authorization", "Set-Cookie")
                 .allowedOrigins("http://localhost:5173",
+                                "http://localhost:5173/kakao/callback",
                                 "http://k10b306.p.ssafy.io:5173",
                                 "http://k10b306.p.ssafy.io:8081",
                                 "https://gongcha.site");
