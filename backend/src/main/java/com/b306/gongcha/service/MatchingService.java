@@ -13,6 +13,8 @@ import com.b306.gongcha.repository.MatchingAskRepository;
 import com.b306.gongcha.repository.MatchingRepository;
 import com.b306.gongcha.repository.TeamRepository;
 import com.b306.gongcha.repository.UserTeamRepository;
+import com.b306.gongcha.util.JWTUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +34,9 @@ public class MatchingService {
     private final UserTeamRepository userTeamRepository;
     private final MatchingRepository matchingRepository;
     private final MatchingAskRepository matchingAskRepository;
+
+    private final JWTUtil jwtUtil;
+
 
     // 매칭 게시판에서 팀장인지 확인
     public Long getTeamId(Long userId) {
@@ -55,10 +60,11 @@ public class MatchingService {
     
     // 매칭 게시판 작성
     @Transactional
-    public void createMatching(MatchingRequest matchingRequest) {
+    public void createMatching(HttpServletRequest httpServletRequest, MatchingRequest matchingRequest) {
 
         // 현재 유저 정보 가져오기
-        Long userId = GetCurrentUserId.currentUserId();
+        User user = jwtUtil.getUserFromAccessToken(httpServletRequest);
+        Long userId = user.getId();
         // 현재 유저의 팀 중 "모집완료" 상태인 팀 id 가져오기
         matchingRequest.updateMatchingTeamId(getTeamId(userId));
         Matching matching = Matching.fromRequest(matchingRequest);
@@ -138,9 +144,10 @@ public class MatchingService {
 
     // 게시판 작성한 팀장이 받은 신청 목록 조회
     @Transactional(readOnly = true)
-    public List<MatchingAskResponse> getAllMatchingAsksByUserId() {
+    public List<MatchingAskResponse> getAllMatchingAsksByUserId(HttpServletRequest httpServletRequest) {
 
-        Long userId = GetCurrentUserId.currentUserId();
+        User user = jwtUtil.getUserFromAccessToken(httpServletRequest);
+        Long userId = user.getId();
         Long teamId = getTeamId(userId);
         List<MatchingAskResponse> matchingAskResponseList = new ArrayList<>();
         List<MatchingAsk> matchingAskList = matchingAskRepository.findByMatchingTeamIdAndPermitIsFalse(teamId);
