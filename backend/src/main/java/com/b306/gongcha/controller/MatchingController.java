@@ -7,6 +7,7 @@ import com.b306.gongcha.service.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,9 +34,9 @@ public class MatchingController {
         description = "매칭이 정상적으로 생성되었습니다."
     )
     @PostMapping("/create")
-    public ResponseEntity<CommonResponse> createClub(@RequestBody MatchingRequest matchingRequest) {
+    public ResponseEntity<CommonResponse> createClub(HttpServletRequest httpServletRequest, @RequestBody MatchingRequest matchingRequest) {
 
-        matchingService.createMatching(matchingRequest);
+        matchingService.createMatching(httpServletRequest, matchingRequest);
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("매칭 생성 완료")
                 .build(), HttpStatus.OK);
@@ -153,11 +154,11 @@ public class MatchingController {
             description = "팀장이 받은 매칭 신청 목록을 정상적으로 조회하였습니다."
     )
     @GetMapping("/request")
-    public ResponseEntity<CommonResponse> getRequestMatchingByUser() {
+    public ResponseEntity<CommonResponse> getRequestMatchingByUser(HttpServletRequest httpServletRequest) {
 
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("팀장의 매칭 신청 목록 조회 완료")
-                .data(matchingService.getAllMatchingAsksByUserId())
+                .data(matchingService.getAllMatchingAsksByUserId(httpServletRequest))
                 .build(), HttpStatus.OK);
     }
 
