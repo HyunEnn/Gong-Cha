@@ -54,10 +54,6 @@ function MainTestPage() {
         return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
-    const refreshValue = getCookie('refresh');
-    console.log('쿠키', document.cookie);
-    console.log('refresh 토큰', refreshValue);
-
     // var x = document.cookie;
     // console.log('쿠키 출력', x);
 
