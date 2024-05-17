@@ -5,23 +5,13 @@ const server = serverAxios();
 const url = '/api/matching';
 
 // 매칭 생성
-const postMatchingCreate = async (content) => {
-    return await server
-        .post(`${url}/create`, content)
-        .then((response) => response.data)
-        .catch((error) => {
-            throw new Error(`API request failed: ${error}`);
-        });
+const postMatchingCreate = async (content, success, fail) => {
+    return await server.post(`${url}/create`, content).then(success).catch(fail);
 };
 
 // 매칭 목록 조회
-const getMatchingList = async () => {
-    return await server
-        .get(`${url}`)
-        .then((response) => response.data)
-        .catch((error) => {
-            throw new Error(`API request failed: ${error}`);
-        });
+const getMatchingList = async (success, fail) => {
+    return await server.get(`${url}`).then(success).catch(fail);
 };
 
 // 매칭 상세 조회
