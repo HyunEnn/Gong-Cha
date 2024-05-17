@@ -66,7 +66,7 @@ public class SecurityConfig {
 //        http.logout((auth) -> auth.disable());
 
         List<AntPathRequestMatcher> excludedPaths = List.of(
-                new AntPathRequestMatcher("/api/auth/regenerate")
+                new AntPathRequestMatcher("/auth/regenerate")
         );
 
         //HTTP Basic 인증 방식 disable
@@ -87,9 +87,9 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth) -> auth
                 .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/kakao/callback").permitAll()
-                .requestMatchers("/api/auth/regenerate").permitAll()
+                .requestMatchers("/auth/regenerate").permitAll()
                 .requestMatchers("/google/callback").permitAll()
-                .requestMatchers("/api/club/clubs").permitAll()
+                .requestMatchers("/club/clubs").permitAll()
                 .requestMatchers("/my").permitAll()
                 .requestMatchers("/reissue").permitAll()
                 .anyRequest().authenticated());
