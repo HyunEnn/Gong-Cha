@@ -63,7 +63,7 @@ function MarketBoardPage() {
             {/* Render component based on activeTab */}
             {activeTab === 'tab2' && <MyTeamInfo />}
             {activeTab === 'tab3' && <TeamList />}
-        </div>
+        </>
     );
 }
 

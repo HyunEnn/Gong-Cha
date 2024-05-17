@@ -8,8 +8,10 @@ import alarmIcon from '@/assets/lottie/alarm';
 import congratulationIcon from '@/assets/lottie/congratulation';
 import versusIcon from '@/assets/lottie/versus';
 import lArrowIcon from '@/assets/icons/lArrow.svg';
+import { getNotice } from '@/apis/api/mypage';
 
 function AlarmPage() {
+  const key = 2;
   const [alarmList, setAlarmList] = useState([]);
   const [alarmDetail, setAlarmDetail] = useState({
     content: '',
@@ -28,7 +30,18 @@ function AlarmPage() {
 
   useEffect(() => {
     // api
-    setAlarmDetail();
+    getNotice(
+      key,
+      (success) => {
+        setAlarmList((prevData) => ({
+            ...prevData,
+            ...success.data.data,
+        }));
+      },
+      (fail) => {
+          console.log(fail);
+      }
+    );
   }, []);
 
   const handleBackClick = () => {

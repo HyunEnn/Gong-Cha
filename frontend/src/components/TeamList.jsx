@@ -64,7 +64,6 @@ function TeamList() {
     }, []);
 
     const handleTeamInfoClick = (key) => {
-        console.log("씨발아");
         setDetailKey({ key });
         setShowDetailModal(true);
     };
@@ -161,9 +160,9 @@ function TeamList() {
     return (
         <div className="absolute">
             {teamListData.length === 0 ? (
-                <div className="absolute flex justify-center left-1/2 top-[calc(15rem)] transform -translate-x-1/2 p-0 w-[calc(6rem)] h-[calc(6rem)]">
+                <div className="absolute left-[calc(11.5rem)] top-[calc(15rem)] transform -translate-x-1/2 p-0 w-[calc(6rem)] h-[calc(6rem)]">
                     <img src={emptyGhostIcon} alt="팀 목록이 없습니다" />
-                    <p className="absolute top-[calc(7rem)] font-pretendardBlack text-[calc(0.4rem)] text-gray-500">팀 목록이 없어요</p>
+                    <p className="absolute left-[calc(2rem)] top-[calc(7rem)] font-pretendardBlack text-[calc(0.4rem)] text-gray-500">팀 목록이 없어요</p>
                 </div>
                 ) : (
                     <>
@@ -345,7 +344,7 @@ function TeamList() {
                                             &times;
                                         </button>
                                         <div className="absolute w-full mt-10">
-                                            <TeamInfo></TeamInfo>
+                                            <TeamInfo teamId2={10000}></TeamInfo>
                                             <div className="absolute flex flex-col items-center justify-center w-full mt-5">
                                                 <button
                                                     className="w-4/5 bg-blue-500 text-white rounded-md font-bold mb-4"

@@ -10,7 +10,7 @@ function BottomNav() {
 
     return (
         <div className="flex flex-col items-center justify-between min-h-screen">
-            <div className="mx-4 overflow-x-hidden overflow-y-auto h-[calc(100vh-96px)] min-w-[calc(360px)]">
+            <div className="mx-4 overflow-x-hidden overflow-y-auto h-[calc(100vh-96px)] min-w-[calc(22.5rem)]">
                 <Outlet />
             </div>
             <footer className="fixed bottom-0 flex items-center justify-center w-full bg-white border-black shadow-top min-h-18 mb-0">

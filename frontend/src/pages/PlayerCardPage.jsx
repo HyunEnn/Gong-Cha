@@ -2,37 +2,48 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import lArrowIcon from '@/assets/icons/lArrow.svg';
 import PlayerCard from '@/components/PlayerCard';
+import { getMyCard } from '@/apis/api/mypage';
 import { myPageDummyData } from '@/data/dummyData'; // dummy data
 
 function PlayerCardPage() {
+    const key = 2;
     const navigate = useNavigate();
-    const [profileData, setProfileData] = useState({});
+    const [profileData, setProfileData] = useState({
+
+    });
+    // const [profileData, setProfileData] = useState({
+    //     userId: 0,
+    //     name: '정준수',
+    //     profileUrl: profileImage,
+    //     playNum: 5,
+    //     shooting: 95,
+    //     pass: 90,
+    //     dribble: 97,
+    //     speed: 98,
+    //     manner: 90,
+    // });
 
     useEffect(() => {
         setProfileData(    // dummy data
             myPageDummyData,
         );
+        // axios for db connection
+        // getMyCard(
+        //     key,
+        //     (success) => {
+        //         setProfileData({
+        //             ...profileData,
+        //         });
+        //     },
+        //     (fail) => {
+                
+        //     }
+        // );
+        // return () => {
+            
+        // };
     }, []);
 
-    useEffect(() => {
-        /* axios for db connection
-        getProfileInfo(
-            key,
-            (success) => {
-                setProfileData({
-                    ...profileData,
-                });
-            },
-            (fail) => {
-                
-            }
-        );
-        return () => {
-            
-        };
-        */
-    }, []);
-    
     const handleBackClick = () => {
         navigate(-1);
     };

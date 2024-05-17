@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
+import { setProfileImage } from '@/apis/api/mypage';
 import imglyRemoveBackground from "@imgly/background-removal";
 import { toast } from "sonner"
 import {
@@ -37,26 +38,7 @@ function ProfilePage() {
     //         playHistoryDummyData,
     //     );
     // }, []);
-    
-    useEffect(() => {
-        /* axios for db connection
-        getPlayScheduleList(
-            key,
-            (success) => {
-                setPlayScheduleList({
-                    ...success,
-                });
-            },
-            (fail) => {
-                
-            }
-        );
-        return () => {
-            
-        };
-        */
-    }, []);
-  
+
     const removeBackground = () => {
       console.log("둔디기 시도");
       imglyRemoveBackground(imageSrc)
@@ -65,6 +47,16 @@ function ProfilePage() {
           /* [공사중] */
           console.log("둔디기 완료");
           console.log(URL.createObjectURL(resultBlob));
+            // axios for db connection
+            setProfileImage(
+                resultBlob,
+                (success) => {
+                    console.log(success);
+                },
+                (fail) => {
+                    console.log(fail);
+                }
+            );
           setError(null);
         })
         .catch((err) => {
@@ -95,7 +87,15 @@ function ProfilePage() {
 
     const handleSubmitNickname = () => {
         setShowNicknameDrawer(false);
-        console.log("새로운 닉네임:", newNickname);
+        // console.log("새로운 닉네임:", newNickname);
+        toast("닉네임이 변경 되었어요!", {
+            description: `변경된 닉네임: ${newNickname}`,
+            className: 'toaster',
+            action: {
+              label: "확인",
+              onClick: () => console.log("이벤트 확인"),
+            },
+        });
     };
 
     const handleSubmitProfileImage = () => {
