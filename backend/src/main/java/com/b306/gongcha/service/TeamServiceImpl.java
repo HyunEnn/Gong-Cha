@@ -46,10 +46,9 @@ public class TeamServiceImpl implements TeamService{
 
         Page<Team> teams = teamRepository.findAll(pageable);
         Page<TeamResponse> teamResponses = teams.map(TeamResponse::fromEntity);
-        teamResponses.forEach(t -> t.updateCaptainName(
-                userTeamRepository.findByTeamIdAndRole(t.getId(), Role.valueOf("팀장"))
-                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER))
-                        .getUser().getName()));
+
+        teamResponses.forEach(t -> userTeamRepository.findByTeamIdAndRole(t.getId(), Role.valueOf("팀장"))
+                .ifPresent(userTeam -> t.updateCaptainName(userTeam.getUser().getName())));
         return teamResponses;
     }
 
