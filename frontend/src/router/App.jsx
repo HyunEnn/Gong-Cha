@@ -34,8 +34,6 @@ function App() {
     useEffect(() => {
         const test = token;
         setLocalToken(token);
-        const test = token;
-        setLocalToken(token);
     }, [token]);
     useEffect(() => {
         if(localToken) {

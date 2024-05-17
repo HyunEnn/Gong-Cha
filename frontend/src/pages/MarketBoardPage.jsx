@@ -12,7 +12,7 @@ function MarketBoardPage() {
     const [activeTab, setActiveTab] = useState('tab2');
 
     return (
-        <div>
+        <>
             <div
                 onClick={handleBackClick}
                 className="absolute left-[calc(.7rem)] top-[calc(2.0rem)] w-[calc(1.5625rem)] h-[calc(1.875rem)] cursor-pointer"
