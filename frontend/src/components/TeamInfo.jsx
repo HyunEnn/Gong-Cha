@@ -1,24 +1,50 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import Modal from '@/components/Modal';
 import PlayerCard from '@/components/PlayerCard';
 import teamBackground from '@/assets/images/FieldBackground.png';
 import squareIcon from '@/assets/images/squareIcon.png';
 import hexagonIcon from '@/assets/images/hexagonIcon.png';
-import { getTeamInfo, getPlayerList } from '@/apis/api/team';
-import { getPlayerCard } from '@/apis/api/mypage';
-import { myTeamInfoDummyData } from '@/data/dummyData'; // dummy data
+import { getTeamInfo, getPlayerList, endTeamRecruit } from '@/apis/api/team';
+import { getPlayerCard, getProfileImage2 } from '@/apis/api/mypage';
+import { getAPIforAuthUserInfo, getAPIforAuthUserInfoById } from '@/apis/api/user';
 
-function TeamInfo({ teamId2 }) {
-    const teamId = 10;
-    const [myTeamInfoData, setMyTeamInfoData] = useState(null);
+function TeamInfo({ teamId }) {
+    const navigate = useNavigate();
     const [myTeamInfo, setMyTeamInfo] = useState(null);
+    const [myTeamSpec, setMyTeamSpec] = useState(
+        {
+            shooting: 0,
+            pass: 0,
+            dribble: 0,
+            speed: 0,
+        }
+    );
+    const [myTeamPlayerLength, setMyTeamPlayerLength] = useState(0);
     const [teamInfo, setTeamInfo] = useState({});
     const [detailKey, setDetailKey] = useState({ key: '' });
     const [showDetailModal, setShowDetailModal] = useState(false);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
     const [startY, setStartY] = useState(0);
     const [dragging, setDragging] = useState(false);
+    const [capId, setCapId] = useState(-1);
+    const [userId, setUserId] = useState(-1);
     const [translateY, setTranslateY] = useState(0);
+    const [profileData, setProfileData] = useState({
+        userId: 0,
+        name: '',
+        profileUrl: '',
+    });
+
+    useEffect(() => {
+        getAPIforAuthUserInfo(
+            (success) => {
+                setUserId(success.data.data.userId);
+            },
+            (fail) => {
+            }
+        );
+    }, []);
 
     useEffect(() => {
         const bars = document.querySelectorAll('.progress-bar');
@@ -30,16 +56,12 @@ function TeamInfo({ teamId2 }) {
                 bar.style.width = targetWidth;
             }, 100);
         });
-    }, [myTeamInfoData]);
+    }, [myTeamSpec]);
 
     useEffect(() => {
-        console.log(teamId2);
-        setMyTeamInfoData(    // dummy data
-            myTeamInfoDummyData,
-        );
-    }, []);
-
-    useEffect(() => {
+        if (teamId === undefined) {
+            return;
+        }
         // 팀 정보
         getTeamInfo(
             teamId,
@@ -51,24 +73,63 @@ function TeamInfo({ teamId2 }) {
                 getPlayerList(
                     teamId,
                     (success) => {
-                        setMyTeamInfo((prevData) => ({
-                            ...prevData,
-                            players: success.data.data,
-                        }));
-                        // 팀원 선수카드 정보 [수정중]
-                        // getPlayerCard(
-                        //     teamId,
-                        //     (success) => {
-                        //         setMyTeamInfo((prevData) => ({
-                        //             ...prevData,
-                        //             players: success.data.data,
-                        //         }));
+                        if(success.data.status === 'OK') {
+                            setMyTeamPlayerLength(success.data.data.length);
+                            setMyTeamInfo((prevData) => ({
+                                ...prevData,
+                                players: success.data.data,
+                            }));
+                            // 팀원 선수카드 정보
+                            const dataArray = success.data.data;
+                            const updatedPlayers = [...success.data.data];
+                            dataArray.forEach((player, index) => {
+                                if(player.role === "팀장") {
+                                    setCapId(player.userId);
+                                }
                                 
-                        //     },
-                        //     (fail) => {
-                        //         console.log(fail);
-                        //     }
-                        // );
+                                getPlayerCard(
+                                    player.userId,
+                                    (success) => {
+                                        const cardInfo = success.data.data;
+                                        updatedPlayers[index] = {
+                                            ...updatedPlayers[index],
+                                            shooting: cardInfo.shooting,
+                                            pass: cardInfo.pass,
+                                            dribble: cardInfo.dribble,
+                                            speed: cardInfo.speed,
+                                        };
+                                        setMyTeamSpec((prevSpec) => ({
+                                            shooting: prevSpec.shooting + cardInfo.shooting,
+                                            pass: prevSpec.pass + cardInfo.pass,
+                                            dribble: prevSpec.dribble + cardInfo.dribble,
+                                            speed: prevSpec.speed + cardInfo.speed
+                                        }));
+                                    },
+                                    (fail) => {
+                                        console.log(fail);
+                                    }
+                                );
+                                getAPIforAuthUserInfoById(
+                                    player.userId,
+                                    (success) => {
+                                        const manner = success.data.data.manner;
+                                        const profileImage = success.data.data.profileImage;
+                                        updatedPlayers[index] = {
+                                            ...updatedPlayers[index],
+                                            manner: manner,
+                                            profileUrl: profileImage,
+                                        };
+                                    },
+                                    (fail) => {
+                                        console.log(fail);
+                                    }
+                                );
+                            });
+                            setMyTeamInfo((prevData) => ({
+                                ...prevData,
+                                players: updatedPlayers,
+                            }));
+                        }
                     },
                     (fail) => {
                         console.log(fail);
@@ -87,7 +148,6 @@ function TeamInfo({ teamId2 }) {
     useEffect(() => {
         // 팀원 정보
         console.log(myTeamInfo);
-
     }, [myTeamInfo]);
 
     const handleTeamInfoClick = (key) => {
@@ -162,7 +222,17 @@ function TeamInfo({ teamId2 }) {
     };
 
     const handleFinishButton = () => {
-        
+        if(capId === userId) {
+            endTeamRecruit(
+                myTeamInfo.id,
+                (success) => {
+                    console.log(success.data.data);
+                    navigate(0);
+                },
+                (fail) => {
+                }
+            );
+        }
     };
     
     // PlayerCard modal rendering
@@ -191,23 +261,30 @@ function TeamInfo({ teamId2 }) {
 
     return (
         <>
-            {myTeamInfoData === null ? (
+            {myTeamInfo === null ? (
                 <div></div>
             ) : (
                 <>
                     {/* team name */}
                     <div className="mt-4 px-4 absolute top-0">
-                        <p>{myTeamInfoData.writer.name} FC</p>
+                        <p>{myTeamInfo.captainName} FC</p>
                     </div>
                     {/* team tags */}
-                    <div className="mt-4 px-4 text-[calc(.5rem)] absolute top-[calc(1.5rem)]">
-                        <p>{myTeamInfoData.location} | {myTeamInfoData.time} | {myTeamInfoData.tags.map(tag => Array.isArray(tag) ? tag.join(', ') : tag).join(', ')}</p>
+                    <div className="mt-4 px-4 text-[calc(0.8rem)] absolute top-[calc(1.5rem)]">
+                        <p>{myTeamInfo.region} {myTeamInfo.district} | {myTeamInfo.difficulty} | {myTeamInfo.matchType} | {myTeamInfo.dayOfWeekList.map(tag => Array.isArray(tag) ? tag.join(', ') : tag).join(', ')}</p>
                     </div>
                     <div className="absolute mt-0 right-0 px-3 text-[calc(.5rem)] top-[calc(1.5rem)]">
-                        <button className="rounded w-[calc(4rem)] h-5 text-[calc(.5rem)] bg-green-500" onClick={handleFinishButton}>모집 완료하기</button>
+                    <button 
+                        className="rounded w-[calc(4rem)] h-5 text-[calc(.5rem)] bg-green-500" 
+                        onClick={handleFinishButton}
+                    >
+                        {capId === userId && myTeamInfo.status === "모집중" ? "모집완료하기" : myTeamInfo.status}
+                    </button>
                     </div>
                     <div className="absolute mt-5 right-[calc(0rem)] px-3 text-[calc(.5rem)] top-[calc(1.5rem)]">
-                        <button className="rounded w-[calc(3rem)] h-5 text-[calc(.5rem)]" onClick={handleTeamInfoClick}>상대팀 보기</button>
+                        <button className="rounded w-[calc(3rem)] h-5 text-[calc(.5rem)]" onClick={handleTeamInfoClick}>
+                            {myTeamInfo.status === "매칭완료" ? "상대팀 보기" : ""}
+                        </button>
                     </div>
                     {/* team analysis */}
                     <div>
@@ -218,26 +295,34 @@ function TeamInfo({ teamId2 }) {
                             </div>
                         </div>
                         <div className="mt-5 ml-4 space-x-0 bg-gray-400 w-[72%] h-5 flex text-[calc(.5rem)]">
-                            <div className="progress-bar bg-blue-500 h-full" data-width="16.666%">
-                                <p className="absolute ml-[calc(.1rem)] mt-[calc(.1rem)] text-white font-pretendardBold text-[calc(.7rem)]">40</p>
+                            <div className="progress-bar bg-blue-500 h-full" data-width={`${(myTeamSpec.shooting / (myTeamPlayerLength )) / 4}%`}>
+                                <p className="absolute ml-[calc(.1rem)] mt-[calc(.1rem)] text-white font-pretendardBold text-[calc(.7rem)]">{parseInt(myTeamSpec.speed / (myTeamPlayerLength ))}</p>
                                 <p className="absolute -mt-[calc(.6rem)] font-pretendardBlack text-blue-500">SHO</p>
                             </div>
-                            <div className="progress-bar bg-green-500 h-full" data-width="33.333%">
-                                <p className="absolute ml-[calc(.1rem)] mt-[calc(.1rem)] text-white font-pretendardBold text-[calc(.7rem)]">90</p>
+                            <div className="progress-bar bg-green-500 h-full" data-width={`${(myTeamSpec.pass / (myTeamPlayerLength ) / 4)}%`}>
+                                <p className="absolute ml-[calc(.1rem)] mt-[calc(.1rem)] text-white font-pretendardBold text-[calc(.7rem)]">{parseInt(myTeamSpec.pass / (myTeamPlayerLength ))}</p>
                                 <p className="absolute -mt-[calc(.6rem)] font-pretendardBlack text-green-500">PAS</p>
                             </div>
-                            <div className="progress-bar bg-red-500 h-full" data-width="20%">
-                                <p className="absolute ml-[calc(.1rem)] mt-[calc(.1rem)] text-white font-pretendardBold text-[calc(.7rem)]">50</p>
+                            <div className="progress-bar bg-red-500 h-full" data-width={`${(myTeamSpec.dribble / (myTeamPlayerLength )) / 4}%`}>
+                                <p className="absolute ml-[calc(.1rem)] mt-[calc(.1rem)] text-white font-pretendardBold text-[calc(.7rem)]">{parseInt(myTeamSpec.dribble / (myTeamPlayerLength ))}</p>
                                 <p className="absolute -mt-[calc(.6rem)] font-pretendardBlack text-red-500">DRI</p>
                             </div>
-                            <div className="progress-bar bg-yellow-500 h-full" data-width="16.666%">
-                                <p className="absolute ml-[calc(.1rem)] mt-[calc(.1rem)] text-white font-pretendardBold text-[calc(.7rem)]">50</p>
+                            <div className="progress-bar bg-yellow-500 h-full" data-width={`${(myTeamSpec.speed / (myTeamPlayerLength)) / 4}%`}>
+                                <p className="absolute ml-[calc(.1rem)] mt-[calc(.1rem)] text-white font-pretendardBold text-[calc(.7rem)]">{parseInt(myTeamSpec.speed / (myTeamPlayerLength ))}</p>
                                 <p className="absolute -mt-[calc(.6rem)] font-pretendardBlack text-yellow-500">SPD</p>
                             </div>
                             <div className="">
                                 <p className="absolute ml-[calc(.7rem)] mt-[calc(.4rem)] font-pretendardBold text-white">max</p>
                             </div>
-                            <p className="absolute mt-[calc(.1rem)] right-[calc(2.3rem)] font-pretendardBlack text-[calc(.7rem)] text-[#72BBA8]">230</p>
+                            <p className="absolute mt-[calc(.1rem)] right-[calc(2.3rem)] font-pretendardBlack text-[calc(.7rem)] text-[#72BBA8]">
+                                {parseInt(
+                                    (myTeamSpec.shooting / myTeamPlayerLength)
+                                    + (myTeamSpec.pass / myTeamPlayerLength)
+                                    + (myTeamSpec.dribble / myTeamPlayerLength)
+                                    + (myTeamSpec.speed / myTeamPlayerLength)
+                                    )}
+                            
+                            </p>
                             <p className="absolute mt-[calc(.1rem)] right-[calc(.5rem)] font-pretendardBlack text-[calc(.7rem)] text-gray-500">/400</p>
                         </div>
                         <div className="absolute mt-[calc(3rem)]">
@@ -246,8 +331,8 @@ function TeamInfo({ teamId2 }) {
                                 alt="배경 필드 사진" 
                             />
                             <div className="flex flex-wrap items-center justify-center p-4 absolute inset-0">
-                                {myTeamInfoData.players.map((player, playerIndex) => 
-                                    player.stateus && (
+                                {myTeamInfo?.players?.map((player, playerIndex) => (
+                                    player.permit && (
                                         <div key={playerIndex} className="fade-in relative flex flex-col items-center justify-center m-2"
                                             style={{
                                                 width: 'calc(20% - 1.5rem)',
@@ -255,13 +340,13 @@ function TeamInfo({ teamId2 }) {
                                             }}
                                             onClick={() => handlePlayerClick(player)}>
                                             <img className="rounded-full border-[calc(0.15rem)] border-stone-1 object-cover object-center mb-1" 
-                                                src={player.profileImage} 
+                                                src={player.profileUrl} 
                                                 alt="프로필 사진"
                                                 style={{ width: '2rem', height: '2rem', objectFit: 'contain' }} />
-                                            <p className="font-pretendardBold text-white text-[calc(0.7rem)]" style={{ alignSelf: 'flex-start' }}>{player.name}</p>
+                                            <p className="font-pretendardBold text-white text-[calc(0.7rem)]" style={{ alignSelf: 'flex-start' }}>{player.userName}</p>
                                         </div>
                                     )
-                                )}
+                                ))}
                                 {renderPlayerCardModal()}
                             </div>
                         </div>
@@ -272,39 +357,39 @@ function TeamInfo({ teamId2 }) {
                             전력
                         </div>
                         <div className="relative left-10 w-[88%]">
-                            {myTeamInfoData.players.map((player, playerIndex) => (
-                                <div key={playerIndex} className={"" + (player.stateus ? "" : " opacity-20")}>
+                            {myTeamInfo?.players?.map((player, playerIndex) => (
+                                <div key={playerIndex} className={"" + (player.permit ? "" : " opacity-20")}>
                                     <div className="relative flex justify-start border-b-[calc(0.05rem)] w-full">
-                                    <div className="absolute -left-6 mt-5">
-                                        <div className={`absolute w-1 h-5 ${getBackgroundColor([player.SHO, player.PAS, player.DRI, player.PAC])}`}></div>
+                                        <div className="absolute -left-6 mt-5">
+                                            <div className={`absolute w-1 h-5 ${getBackgroundColor([player.shooting, player.pass, player.dribble, player.speed])}`}></div>
                                             <p className="ml-2 -mt-[calc(.15rem)] font-pretendardBlack">
-                                                {Math.max(player.SHO, player.PAS, player.DRI, player.PAC)}
+                                                {Math.max(player.shooting, player.pass, player.dribble, player.speed)}
                                             </p>
                                         </div>
                                         <img className="border-stone-1 object-cover object-center mb-1"
-                                            src={player.profileImage} 
+                                            src={player.profileUrl}
                                             alt="프로필 사진"
                                             style={{ width: '4rem', height: '4rem', objectFit: 'contain' }} />
-                                        <p className="relative mt-4 ml-2 font-pretendardBlack text-black text-[calc(0.8rem)]">{player.name}</p>
+                                        <p className="relative mt-4 ml-2 font-pretendardBlack text-black text-[calc(0.8rem)]">{player.userName}</p>
                                         <p className="absolute mt-[calc(2.5rem)] ml-[calc(4.5rem)] font-pretendardRegular text-gray-500 text-[calc(0.5rem)]">경기수</p>
                                         <div className="absolute hexagon mt-[calc(3.2rem)] ml-[calc(4.85rem)] text-gray-500 text-[calc(0.5rem)]">
                                             <div className="absolute flex flex-col items-center justify-center -mt-[calc(.07rem)] w-4 h-4 -ml-[calc(.18rem)]">
-                                                <img className={"absolute opacity-50" + (player.playNum > 4 ? "" : " h-3")}
-                                                    src={(player.playNum > 4 ? hexagonIcon : squareIcon)}
+                                                <img className={"absolute opacity-50" + (player.games > 4 ? "" : " h-3")}
+                                                    src={(player.games > 4 ? hexagonIcon : squareIcon)}
                                                     alt="경기수 아이콘"
                                                 />
                                                 <p className="absolute font-pretendardBlack text-center">
-                                                    {player.playNum}
+                                                    {player.games}
                                                 </p>
                                             </div>
                                         </div>
                                         <p className="absolute mt-[calc(2.5rem)] ml-[calc(6.2rem)] font-pretendardRegular text-gray-500 text-[calc(0.5rem)]">매너점수</p>
-                                        <div className={"absolute flex flex-col items-center mt-[calc(3.3rem)] ml-[calc(6.5rem)] w-4 h-3" + (player.MAN > 59 ? " bg-[#D6D6DA]" : " bg-[#CF946E]") + (player.MAN > 79 ? " bg-[#d6b534]" : "")}>
-                                            <p className="absolute font-pretendardBlack text-gray-500 text-[calc(0.5rem)]">{player.MAN}</p>
+                                        <div className={"absolute flex flex-col items-center mt-[calc(3.3rem)] ml-[calc(6.5rem)] w-4 h-3" + (player.manner > 59 ? " bg-[#D6D6DA]" : " bg-[#CF946E]") + (player.manner > 79 ? " bg-[#d6b534]" : "")}>
+                                            <p className="absolute font-pretendardBlack text-gray-500 text-[calc(0.5rem)]">{player.manner}</p>
                                         </div>
                                         <div className='asbolute flex justify-end'>
-                                        <p className="absolute mt-[calc(2.5rem)] right-2 font-pretendardRegular text-gray-500 text-[calc(0.5rem)]">선수 가치</p>
-                                        <p className="absolute mt-[calc(3.1rem)] right-4 font-pretendardBlack text-black text-[calc(0.7rem)]">{parseInt((player.SHO + player.PAS + player.DRI + player.PAC) / 4)}</p>
+                                            <p className="absolute mt-[calc(2.5rem)] right-2 font-pretendardRegular text-gray-500 text-[calc(0.5rem)]">선수 가치</p>
+                                            <p className="absolute mt-[calc(3.1rem)] right-4 font-pretendardBlack text-black text-[calc(0.7rem)]">{parseInt((player.shooting + player.pass + player.dribble + player.speed) / 4)}</p>
                                         </div>
                                     </div>
                                 </div>

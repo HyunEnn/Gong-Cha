@@ -16,6 +16,10 @@ async function getTeamInfo(teamId, success, fail) {
     await server.get(`${url}/${teamId}`).then(success).catch(fail);
 }
 
+async function getMyTeamInfo(success, fail) {
+    await server.get(`${url}`).then(success).catch(fail);
+}
+
 async function updateTeamInfo(teamId, data, success, fail) {
     await server.patch(`${url}/${teamId}`, data).then(success).catch(fail);
 }
@@ -51,7 +55,8 @@ async function getPlayerList(teamId, success, fail) {
 export { 
     createTeam,
     getTeamList, 
-    getTeamInfo, 
+    getTeamInfo,
+    getMyTeamInfo,
     updateTeamInfo,
     deleteTeamInfo, 
     reqPlayerToTeam,

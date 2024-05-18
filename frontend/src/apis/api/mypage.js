@@ -4,11 +4,15 @@ const server = serverAxios();
 const url = 'users';
 
 async function setProfileNickName(data, success, fail) {
-    await server.patch(`${url}/name`, data).then(success).catch(fail);
+    await server.patch(`${url}/nickname`, data).then(success).catch(fail);
 }
 
 async function getProfileImage(success, fail) {
     await server.get(`${url}/profile`).then(success).catch(fail);
+}
+
+async function getProfileImage2(userId, success, fail) {
+    await server.get(`${url}/profile/${userId}`).then(success).catch(fail);
 }
 
 async function getManner(userId, success, fail) {
@@ -28,7 +32,7 @@ async function setRating(data, success, fail) {
 }
 
 async function getMyCard(success, fail) {
-    await server.patch(`${url}/card`).then(success).catch(fail);
+    await server.get(`${url}/card`).then(success).catch(fail);
 }
 
 async function getPlayerCard(userId, success, fail) {
@@ -46,6 +50,7 @@ async function setEvaluation(data, success, fail) {
 export { 
     setProfileNickName,
     getProfileImage,
+    getProfileImage2,
     getManner,
     getPlayScheduleList,
     getNotice,

@@ -21,7 +21,7 @@ import { Toaster } from '@/components/ui/sonner';
 import FirebaseComponent from '@/firebase/firebaseConfig';
 import { testStore } from '@/stores/testStore';
 import { toast } from 'sonner';
-
+import { setToken } from '@/apis/api/token';
 import ProtectedRoute from '@/router/ProtectedRoute';
 import Redirection from '@/router/Redirection';
 const { VITE_AUTH_URL } = import.meta.env;
@@ -37,14 +37,25 @@ function App() {
     }, [token]);
     useEffect(() => {
         if(localToken) {
-            toast('device token', {
-                description: localToken,
-                className: 'toaster',
-                action: {
-                    label: "확인",
-                    onClick: () => console.log("이벤트 확인"),
+            // toast('device token', {
+            //     description: localToken,
+            //     className: 'toaster',
+            //     action: {
+            //         label: "확인",
+            //         onClick: () => console.log("이벤트 확인"),
+            //     },
+            // });
+            // axios for db connection
+            setToken(
+                {
+                    token: localToken,
                 },
-            });
+                (success) => {
+                    console.log(success.data.message);
+                },
+                (fail) => {
+                }
+            );
         }
     }, [localToken]);
     useEffect(() => {
