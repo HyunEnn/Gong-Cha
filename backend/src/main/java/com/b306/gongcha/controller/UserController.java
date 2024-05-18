@@ -1,5 +1,6 @@
 package com.b306.gongcha.controller;
 
+import com.b306.gongcha.dto.request.UserNameRequest;
 import com.b306.gongcha.dto.request.UserRatingRequest;
 import com.b306.gongcha.dto.response.CommonResponse;
 import com.b306.gongcha.service.CardServiceImpl;
@@ -10,9 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,7 +61,6 @@ public class UserController {
                 .data(cardService.getMyCard(request))
                 .build(), HttpStatus.OK);
     }
-
 
     @Operation(
             summary = "선수 평가",
@@ -128,11 +125,49 @@ public class UserController {
             description = "알림 조회에 성공했습니다."
     )
     @GetMapping("/notice")
-    public ResponseEntity<CommonResponse> notice(HttpServletRequest request) {
+    public ResponseEntity<CommonResponse> getNotice(HttpServletRequest request) {
 
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("알림 조회 성공")
                 .data(userService.getNotices(request))
+                .build(), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "유저 닉네임 변경",
+            description = "유저의 닉네임을 변경함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "닉네임 변경에 성공했습니다."
+    )
+    @PatchMapping("/nickname")
+    public ResponseEntity<CommonResponse> updateNickName(
+            HttpServletRequest request,
+            @RequestBody UserNameRequest dto){
+
+        userService.updateUserName(request, dto);
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("닉네임 변경 성공")
+                .build(), HttpStatus.OK);
+    }
+    @Operation(
+            summary = "유저 닉네임 중복 검사",
+            description = "유저의 닉네임이 중복인지 확인함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "닉네임 중복 검사에 성공했습니다."
+    )
+
+    @GetMapping("/nickname")
+    public ResponseEntity<CommonResponse> nickName(
+            HttpServletRequest request,
+            @RequestBody UserNameRequest dto){
+
+        userService.duplicateName(request, dto);
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("닉네임 중복 검사 성공")
                 .build(), HttpStatus.OK);
     }
 }

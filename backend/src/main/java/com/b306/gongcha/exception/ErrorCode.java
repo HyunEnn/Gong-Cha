@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     NOT_FOUND_ID(HttpStatus.NOT_FOUND, "해당 아이디를 찾을 수 없습니다."),
+    DUPLICATE_USER_NAME(HttpStatus.BAD_REQUEST, "이미 존재하는 닉네임입니다."),
+    SAME_AS_CURRENT_USER_NAME(HttpStatus.BAD_REQUEST, "현재 사용 중인 닉네임과 동일합니다."),
     NOT_FOUND_AUTHENTICATION(HttpStatus.UNAUTHORIZED, "인증 정보가 없습니다."),
     NOT_EXIST_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "존재하지 않는 리프레시 토큰입니다."),
     BLANK_TOKEN_HEADER(HttpStatus.UNAUTHORIZED, "헤더에 토큰이 없습니다."),

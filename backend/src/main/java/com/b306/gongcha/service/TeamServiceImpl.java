@@ -91,6 +91,7 @@ public class TeamServiceImpl implements TeamService{
                     .ifPresent(currentUser -> utr.updatePhone(currentUser.getPhone())));
         }
 
+
         return userTeamResponseList;
     }
 

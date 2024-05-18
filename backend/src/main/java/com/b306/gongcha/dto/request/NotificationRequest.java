@@ -12,10 +12,10 @@ public class NotificationRequest {
     private String title;
     private String body;
 
-    @Builder
-    public NotificationRequest(Long userId, String title, String body){
-        this.userId = userId;
-        this.title = title;
-        this.body = body;
-    }
+//    @Builder
+//    public NotificationRequest(Long userId, String title, String body){
+//        this.userId = userId;
+//        this.title = title;
+//        this.body = body;
+//    }
 }

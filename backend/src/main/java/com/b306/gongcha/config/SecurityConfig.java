@@ -2,6 +2,7 @@ package com.b306.gongcha.config;
 
 import com.b306.gongcha.oauth2.CustomSuccessHandler;
 import com.b306.gongcha.repository.RefreshTokenRepository;
+import com.b306.gongcha.repository.UserRepository;
 import com.b306.gongcha.service.CustomLogoutService;
 import com.b306.gongcha.service.CustomOauth2UserService;
 import com.b306.gongcha.util.JWTFilter;
@@ -32,6 +33,7 @@ public class SecurityConfig {
     private final CustomOauth2UserService customOauth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
     private final RefreshTokenRepository refreshRepository;
+    private final UserRepository userRepository;
     private final JWTUtil jwtUtil;
 
     @Bean
@@ -75,8 +77,8 @@ public class SecurityConfig {
 
 
         //JWTFilter 추가
-        http.addFilterAfter(new JWTFilter(jwtUtil, excludedPaths), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(new CustomLogoutService(jwtUtil, refreshRepository), LogoutFilter.class);
+        http.addFilterAfter(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new CustomLogoutService(jwtUtil, refreshRepository, userRepository), LogoutFilter.class);
 
         //oauth2
         http.oauth2Login((oauth2) -> oauth2
