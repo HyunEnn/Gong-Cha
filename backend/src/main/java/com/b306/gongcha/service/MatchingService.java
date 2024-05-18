@@ -284,4 +284,16 @@ public class MatchingService {
         }
     }
 
+    // 게시판 작성한 팀장이 받은 신청 목록 조회
+    @Transactional(readOnly = true)
+    public List<MatchingAskResponse> getMatchingRecords(HttpServletRequest httpServletRequest) {
+
+        User user = jwtUtil.getUserFromAccessToken(httpServletRequest);
+        Long userId = user.getId();
+        List<MatchingAskResponse> matchingAskResponseList = new ArrayList<>();
+        List<MatchingAsk> matchingAskList = matchingAskRepository.findAllByUserIdAndStatus(userId);
+        matchingAskList.forEach(ma -> matchingAskResponseList.add(MatchingAskResponse.fromEntity(ma)));
+        return matchingAskResponseList;
+    }
+
 }
