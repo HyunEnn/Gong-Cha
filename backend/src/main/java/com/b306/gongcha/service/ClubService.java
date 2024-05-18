@@ -132,4 +132,17 @@ public class ClubService {
         }
     }
 
+    public ClubInfoResponse getMyClub(HttpServletRequest request) {
+
+        User user = jwtUtil.getUserFromAccessToken(request);
+
+        System.out.println("user = " + user.getName());
+
+        Long clubId = user.getClub().getId();
+
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
+
+        return ClubInfoResponse.fromEntity(club);
+    }
 }
