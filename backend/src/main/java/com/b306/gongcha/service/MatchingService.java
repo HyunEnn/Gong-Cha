@@ -284,7 +284,7 @@ public class MatchingService {
         }
     }
 
-    // 게시판 작성한 팀장이 받은 신청 목록 조회
+    // 유저의 경기 내역 조회
     @Transactional(readOnly = true)
     public List<MatchingAskResponse> getMatchingRecords(HttpServletRequest httpServletRequest) {
 

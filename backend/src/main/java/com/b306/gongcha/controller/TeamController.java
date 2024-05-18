@@ -229,4 +229,21 @@ public class TeamController {
                 .build(), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "내 팀 조회",
+            description = "내 팀 정보 조회"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "내 팀 정보 조회 성공"
+    )
+    @GetMapping("/myTeam")
+    public ResponseEntity<CommonResponse> getMyTeam(HttpServletRequest httpServletRequest) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("내 팀 정보 조회")
+                .data(teamService.getMyTeam(httpServletRequest))
+                .build(), HttpStatus.OK);
+    }
+
 }
