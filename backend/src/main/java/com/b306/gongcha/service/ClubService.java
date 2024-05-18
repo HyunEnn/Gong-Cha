@@ -136,8 +136,6 @@ public class ClubService {
 
         User user = jwtUtil.getUserFromAccessToken(request);
 
-        System.out.println("user = " + user.getName());
-
         Long clubId = user.getClub().getId();
 
         Club club = clubRepository.findById(clubId)
