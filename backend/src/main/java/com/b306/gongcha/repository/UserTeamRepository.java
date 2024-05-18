@@ -39,4 +39,6 @@ public interface UserTeamRepository extends JpaRepository<UserTeam, Long> {
 
     Optional<UserTeam> findByTeamIdAndRole(Long teamId, Role role);
 
+    List<UserTeam> findAllByUserId(Long userId);
+
 }
