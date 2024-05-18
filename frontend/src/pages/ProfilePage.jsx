@@ -45,11 +45,14 @@ function ProfilePage() {
         .then((resultBlob) => {
           setResultSrc(URL.createObjectURL(resultBlob));
           /* [공사중] */
+          /* 파일 저장하고 저장 요청 보내기 */
           console.log("둔디기 완료");
-          console.log(URL.createObjectURL(resultBlob));
+          const formData = new FormData();
+          formData.append("file", imageSrc);
+          console.log(imageSrc);
             // axios for db connection
             setProfileImage(
-                resultBlob,
+                formData,
                 (success) => {
                     console.log(success);
                 },

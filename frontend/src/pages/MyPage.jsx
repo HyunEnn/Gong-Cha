@@ -30,14 +30,14 @@ function MyPage() {
     });
 
     useEffect(() => {
+        console.log(self.crossOriginIsolated);
         setProfileData({    // dummy data
             ...myPageDummyData
         });
         // axios for db connection
         getProfileImage(
-            userId,
             (success) => {
-                // console.log(success.data);
+                console.log(success.data);
                 setProfileData((prevData) => ({
                     ...prevData,
                     profileImage: success.data.data,

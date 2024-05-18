@@ -2,14 +2,14 @@ import { serverAxios } from '@/apis/util/commons';
 
 const server = serverAxios();
 
-const url = 'http://k10b306.p.ssafy.io:8081/api/users';
+const url = 'users';
 
 async function setProfileNickName(userId, success, fail) {
     await server.get(`${url}/profile/${userId}`).then(success).catch(fail);
 }
 
-async function getProfileImage(userId, success, fail) {
-    await server.get(`${url}/profile/${userId}`).then(success).catch(fail);
+async function getProfileImage(success, fail) {
+    await server.get(`${url}/profile`).then(success).catch(fail);
 }
 
 async function setProfileImage(img, success, fail) {
