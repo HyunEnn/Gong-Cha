@@ -2,7 +2,7 @@ import { serverAxios } from '@/apis/util/commons';
 
 const server = serverAxios();
 
-const url = '/api/matching/request';
+const url = '/matching/request';
 
 // 매칭 신청
 const postMatchingRequest = async (matchingId, versusTeamId, data) => {

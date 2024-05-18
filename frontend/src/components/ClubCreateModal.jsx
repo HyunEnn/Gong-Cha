@@ -54,20 +54,16 @@ function ClubCreateModal({ isOpen, onClose }) {
             alert('활동 시간을 설정 해주세요!');
         } else {
             setClubCreateIndex(index);
-            clubCreateRequest.activityStartTime.hour = activityStartTime.format('HH');
-            clubCreateRequest.activityStartTime.minute = activityStartTime.format('mm');
-            clubCreateRequest.activityEndTime.hour = activityEndTime.format('HH');
-            clubCreateRequest.activityEndTime.minute = activityEndTime.format('mm');
+            clubCreateRequest.activityStartTime = activityStartTime.format('HH:mm');
+            clubCreateRequest.activityEndTime = activityEndTime.format('HH:mm');
             console.log(clubCreateRequest);
         }
     };
 
     const handleChangeContentThirdPrev = (index) => {
         setClubCreateIndex(index);
-        clubCreateRequest.activityStartTime.hour = '';
-        clubCreateRequest.activityStartTime.minute = '';
-        clubCreateRequest.activityEndTime.hour = '';
-        clubCreateRequest.activityEndTime.minute = '';
+        clubCreateRequest.activityStartTime = '';
+        clubCreateRequest.activityEndTime = '';
     };
 
     const handleChangeContentThirdNext = (index) => {

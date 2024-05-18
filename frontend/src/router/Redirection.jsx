@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { serverAxios } from '@/apis/util/commons';
 
 const server = serverAxios();
-const url = '/api/auth/regenerate';
+const url = '/auth/regenerate';
 
 export function getCookie(name) {
     const cookieValue = document.cookie
@@ -35,7 +35,7 @@ function Redirection() {
         regenerate(
             config,
             (success) => {
-                //console.log(success);
+                console.log(success);
                 const accessToken = success.data.data.accessToken;
                 localStorage.setItem('accessToken', accessToken);
                 navigate('/main', { replace: true });

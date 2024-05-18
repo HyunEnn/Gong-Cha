@@ -33,32 +33,19 @@ export const useClubStore = create((set) => ({
     clubCreateRequest: {
         clubName: '',
         description: '',
-        activityStartTime: {
-            hour: '',
-            minute: '',
-            second: 0,
-            nano: 0,
-        },
-        activityEndTime: {
-            hour: '',
-            minute: '',
-            second: 0,
-            nano: 0,
-        },
+        activityStartTime: '',
+        activityEndTime: '',
         skillLevel: '',
         region: '',
         districts: '',
     },
-    myClubInfoReadResponse: {
-        clubName: '흥민풋살',
-        description: '가입 신청 문의 1588-1588',
-        activityStartTime: '09:00',
-        activityEndTime: '21:00',
-        skillLevel: '중급',
-        region: '대전',
-        districts: '유성구',
-    },
-    myClubListReadResponse: [
+    clubListResponse: [],
+    setClubListResponse: (newList) => set({ clubListResponse: newList }), // 상태 업데이트 함수 추가
+    myClubResponse: {},
+    setMyClubResponse: (data) => set({ myClubResponse: data }),
+    myClubListReadResponse: [],
+    setMyClubListResponse: (data) => set({ myClubListReadResponse: data }),
+    myClubListDummyReadResponse: [
         {
             playerImg: playerImg1,
             userId: '김싸피',
@@ -74,4 +61,6 @@ export const useClubStore = create((set) => ({
             isMaster: false,
         },
     ],
+    myClubApplyListResponse: [],
+    setMyClubApplyListResponse: (data) => set({ myClubApplyListResponse: data }),
 }));
