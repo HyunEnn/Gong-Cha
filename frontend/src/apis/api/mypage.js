@@ -1,7 +1,7 @@
 import { serverAxios } from '@/apis/util/commons';
 
 const server = serverAxios();
-const url = 'users';
+const url = '/users';
 
 async function setProfileNickName(data, success, fail) {
     await server.patch(`${url}/nickname`, data).then(success).catch(fail);
@@ -47,7 +47,7 @@ async function setEvaluation(data, success, fail) {
     await server.put(`${url}/card`, data).then(success).catch(fail);
 }
 
-export { 
+export {
     setProfileNickName,
     getProfileImage,
     getProfileImage2,
