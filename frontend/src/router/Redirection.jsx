@@ -35,7 +35,7 @@ function Redirection() {
         regenerate(
             config,
             (success) => {
-                //console.log(success);
+                console.log(success);
                 const accessToken = success.data.data.accessToken;
                 localStorage.setItem('accessToken', accessToken);
                 navigate('/main', { replace: true });

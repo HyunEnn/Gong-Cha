@@ -23,11 +23,11 @@ function SearchClub() {
                 <Button size="sm" onClick={() => handleOpenClubCreate()}>
                     클럽 생성하기
                 </Button>
-                <div className="flex flex-row">
+                {/* <div className="flex flex-row">
                     <Input type="text" className="py-2 pl-3 pr-8 w-36 h-9" placeholder="클럽명으로 검색" />
                     &nbsp;&nbsp;
                     <Button size="sm">검색</Button>
-                </div>
+                </div> */}
             </div>
             <div className="flex flex-col">
                 <ClubBoard />
