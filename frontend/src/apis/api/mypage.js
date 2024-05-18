@@ -1,19 +1,14 @@
 import { serverAxios } from '@/apis/util/commons';
 
 const server = serverAxios();
-
 const url = 'users';
 
-async function setProfileNickName(userId, success, fail) {
-    await server.get(`${url}/profile/${userId}`).then(success).catch(fail);
+async function setProfileNickName(data, success, fail) {
+    await server.patch(`${url}/name`, data).then(success).catch(fail);
 }
 
 async function getProfileImage(success, fail) {
     await server.get(`${url}/profile`).then(success).catch(fail);
-}
-
-async function setProfileImage(img, success, fail) {
-    await server.patch(`${url}/profile`, img).then(success).catch(fail);
 }
 
 async function getManner(userId, success, fail) {
@@ -51,7 +46,6 @@ async function setEvaluation(data, success, fail) {
 export { 
     setProfileNickName,
     getProfileImage,
-    setProfileImage,
     getManner,
     getPlayScheduleList,
     getNotice,

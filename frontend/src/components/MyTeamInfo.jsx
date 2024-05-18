@@ -63,6 +63,8 @@ function MyTeamInfo() {
     };
 
     const handleLeftButton = () => {
+        // axios whatdagotta
+        
         navigate(0);
     };
 

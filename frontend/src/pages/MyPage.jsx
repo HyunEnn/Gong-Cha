@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { getProfileImage } from '@/apis/api/mypage';
+import { getAPIforAuthUserInfo } from '@/apis/api/user';
 import {
     CardForm,
     CardContent,
@@ -20,7 +21,7 @@ import cardMenu from '@/assets/lotties/cardMenu';
 import { myPageDummyData } from '@/data/dummyData'; // dummy data
 
 function MyPage() {
-    const userId = 1; // test state data
+    const [userId, setUserId] = useState(0);
     const navigate = useNavigate();
     const [isActive, setIsActive] = useState(false);
     const [profileData, setProfileData] = useState({
@@ -30,22 +31,32 @@ function MyPage() {
     });
 
     useEffect(() => {
-        console.log(self.crossOriginIsolated);
         setProfileData({    // dummy data
             ...myPageDummyData
         });
         // axios for db connection
         getProfileImage(
             (success) => {
-                console.log(success.data);
                 setProfileData((prevData) => ({
                     ...prevData,
-                    profileImage: success.data.data,
+                    profileUrl: success.data.data.profileUrl,
                 }));
             },
             (fail) => {
                 console.log(fail);
             }
+        );
+        getAPIforAuthUserInfo(
+        (success) => {
+            setUserId(success.data.data.userId);
+            setProfileData((prevData) => ({
+                ...prevData,
+                name: success.data.data.name,
+            }));
+        },
+        (fail) => {
+            console.log(fail);
+        }
         );
     }, []);
 
