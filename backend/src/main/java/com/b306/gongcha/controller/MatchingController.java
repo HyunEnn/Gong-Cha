@@ -247,4 +247,21 @@ public class MatchingController {
                 .build(), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "팀 경기 내역 조회",
+            description = "유저가 플레이한 경기 내역 조회"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "플레이한 경기 내역 조회 성공"
+    )
+    @GetMapping("/records")
+    public ResponseEntity<CommonResponse> getMatchingRecords(HttpServletRequest httpServletRequest) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("플레이한 경기 내역 조회")
+                .data(matchingService.getMatchingRecords(httpServletRequest))
+                .build(), HttpStatus.OK);
+    }
+
 }
