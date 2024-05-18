@@ -139,4 +139,12 @@ public class ClubController {
                 .build(), HttpStatus.OK);
     }
 
+    @GetMapping("/myClub")
+    public ResponseEntity<CommonResponse> getMyClub(HttpServletRequest request) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("내 클럽에 대한 조회 완료")
+                .data(clubService.getMyClub(request))
+                .build(), HttpStatus.OK);
+    }
 }
