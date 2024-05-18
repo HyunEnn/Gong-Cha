@@ -301,4 +301,22 @@ public class TeamServiceImpl implements TeamService{
         }
     }
 
+    @Override
+    public TeamResponse getMyTeam(HttpServletRequest httpServletRequest) {
+
+        Long userId = jwtUtil.getUserFromAccessToken(httpServletRequest).getId();
+        List<UserTeam> userTeamList = userTeamRepository.findAllByUserId(userId);
+        Long teamId = 0L;
+        for(UserTeam ut : userTeamList) {
+            Team team = teamRepository.findById(ut.getTeam().getId()).orElse(null);
+            if(team != null && team.getStatus() != Status.valueOf("경기종료")) {
+                teamId = ut.getTeam().getId();
+                break;
+            }
+        }
+
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
+        return team.toTeamResponse();
+    }
+
 }
