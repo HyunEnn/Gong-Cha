@@ -9,10 +9,7 @@ import com.b306.gongcha.entity.*;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
 import com.b306.gongcha.global.GetCurrentUserId;
-import com.b306.gongcha.repository.MatchingAskRepository;
-import com.b306.gongcha.repository.MatchingRepository;
-import com.b306.gongcha.repository.TeamRepository;
-import com.b306.gongcha.repository.UserTeamRepository;
+import com.b306.gongcha.repository.*;
 import com.b306.gongcha.util.JWTUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +31,7 @@ public class MatchingService {
     private final UserTeamRepository userTeamRepository;
     private final MatchingRepository matchingRepository;
     private final MatchingAskRepository matchingAskRepository;
+    private final TransferRepository transferRepository;
 
     private final JWTUtil jwtUtil;
 
@@ -246,6 +244,10 @@ public class MatchingService {
         List<UserTeam> userTeamList = userTeamRepository.findAllByTeamId(matchingTeamId);
         userTeamList.forEach(ut -> ut.getUser().addGames());
 
+        // 이적시장에 카드 등록한 선수의 경우 팀 소속 여부 true -> false 변경
+        userTeamList.forEach(ut -> transferRepository.findByUserId(ut.getUser().getId())
+                .ifPresent(transfer -> transfer.updateJoin(false)));
+
         // 팀 게시판의 상태 매칭완료로 변경하기
         Team team = teamRepository.findById(matchingTeamId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
@@ -256,6 +258,10 @@ public class MatchingService {
         Long versusTeamId = matchingAsk.getVersusTeamId();
         List<UserTeam> versusUserTeamList = userTeamRepository.findAllByTeamId(versusTeamId);
         versusUserTeamList.forEach(ut -> ut.getUser().addGames());
+
+        // 이적시장에 카드 등록한 선수의 경우 팀 소속 여부 true -> false 변경
+        versusUserTeamList.forEach(ut -> transferRepository.findByUserId(ut.getUser().getId())
+                .ifPresent(transfer -> transfer.updateJoin(false)));
 
         // 상대팀도 동일하게 매칭완료로 변경
         Team versusTeam = teamRepository.findById(versusTeamId)
