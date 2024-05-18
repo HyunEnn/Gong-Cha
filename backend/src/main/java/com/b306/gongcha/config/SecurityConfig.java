@@ -35,6 +35,7 @@ public class SecurityConfig {
     private final RefreshTokenRepository refreshRepository;
     private final UserRepository userRepository;
     private final JWTUtil jwtUtil;
+    private final List<AntPathRequestMatcher> excludedPaths;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -77,7 +78,7 @@ public class SecurityConfig {
 
 
         //JWTFilter 추가
-        http.addFilterAfter(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(new JWTFilter(jwtUtil, excludedPaths), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(new CustomLogoutService(jwtUtil, refreshRepository, userRepository), LogoutFilter.class);
 
         //oauth2
