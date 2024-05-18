@@ -20,7 +20,8 @@ public class TransferResponse {
     private List<String> dayOfWeek; // 희망 요일
     private String info; // 선수 한마디
     private Boolean isJoined; // 선수 팀 합류 여부
-    private User user; // 작성자
+    private Long userId; // 작성자 id
+    private String userName; // 작성자 이름
 
     public static TransferResponse fromEntity(Transfer transfer) {
         return TransferResponse.builder()
@@ -34,7 +35,8 @@ public class TransferResponse {
                 .dayOfWeek(transfer.getDayOfWeek())
                 .info(transfer.getInfo())
                 .isJoined(transfer.getIsJoined())
-                .user(transfer.getUser())
+                .userId(transfer.getUser().getId())
+                .userName(transfer.getUser().getName())
                 .build();
     }
 

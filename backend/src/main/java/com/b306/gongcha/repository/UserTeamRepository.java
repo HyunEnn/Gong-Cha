@@ -26,8 +26,6 @@ public interface UserTeamRepository extends JpaRepository<UserTeam, Long> {
     // 승인 대기 목록 선수들만 보여주기
     List<UserTeam> findAllByTeamIdAndPermitIsFalse(Long teamId);
 
-//    UserTeam findByUserIdAndRole(Long userId, Role role);
-
     // 팀 id로 유저 정보 목록 불러오기
     @Query("select u from User u left outer join UserTeam ut on u.id = ut.user.id where ut.team.id = :teamId")
     List<User> findUsersByTeamId(Long teamId);
@@ -39,7 +37,6 @@ public interface UserTeamRepository extends JpaRepository<UserTeam, Long> {
     // 유저 id와 역할로 찾기
     List<UserTeam> findAllByUserIdAndRole(Long userId, Role role);
 
-    // 팀 id와 역할로 찾기 - 팀장 찾을 때 사용
     Optional<UserTeam> findByTeamIdAndRole(Long teamId, Role role);
 
 }

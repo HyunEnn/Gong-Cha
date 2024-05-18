@@ -122,7 +122,7 @@ public class TransferController {
             responseCode = "200",
             description = "해당 선수에게 합류 요청이 발송되었습니다."
     )
-    @PostMapping("/request/{transferId}/{userId}")
+    @PostMapping("/{transferId}/{userId}")
     public ResponseEntity<CommonResponse> requestTransfer(@PathVariable Long transferId, @PathVariable Long userId) {
 
         return new ResponseEntity<>(CommonResponse.builder()

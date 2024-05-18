@@ -1,9 +1,11 @@
 package com.b306.gongcha.service;
 
+import com.b306.gongcha.dto.response.AccessResponse;
+import com.b306.gongcha.dto.response.UserInfoResponse;
+import com.b306.gongcha.entity.User;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
 import com.b306.gongcha.repository.RefreshTokenRepository;
-import com.b306.gongcha.repository.UserRepository;
 import com.b306.gongcha.util.JWTUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
@@ -19,10 +21,9 @@ public class Oauth2TokenService {
 
     private final JWTUtil jwtUtil;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final UserRepository userRepository;
     private final RefreshTokenService refreshTokenService;
 
-    public void regenerateAccessToken(HttpServletRequest request, HttpServletResponse response) {
+    public AccessResponse regenerateAccessToken(HttpServletRequest request, HttpServletResponse response) {
 
         //get refresh token
         String refresh = null;
@@ -67,7 +68,7 @@ public class Oauth2TokenService {
         }
 
         // 새로운 JWT 토큰 발행
-        String newAccess = jwtUtil.createJwt(userId, "Authorization", userInfo, role, 60 * 60 * 1000L);
+        String newAccess = jwtUtil.createJwt(userId, "access", userInfo, role, 60 * 60 * 1000L);
         String newRefresh = jwtUtil.createJwt(userId, "refresh", userInfo, role, 60 * 60 * 24L * 1000);
 
         // 기존 redis 에 있는 refresh 삭제 후 신규 토큰 저장
@@ -75,11 +76,19 @@ public class Oauth2TokenService {
         refreshTokenService.addRefreshToken(userId, newRefresh);
 
         // 응답
-        response.setHeader("Authorization", newAccess);
         response.addCookie(createCookie("refresh", newRefresh));
 
         response.setStatus(HttpStatus.OK.value());
-        return;
+        return AccessResponse.builder()
+                .AccessToken(newAccess)
+                .build();
+    }
+
+    public UserInfoResponse getUserInfo(HttpServletRequest request) {
+
+        User user = jwtUtil.getUserFromAccessToken(request);
+
+        return UserInfoResponse.fromEntity(user);
     }
 
     private Cookie createCookie(String key, String value) {
@@ -87,7 +96,8 @@ public class Oauth2TokenService {
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(60*60*24);
         cookie.setPath("/");
-        cookie.setHttpOnly(true);
+        // httpOnly 가 true 면, 클라이언트에서 조회가 불가능해짐
+        cookie.setHttpOnly(false);
 
         return cookie;
     }

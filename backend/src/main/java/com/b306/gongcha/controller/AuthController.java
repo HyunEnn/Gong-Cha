@@ -34,12 +34,29 @@ public class AuthController {
     )
     @PostMapping("/regenerate")
     public ResponseEntity<CommonResponse> reissue(HttpServletRequest request, HttpServletResponse response) {
-        oauth2TokenService.regenerateAccessToken(request, response);
+
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("access token regenerate success")
+                .data(oauth2TokenService.regenerateAccessToken(request, response))
                 .build(), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "유저 정보 조회",
+            description = "REFRESH 토큰을 통한 유저 정보 조회를 진행합니다."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "유저 정보 조회에 성공하였습니다."
+    )
+    @GetMapping("/userInfo")
+    public ResponseEntity<CommonResponse> getUserInfo(HttpServletRequest request) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("유저 정보 조회 성공")
+                .data(oauth2TokenService.getUserInfo(request))
+                .build(), HttpStatus.OK);
+    }
 
     @PostMapping("/phone")
     public ResponseEntity<CommonResponse> sendAuthCode(

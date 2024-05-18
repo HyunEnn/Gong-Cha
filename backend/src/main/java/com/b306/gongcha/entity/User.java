@@ -29,6 +29,12 @@ public class User extends BaseEntity {
     private String profile;
     private String firebaseToken;
     private String phone;
+    private int games;
+
+    public void addGames() {
+
+        this.games++;
+    }
 
     @ColumnDefault("50")
     private int manner;
