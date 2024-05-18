@@ -1,17 +1,20 @@
 package com.b306.gongcha.service;
 
+import com.b306.gongcha.dto.request.DeviceTokenRequest;
 import com.b306.gongcha.dto.request.NotificationRequest;
 import com.b306.gongcha.entity.User;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
-import com.b306.gongcha.global.GetCurrentUserId;
 import com.b306.gongcha.repository.UserRepository;
+import com.b306.gongcha.util.JWTUtil;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +22,7 @@ public class NotificationService {
 
     private final FirebaseMessaging firebaseMessaging;
     private final UserRepository userRepository;
+    private final JWTUtil jwtUtil;
 
     public void sendNotification(NotificationRequest request){
 
@@ -45,10 +49,10 @@ public class NotificationService {
         }
     }
 
-    public void saveDeviceToken(String token){
+    @Transactional
+    public void saveDeviceToken(DeviceTokenRequest dto, HttpServletRequest request){
 
-        Long userId = GetCurrentUserId.currentUserId();
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+        User user = jwtUtil.getUserFromAccessToken(request);
+        user.updateToken(dto);
     }
 }

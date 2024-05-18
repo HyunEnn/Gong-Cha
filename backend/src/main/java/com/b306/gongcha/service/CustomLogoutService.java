@@ -4,6 +4,7 @@ import com.b306.gongcha.entity.User;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
 import com.b306.gongcha.repository.RefreshTokenRepository;
+import com.b306.gongcha.repository.UserRepository;
 import com.b306.gongcha.util.JWTUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -26,6 +27,7 @@ public class CustomLogoutService extends GenericFilterBean {
 
     private final JWTUtil jwtUtil;
     private final RefreshTokenRepository refreshRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -86,6 +88,9 @@ public class CustomLogoutService extends GenericFilterBean {
         // 로그아웃 진행
         // Refresh 를 redis 에서 제거
         refreshRepository.deleteById(userId);
+
+        User user = jwtUtil.getUserFromAccessToken(request);
+        user.deleteToken();
 
         //Refresh 토큰 Cookie 값 0
         Cookie cookie = new Cookie("refresh", null);
