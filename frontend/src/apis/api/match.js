@@ -2,7 +2,7 @@ import { serverAxios } from '@/apis/util/commons';
 
 const server = serverAxios();
 
-const url = '/api/matching';
+const url = '/matching';
 
 // 매칭 생성
 const postMatchingCreate = async (content, success, fail) => {
