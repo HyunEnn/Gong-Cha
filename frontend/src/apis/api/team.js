@@ -2,7 +2,7 @@ import { serverAxios } from '@/apis/util/commons';
 
 const server = serverAxios();
 
-const url = 'http://k10b306.p.ssafy.io:8081/api/team';
+const url = 'http://localhost:8081/api/team';
 
 async function createTeam(data, success, fail) {
     await server.post(`${url}`, data).then(success).catch(fail);
