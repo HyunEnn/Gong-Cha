@@ -1,33 +1,3 @@
-import React, { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import ToggleButton from "@/components/ui/nameButton";
-import { Input } from "@/components/ui/input"
-import Modal from '@/components/Modal';
-import TeamInfo from '@/components/TeamInfo';
-import emptyGhostIcon from '@/assets/icons/emptyGhost.svg';
-import rArrowIcon from '@/assets/icons/rArrow.svg';
-import { getTeamList } from '@/apis/api/team';
-
-const regions = [
-    { id: 1, region: '서울', districts: ['강남구', '송파구', '강서구', '마포구', '종로구', '중구', '용산구', '성동구', '광진구', '동대문구', '중랑구', '성북구', '강북구', '도봉구', '노원구', '은평구', '서대문구', '구로구', '금천구', '영등포구', '동작구', '관악구', '서초구', '강동구'] },
-    { id: 2, region: '부산', districts: ['해운대구', '수영구', '남구', '북구', '동래구', '금정구', '부산진구', '연제구', '사하구', '강서구', '사상구', '기장군'] },
-    { id: 3, region: '대구', districts: ['수성구', '달서구', '북구', '동구', '서구', '남구', '달성군'] },
-    { id: 4, region: '인천', districts: ['연수구', '남동구', '서구', '부평구', '계양구', '미추홀구', '동구', '중구', '강화군', '옹진군'] },
-    { id: 5, region: '광주', districts: ['서구', '북구', '광산구', '남구', '동구'] },
-    { id: 6, region: '대전', districts: ['서구', '유성구', '대덕구', '중구', '동구'] },
-    { id: 7, region: '울산', districts: ['울주군', '남구', '북구', '동구', '중구'] },
-    { id: 8, region: '세종', districts: ['세종특별자치시'] },
-    { id: 9, region: '경기', districts: ['수원시', '성남시', '고양시', '용인시', '부천시', '안산시', '안양시', '남양주시', '화성시', '평택시', '의정부시', '시흥시', '파주시', '김포시', '광명시', '광주시', '군포시', '이천시', '양주시', '오산시', '구리시', '안성시', '포천시', '의왕시', '하남시', '여주시', '양평군', '동두천시', '가평군', '과천시'] },
-    { id: 10, region: '강원', districts: ['춘천시', '원주시', '강릉시', '동해시', '태백시', '속초시', '삼척시'] },
-    { id: 11, region: '충북', districts: ['청주시', '충주시', '제천시'] },
-    { id: 12, region: '충남', districts: ['천안시', '공주시', '보령시', '아산시', '서산시', '논산시', '계룡시', '당진시'] },
-    { id: 13, region: '전남', districts: ['목포시', '여수시', '순천시', '나주시', '광양시'] },
-    { id: 14, region: '전북', districts: ['전주시', '군산시', '익산시', '정읍시', '남원시', '김제시'] },
-    { id: 15, region: '경남', districts: ['창원시', '진주시', '통영시', '사천시', '김해시', '밀양시', '거제시', '양산시'] },
-    { id: 16, region: '경북', districts: ['포항시', '경주시', '김천시', '안동시', '구미시', '영주시', '영천시', '상주시', '문경시', '경산시'] },
-    { id: 17, region: '제주', districts: ['제주시', '서귀포시'] },
-];
-
 function TeamList() {
     const [teamListData, setTeamListData] = useState([]);
     const [detailKey, setDetailKey] = useState({ key: '' });
@@ -40,27 +10,30 @@ function TeamList() {
     });
     const [filterState, setFilterState] = useState([false, false, false, false]);
     const [checked, setChecked] = useState(false);
+    
+    useEffect(() => {
+        setTeamListData(    // dummy data
+            TeamListDummyData,
+        );
+    }, []);
 
     useEffect(() => {
-        // axios for db connection
-        getTeamList(
+        /* axios for db connection
+        getMyTeamInfo(
+            key,
             (success) => {
-                console.log(success.data.data);
-                if (success.data.data.content.length !== 0) {
-                    console.log(success.data.data.content.length);
-                    setTeamListData(
-                        success.data.data.content,
-                    );
-                }
+                setMyTeamInfoData({
+                    ...success,
+                });
             },
             (fail) => {
-                console.log(fail);
+                
             }
         );
         return () => {
             
         };
-
+        */
     }, []);
 
     const handleTeamInfoClick = (key) => {
@@ -158,11 +131,11 @@ function TeamList() {
     
 
     return (
-        <div className="absolute">
+        <>
             {teamListData.length === 0 ? (
-                <div className="absolute left-[calc(11.5rem)] top-[calc(15rem)] transform -translate-x-1/2 p-0 w-[calc(6rem)] h-[calc(6rem)]">
+                <div className="absolute flex justify-center left-1/2 top-[calc(15rem)] transform -translate-x-1/2 p-0 w-[calc(6rem)] h-[calc(6rem)]">
                     <img src={emptyGhostIcon} alt="팀 목록이 없습니다" />
-                    <p className="absolute left-[calc(2rem)] top-[calc(7rem)] font-pretendardBlack text-[calc(0.4rem)] text-gray-500">팀 목록이 없어요</p>
+                    <p className="absolute top-[calc(7rem)] font-pretendardBlack text-[calc(0.4rem)] text-gray-500">팀 목록이 없어요</p>
                 </div>
                 ) : (
                     <>
@@ -296,23 +269,12 @@ function TeamList() {
                                 </button>
                             </div>
                         </div>
-                        <div className="absolute flex flex-col justify-start left-[calc(1.13125rem)] top-[calc(15.5rem)] w-[calc(20.2rem)] rounded bg-slate-200">
+                        <div className="absolute flex flex-col justify-start left-[calc(1.13125rem)] top-[calc(15.5rem)] w-[calc(20.2rem)] bg-gray-200">
                             {teamListData.map((data) => (
-                                    <div key={uuidv4()} className="border-b-[calc(0.05rem)] border-white transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handleTeamInfoClick(data.key)}>
-                                        <div className="absolute mt-2 ml-4 text-[calc(.6rem)]">
-                                            <p className="font-pretendardBlack">{data.startTime}:00</p>
-                                            <p className='ml-2'>~</p>
-                                            <p className="font-pretendardBlack">{data.endTime}:00</p>
-                                        </div>
-                                        <div className="mt-2 ml-[calc(5rem)] mb-3">
-                                            {/* <p>{data.writer.name} FC</p> */}
-                                            <p>테스트 FC</p>
-                                            <p className="mt-1 text-[calc(.5rem)]">
-                                                {data.region} {data.district}
-                                                &nbsp;&nbsp;{data.difficulty}
-                                                {/* &nbsp;&nbsp;현재 {data.players.length}명 */}
-                                                &nbsp;&nbsp;현재 5명
-                                            </p>
+                                    <div key={uuidv4()} className="border-b-[calc(0.05rem)] border-white" onClick={() => handleTeamInfoClick(data.key)}>
+                                        <div className="mt-3 ml-1">
+                                            <p>{data.writer.name} FC</p>
+
                                             {/* 친선전: ENUM
                                                 location: 부산시
                                                 district: 남구
@@ -329,39 +291,39 @@ function TeamList() {
                             )}
                         </div>
                         {showDetailModal && (
-                            <Modal show={showDetailModal} onClose={closeModal}>
-                                {/* Modal content */}
-                                <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center " onClick={handleOutsideClick}>
-                                    <div
-                                        className="relative flex flex-col items-center justify-start bg-stone-100 w-[calc(20.5rem)] h-[calc(31.25rem)] rounded-xl overflow-x-hidden overflow-y-auto" 
-                                        onClick={e => e.stopPropagation()}
+                        <Modal show={showDetailModal} onClose={closeModal}>
+                            {/* Modal content */}
+                            <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center " onClick={handleOutsideClick}>
+                                <div
+                                    className="relative flex flex-col items-center justify-start bg-stone-100 w-[calc(20.5rem)] h-[calc(31.25rem)] rounded-xl overflow-x-hidden overflow-y-auto" 
+                                    onClick={e => e.stopPropagation()}
+                                >
+                                    {/* close button */}
+                                    <button
+                                        onClick={closeModal} 
+                                        className="self-start mt-2 mb-2 ml-2 w-5 h-5 bg-[#FF5F51] rounded-full shadow-sm font-bold text-white flex items-center justify-center"
                                     >
-                                        {/* close button */}
-                                        <button
-                                            onClick={closeModal} 
-                                            className="self-start mt-2 mb-2 ml-2 w-5 h-5 bg-[#FF5F51] rounded-full shadow-sm font-bold text-white flex items-center justify-center"
-                                        >
-                                            &times;
-                                        </button>
-                                        <div className="absolute w-full mt-10">
-                                            <TeamInfo teamId2={10000}></TeamInfo>
-                                            <div className="absolute flex flex-col items-center justify-center w-full mt-5">
-                                                <button
-                                                    className="w-4/5 bg-blue-500 text-white rounded-md font-bold mb-4"
-                                                    onClick={handleSubmit}
-                                                >
-                                                    신청하기
-                                                </button>
-                                            </div>
+                                        &times;
+                                    </button>
+                                    <div className="absolute w-full mt-10">
+                                        <TeamInfo></TeamInfo>
+                                        <div className="absolute flex flex-col items-center justify-center w-full mt-5">
+                                            <button
+                                                className="w-4/5 bg-blue-500 text-white rounded-md font-bold mb-4"
+                                                onClick={handleSubmit}
+                                            >
+                                                신청하기
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                            </Modal>
+                            </div>
+                        </Modal>
                         )}
                     </>
                 )
             }
-        </div>
+        </>
     );
 }
 

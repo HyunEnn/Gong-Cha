@@ -1,15 +1,57 @@
 import { serverAxios } from '@/apis/util/commons';
 
 const server = serverAxios();
+const url = 'users';
 
-const url = '/users';
+async function setProfileNickName(data, success, fail) {
+    await server.patch(`${url}/name`, data).then(success).catch(fail);
+}
 
-async function getProfileInfo(userId, success, fail) {
-    await server.get(`${url}/${userId}/profile`).then(success).catch(fail);
+async function getProfileImage(success, fail) {
+    await server.get(`${url}/profile`).then(success).catch(fail);
+}
+
+async function getManner(userId, success, fail) {
+    await server.get(`${url}/manner/${userId}`).then(success).catch(fail);
 }
 
 async function getPlayScheduleList(userId, success, fail) {
     await server.get(`${url}/${userId}/group`).then(success).catch(fail);
 }
 
-export { getProfileInfo, getPlayScheduleList };
+async function getNotice(userId, success, fail) {
+    await server.get(`${url}/notice/${userId}`).then(success).catch(fail);
+}
+
+async function setRating(data, success, fail) {
+    await server.patch(`${url}/card/$`, data).then(success).catch(fail);
+}
+
+async function getMyCard(success, fail) {
+    await server.patch(`${url}/card`).then(success).catch(fail);
+}
+
+async function getPlayerCard(userId, success, fail) {
+    await server.get(`${url}/card/${userId}`).then(success).catch(fail);
+}
+
+async function setReport(userId, success, fail) {
+    await server.patch(`${url}/report/${userId}`).then(success).catch(fail);
+}
+
+async function setEvaluation(data, success, fail) {
+    await server.put(`${url}/card`, data).then(success).catch(fail);
+}
+
+export { 
+    setProfileNickName,
+    getProfileImage,
+    getManner,
+    getPlayScheduleList,
+    getNotice,
+    setRating,
+    getMyCard,
+    getPlayerCard,
+    setReport,
+    setEvaluation,
+};

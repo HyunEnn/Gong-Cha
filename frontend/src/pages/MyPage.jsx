@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getProfileInfo } from '@/apis/api/mypage';
+import { getProfileImage } from '@/apis/api/mypage';
+import { getAPIforAuthUserInfo } from '@/apis/api/user';
 import {
     CardForm,
     CardContent,
@@ -13,37 +14,50 @@ import rArrowIcon from '@/assets/icons/rArrow.svg';
 import playScheduleIcon from '@/assets/icons/playSchedule.svg';
 import playHistoryIcon from '@/assets/icons/playHistory.svg';
 import alarmIcon from '@/assets/icons/alarm.svg';
+import defaultProfileImage from '@/assets/images/defaultProfileImage.png';
 import Lottie from 'lottie-react';
 import playerCardAnimation from '@/assets/lottie/playercard';
 import cardMenu from '@/assets/lotties/cardMenu';
 import { myPageDummyData } from '@/data/dummyData'; // dummy data
 
 function MyPage() {
-    const key = 2; // test state data
-    const [isActive, setIsActive] = useState(false);
+    const [userId, setUserId] = useState(0);
     const navigate = useNavigate();
-    const [profileData, setProfileData] = useState({});
+    const [isActive, setIsActive] = useState(false);
+    const [profileData, setProfileData] = useState({
+        userId: 0,
+        nickname: '',
+        profileUrl: '',
+    });
 
     useEffect(() => {
         setProfileData({    // dummy data
             ...myPageDummyData
         });
-        /* axios for db connection
-        getProfileInfo(
-            key,
+        // axios for db connection
+        getProfileImage(
             (success) => {
-                setProfileData({
-                    ...profileData,
-                });
+                setProfileData((prevData) => ({
+                    ...prevData,
+                    profileUrl: success.data.data.profileUrl,
+                }));
             },
             (fail) => {
-                
+                console.log(fail);
             }
         );
-        return () => {
-            
-        };
-        */
+        getAPIforAuthUserInfo(
+        (success) => {
+            setUserId(success.data.data.userId);
+            setProfileData((prevData) => ({
+                ...prevData,
+                name: success.data.data.name,
+            }));
+        },
+        (fail) => {
+            console.log(fail);
+        }
+        );
     }, []);
 
     const handleNagivate = (page) => {
@@ -67,8 +81,11 @@ function MyPage() {
     };
     const handleAlarmClick = () => {
         handleNagivate('/alarm');
-        <PlayerCard season="currentSeason"/>
     };
+
+    const onErrorImg = (e) => {
+        e.target.src = defaultProfileImage
+    }
 
     return (
         <div className="absolute flex items-center justify-center">
@@ -81,8 +98,9 @@ function MyPage() {
                 <CardForm className="absolute flex flex-col justify-center left-[calc(1.13125rem)] top-[calc(7.625rem)] w-[calc(19.875rem)] h-[calc(4.375rem)] rounded-[15px] border-stone-70" onClick={() => handleProfileClick()}>
                     <CardContent className="flex items-center left-[calc(5.875rem)] pt-[calc(1.5rem)] p-0">
                         <img className="relative left-[calc(0.875rem)] rounded-full border-[calc(0.01rem)]" 
-                            src={profileData.profileImage} 
-                            alt="프로필 사진" 
+                            src={profileData.profileUrl}
+                            onError={onErrorImg}
+                            alt="프로필 사진"
                             style={{ width: '3rem', height: '3rem', objectFit: 'contain' }} />
                         <CardTitle className="relative left-[calc(1.875rem)] text-[calc(1.0rem)]">{profileData.name}</CardTitle>
                     </CardContent>

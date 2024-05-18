@@ -63,6 +63,8 @@ function MyTeamInfo() {
     };
 
     const handleLeftButton = () => {
+        // axios whatdagotta
+        
         navigate(0);
     };
 
@@ -127,20 +129,20 @@ function MyTeamInfo() {
     };
 
     return (
-        <div className="absolute flex flex-col items-center justify-center">
+        <div className="absolute flex justify-center">
             {/* create team button */}
-            <div className="absolute flex flex-col left-[calc(9rem)]">
-                <div className="absolute flex items-center justify-center top-[calc(11.5rem)] w-[calc(20.25rem)]">
+            <div className="absolute flex flex-col">
+                <div className="absolute flex items-center justify-center top-[calc(11.5rem)] w-[calc(22.25rem)]">
                     {myTeamInfoData.length === 0 ? (
                             <button
-                                className="w-[calc(4rem)] h-[calc(2rem)] text-gray-700 rounded-full border-[calc(.1rem)] border-gray-100 font-bold text-[calc(.6rem)]"
+                                className="relative left-[calc(8rem)] w-[calc(4rem)] h-[calc(2rem)] text-gray-700 rounded-full border-[calc(.1rem)] border-gray-100 font-bold text-[calc(.6rem)]"
                                 onClick={handleCreateButton}
                             >
                                 팀 생성하기
                             </button>
                     ) : (
                         <button
-                        className="w-[calc(4rem)] h-[calc(2rem)] text-gray-700 rounded-full border-[calc(.1rem)] border-gray-100 font-bold text-[calc(.6rem)]"
+                        className="relative left-[calc(8rem)] w-[calc(4rem)] h-[calc(2rem)] text-gray-700 rounded-full border-[calc(.1rem)] border-gray-100 font-bold text-[calc(.6rem)]"
                         onClick={handleLeftButton}
                         >
                             팀 나가기

@@ -5,9 +5,10 @@ import teamBackground from '@/assets/images/FieldBackground.png';
 import squareIcon from '@/assets/images/squareIcon.png';
 import hexagonIcon from '@/assets/images/hexagonIcon.png';
 import { getTeamInfo, getPlayerList } from '@/apis/api/team';
+import { getPlayerCard } from '@/apis/api/mypage';
 import { myTeamInfoDummyData } from '@/data/dummyData'; // dummy data
 
-function TeamInfo() {
+function TeamInfo({ teamId2 }) {
     const teamId = 10;
     const [myTeamInfoData, setMyTeamInfoData] = useState(null);
     const [myTeamInfo, setMyTeamInfo] = useState(null);
@@ -32,6 +33,7 @@ function TeamInfo() {
     }, [myTeamInfoData]);
 
     useEffect(() => {
+        console.log(teamId2);
         setMyTeamInfoData(    // dummy data
             myTeamInfoDummyData,
         );
@@ -45,6 +47,33 @@ function TeamInfo() {
                 setMyTeamInfo(
                     success.data.data,
                 );
+                // 팀원 리스트 정보
+                getPlayerList(
+                    teamId,
+                    (success) => {
+                        setMyTeamInfo((prevData) => ({
+                            ...prevData,
+                            players: success.data.data,
+                        }));
+                        // 팀원 선수카드 정보 [수정중]
+                        // getPlayerCard(
+                        //     teamId,
+                        //     (success) => {
+                        //         setMyTeamInfo((prevData) => ({
+                        //             ...prevData,
+                        //             players: success.data.data,
+                        //         }));
+                                
+                        //     },
+                        //     (fail) => {
+                        //         console.log(fail);
+                        //     }
+                        // );
+                    },
+                    (fail) => {
+                        console.log(fail);
+                    }
+                );
             },
             (fail) => {
                 console.log(fail);
@@ -56,32 +85,9 @@ function TeamInfo() {
     }, [teamId]);
 
     useEffect(() => {
-        // 팀원 리스트
-        getPlayerList(
-            teamId,
-            (success) => {
-                console.log(myTeamInfo);
-                // setMyTeamInfo((prevData) => ({
-                //     ...prevData,
-                //     players: success.data.data,
-                //   }));
-                console.log(success.data.data);
-                // setMyTeamInfoData({
-                //     ...success,
-                // });
-            },
-            (fail) => {
-                console.log(fail);
-            }
-        );
-        return () => {
-            
-        };
-    }, [myTeamInfo]);
-
-    useEffect(() => {
         // 팀원 정보
         console.log(myTeamInfo);
+
     }, [myTeamInfo]);
 
     const handleTeamInfoClick = (key) => {
