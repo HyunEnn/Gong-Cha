@@ -8,6 +8,8 @@ import hexagonIcon from '@/assets/images/hexagonIcon.png';
 import { getTeamInfo, getPlayerList, endTeamRecruit } from '@/apis/api/team';
 import { getPlayerCard, getProfileImage2 } from '@/apis/api/mypage';
 import { getAPIforAuthUserInfo, getAPIforAuthUserInfoById } from '@/apis/api/user';
+import { toast } from 'sonner';
+import { pushAlarm } from '@/apis/api/token';
 
 function TeamInfo({ teamId }) {
     const navigate = useNavigate();
@@ -222,16 +224,42 @@ function TeamInfo({ teamId }) {
     };
 
     const handleFinishButton = () => {
-        if(capId === userId) {
+        if(capId === userId && myTeamInfo.status === "모집중") {
             endTeamRecruit(
                 myTeamInfo.id,
                 (success) => {
                     console.log(success.data.data);
-                    navigate(0);
                 },
                 (fail) => {
                 }
             );
+            toast("팀원 모집을 완료하였습니다!", {
+                description: "팀원에게 알람을 전송합니다.",
+                className: 'toaster',
+                action: {
+                    label: "확인",
+                    onClick: () => {
+                        console.log("이벤트 확인");
+                        myTeamInfo.players.forEach((player) => {
+                            console.log(player.userId);
+                            pushAlarm(
+                                {
+                                    userId: player.userId,
+                                    title: "팀원 모집이 완료되었습니다!",
+                                    body: "앱에서 자세한 내용을 확인해주세요~"
+                                },
+                                (success) => {
+                                    console.log(success.data.data);
+                                },
+                                (fail) => {
+                                    console.log(fail);
+                                }
+                            );
+                        });
+                        navigate(0);
+                    },
+                },
+            });
         }
     };
     
