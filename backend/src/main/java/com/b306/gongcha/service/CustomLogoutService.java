@@ -1,5 +1,6 @@
 package com.b306.gongcha.service;
 
+import com.b306.gongcha.entity.User;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
 import com.b306.gongcha.repository.RefreshTokenRepository;
@@ -46,7 +47,7 @@ public class CustomLogoutService extends GenericFilterBean {
             filterChain.doFilter(request, response);
             return;
         }
-        System.out.println("여긴 들어오나?");
+
         // 쿠키에서 REFRESH 토큰 가져오기
         String refresh = null;
         Cookie[] cookies = request.getCookies();
@@ -74,15 +75,17 @@ public class CustomLogoutService extends GenericFilterBean {
             throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
 
+        Long userId = jwtUtil.getUserId(refresh);
+
         // redis 에 저장되어 있는지 확인
-        Boolean isExist = refreshRepository.existsByRefreshToken(refresh);
+        Boolean isExist = refreshRepository.existsById(userId);
         if (!isExist) {
             throw new CustomException(ErrorCode.NOT_FOUND_TOKEN);
         }
 
         // 로그아웃 진행
         // Refresh 를 redis 에서 제거
-        refreshRepository.deleteByRefreshToken(refresh);
+        refreshRepository.deleteById(userId);
 
         //Refresh 토큰 Cookie 값 0
         Cookie cookie = new Cookie("refresh", null);
