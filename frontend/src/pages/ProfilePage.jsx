@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { setProfileNickName } from '@/apis/api/mypage'
 import { setProfileImageAPI } from '@/apis/util/setProfileImage'
-import imglyRemoveBackground from "@imgly/background-removal";
+import { removeBackground } from "@imgly/background-removal"; 
 import { toast } from "sonner";
 import {
     Drawer,
@@ -55,10 +55,10 @@ function ProfilePage() {
         );
     }, []);
 
-    const removeBackground = async () => {
+    const removeBG = async () => {
         console.log("배경 제거 시도");
         try {
-            const resultBlob = await imglyRemoveBackground(imageSrc);
+            const resultBlob = await removeBackground(imageSrc);
             setResultSrc(URL.createObjectURL(resultBlob));
 
             console.log("배경 제거 완료");
@@ -126,7 +126,7 @@ function ProfilePage() {
     };
 
     const handleSubmitProfileImage = () => {
-        removeBackground();
+        removeBG();
         setShowProfileImageDrawer(false);
         toast("프로필 이미지가 업로드 되었어요!", {
             description: "이미지 반영까지는 대략 30초 소요됩니다",
@@ -186,10 +186,11 @@ function ProfilePage() {
                                     &times;
                                 </button>
                                 <div>
-                                    [공사중]
+                                    [사진 변경 팁]
                                 </div>
-                                <div>
-                                    프로필 변경 팁 안내
+                                <div className="absolute flex flex-col items-center justify-center mt-[80%]">
+                                    <span className='-mt-[20%]'>🏃</span>
+                                    <span>상반신이 모두 나오도록 찍어보세요</span>
                                 </div>
                             </div>
                         </div>

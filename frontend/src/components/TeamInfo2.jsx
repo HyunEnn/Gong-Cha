@@ -399,52 +399,6 @@ function TeamInfo({ teamId }) {
                             </div>
                         </div>
                     </div>
-                    {/* player info */}
-                    <div className="mt-[calc(18.5rem)] space-x-0">
-                        <div className="ml-4 h-full w-1/6 font-pretendardBlack">
-                            전력
-                        </div>
-                        <div className="relative left-10 w-[88%]">
-                            {myTeamInfo?.players?.map((player, playerIndex) => (
-                                <div key={playerIndex} className={"" + (player.permit ? "" : " opacity-20")}>
-                                    <div className="relative flex justify-start border-b-[calc(0.05rem)] w-full">
-                                        <div className="absolute -left-6 mt-5">
-                                            <div className={`absolute w-1 h-5 ${getBackgroundColor([player.shooting, player.pass, player.dribble, player.speed])}`}></div>
-                                            <p className="ml-2 -mt-[calc(.15rem)] font-pretendardBlack">
-                                                {Math.max(player.shooting, player.pass, player.dribble, player.speed)}
-                                            </p>
-                                            <p className="ml-[calc(.3rem)] -mt-[calc(.15rem)] font-pretendardBlack text-[calc(.5rem)]">{getSpecial([player.shooting, player.pass, player.dribble, player.speed])}</p>
-                                        </div>
-                                        <img className="border-stone-1 object-cover object-center mb-1"
-                                            src={player.profileUrl}
-                                            alt="프로필 사진"
-                                            style={{ width: '4rem', height: '4rem', objectFit: 'contain' }} />
-                                        <p className="relative mt-4 ml-2 font-pretendardBlack text-black text-[calc(0.8rem)]">{player.userName}</p>
-                                        <p className="absolute mt-[calc(2.5rem)] ml-[calc(4.5rem)] font-pretendardRegular text-gray-500 text-[calc(0.5rem)]">경기수</p>
-                                        <div className="absolute hexagon mt-[calc(3.2rem)] ml-[calc(4.85rem)] text-gray-500 text-[calc(0.5rem)]">
-                                            <div className="absolute flex flex-col items-center justify-center -mt-[calc(.07rem)] w-4 h-4 -ml-[calc(.18rem)]">
-                                                <img className={"absolute opacity-50" + (player.games > 4 ? "" : " h-3")}
-                                                    src={(player.games > 4 ? hexagonIcon : squareIcon)}
-                                                    alt="경기수 아이콘"
-                                                />
-                                                <p className="absolute font-pretendardBlack text-center">
-                                                    {player.games}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <p className="absolute mt-[calc(2.5rem)] ml-[calc(6.2rem)] font-pretendardRegular text-gray-500 text-[calc(0.5rem)]">매너점수</p>
-                                        <div className={"absolute flex flex-col items-center mt-[calc(3.3rem)] ml-[calc(6.5rem)] w-4 h-3" + (player.manner > 59 ? " bg-[#D6D6DA]" : " bg-[#CF946E]") + (player.manner > 79 ? " bg-[#d6b534]" : "")}>
-                                            <p className="absolute font-pretendardBlack text-gray-500 text-[calc(0.5rem)]">{player.manner}</p>
-                                        </div>
-                                        <div className='asbolute flex justify-end'>
-                                            <p className="absolute mt-[calc(2.5rem)] right-2 font-pretendardRegular text-gray-500 text-[calc(0.5rem)]">선수 가치</p>
-                                            <p className="absolute mt-[calc(3.1rem)] right-4 font-pretendardBlack text-black text-[calc(0.7rem)]">{parseInt((player.shooting + player.pass + player.dribble + player.speed) / 4)}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
                     {showDetailModal && (
                         <Modal show={showDetailModal} onClose={closeModal}>
                             {/* Modal content */}

@@ -19,11 +19,14 @@ import reportIcon from '@/assets/icons/report.svg';
 import emptyGhostIcon from '@/assets/icons/emptyGhost.svg';
 import playGroundIcon from '@/assets/images/FieldBackground2.png';
 import evaluationIcon from '@/assets/images/evaluation.png';
+import { getMatchingList } from '@/apis/api/matching2';
+import { getTeamInfo } from '@/apis/api/team';
 import { playHistoryDummyData } from '@/data/dummyData'; // dummy data
 
 function PlayHistoryPage() {
     const navigate = useNavigate();
     const [playHistoryData, setPlayHistoryData] = useState([]);
+    const [playHistory, setPlayHistory] = useState([]);
     const [showDetailModal, setShowDetailModal] = useState(false);
     const [detailKey, setDetailKey] = useState({ key: '' });
     const [selectedPlayer, setSelectedPlayer] = useState(null);
@@ -40,73 +43,56 @@ function PlayHistoryPage() {
     }, []);
     
     useEffect(() => {
-        /* axios for db connection
-        getPlayScheduleList(
-            key,
+        // axios for db connection<TeamInfo teamId={detailKey}></TeamInfo>
+        getMatchingList(
             (success) => {
-                setPlayScheduleList({
-                    ...success,
+                const dataArray = success.data.data;
+                dataArray.forEach((data, index) => {
+                    getTeamInfo(
+                        data.matchingTeamId,
+                        (success) => {
+                            dataArray[index] = {
+                                ...dataArray[index],
+                                matchingTeam: success.data.data,
+                            };
+                        },
+                        (fail) => {
+                            console.log(fail);
+                        }
+                    );
+                    getTeamInfo(
+                        data.versusTeamId,
+                        (success) => {
+                            dataArray[index] = {
+                                ...dataArray[index],
+                                versusTeam: success.data.data,
+                            };
+                        },
+                        (fail) => {
+                            console.log(fail);
+                        }
+                    );
+                    setPlayHistory((prevData) => ({
+                        ...prevData,
+                        ...dataArray,
+                    }));
                 });
-            },
-            (fail) => {
-                
             }
         );
         return () => {
             
         };
-        */
     }, []);
+
+    useEffect(() => {
+        console.log(playHistory);
+    }, [playHistory]);
 
     const handleBackClick = () => {
         navigate(-1);
     };
 
     const handlePlayScheduleClick = (state, key) => {
-        /*
-        if (state === "matching_active") {
-            console.log("엄 " + key);
-            getFunc1(
-                key,
-                (success) => {
-                    playScheduleData({
-                        ...success,
-                    });
-                },
-                (fail) => {
-            });
-        } else if (state === "matching_inactive") {
-            getFunc2(
-                key,
-                (success) => {
-                    playScheduleData({
-                        ...success,
-                    });
-                },
-                (fail) => {
-            });
-        } else if (state === "recruitment_active") {
-            getFunc3(
-                key,
-                (success) => {
-                    playScheduleData({
-                        ...success,
-                    });
-                },
-                (fail) => {
-            });
-        } else {
-            getFunc4(
-                key,
-                (success) => {
-                    playScheduleData({
-                        ...success,
-                    });
-                },
-                (fail) => {
-            });
-        }
-        */
         setDetailKey({ key });
         setShowDetailModal(true);
     };
@@ -244,97 +230,7 @@ function PlayHistoryPage() {
                     </div>
                     )
                 }
-                {showDetailModal && (
-                    <Modal show={showDetailModal} onClose={closeModal}>
-                        {/* Modal content */}
-                        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center" onClick={handleOutsideClick}>
-                            <div
-                                className="animate-scale-in relative flex flex-col items-center justify-start bg-stone-100 w-[calc(20.5rem)] h-[calc(31.25rem)] rounded-xl overflow-x-hidden overflow-y-auto" 
-                                onClick={e => e.stopPropagation()}
-                            >
-                                {/* close button */}
-                                <button
-                                    onClick={closeModal} 
-                                    className="self-start mt-2 mb-0 ml-2 w-5 h-5 bg-[#FF5F51] rounded-full shadow-sm font-bold text-white flex items-center justify-center"
-                                >
-                                    &times;
-                                </button>
-                                <div className="absolute flex flex-col items-center justify-center mt-5">
-                                        <p className="font-pretendardBlack">{playHistoryData[0][0].writer.name} FC VS {playHistoryData[0][1].writer.name} FC</p>
-                                </div>
-                                {/* team info content */}
-                                <div className="flex flex-col items-start justify-center mt-5 bg-stone-200 relative">
-                                    <div className="mb-0 w-[calc(18rem)]">
-                                        <img className="rounded-sm w-full mt-[calc(0rem)] transform inset-0 bg-gradient-to-b from-transparent to-black x-" src={playGroundIcon} alt="경기장 배경" />
-                                    </div>
-                                    <div className="flex justify-center w-full absolute bottom-1.5/2">
-                                        {playHistoryData.map((teamList, index) => (
-                                            <div key={uuidv4()} className="flex flex-col items-center mx-4">
-                                                <div className="flex flex-wrap items-center justify-center">
-                                                    {teamList.map((team, teamIndex) => (
-                                                        <React.Fragment key={team.key}>
-                                                            {teamIndex !== 0 && (
-                                                                <div className="w-full mb-4 flex items-center justify-center">
-                                                                    <span className="font-pretendardRegular text-2xl mx-2 mt-3">🆚</span>
-                                                                </div>
-                                                            )}
-                                                            {team.players.map((player, playerIndex) => (
-                                                                <div key={playerIndex} className="relative flex flex-col items-center justify-center mx-2" onClick={() => handlePlayerClick(player)}>
-                                                                    <img className="rounded-full border-[calc(0.15rem)] border-stone-10 border-b-blue-300 object-cover object-center mb-1" 
-                                                                        src={player.profileImage} 
-                                                                        alt="프로필 사진"
-                                                                        style={{ width: '2rem', height: '2rem', objectFit: 'contain' }} />
-                                                                    <div className="relative font-pretendardBold text-white text-[calc(0.7rem)] w-[calc(3rem)]" style={{ alignSelf: 'flex-start' }}>
-                                                                        <p className="ml-2">{player.name}</p>
-                                                                        {selectedPlayer === null && (
-                                                                            <div className="absolute -mt-5 ml-[calc(2.5rem)]">
-                                                                                <img 
-                                                                                    src={reportIcon} 
-                                                                                    alt="리포트 아이콘" 
-                                                                                    width={30} 
-                                                                                    height={30} 
-                                                                                    onClick={openReportModal}/>
-                                                                                <p className="text-center text-[calc(0.2rem)] -ml-1 font-pretendardBold">신고하기</p>
-                                                                            </div>
-                                                                        )}
-                                                                    </div>
-                                                                    
-                                                                </div>
-                                                            ))}
-                                                            {showReportModal && (
-                                                                <ReportModal onClose={closeReportModal} />
-                                                            )}
-                                                            {/* <div className="flex flex-col items-center justify-center mx-2 font-pretendardBold text-gray-800 text-lg">
-                                                                {team.writer.name} FC
-                                                            </div> */}
-                                                        </React.Fragment>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    {/* test */}
-                                    {renderPlayerCardModal()}
-                                </div>
-                                {/* evaluation & report Icon */}
-                                {selectedPlayer === null && (
-                                    <div className="absolute top-0 right-0 mt-[calc(4.85rem)] mr-[calc(3rem)]" onClick={openEvaluationModal}>
-                                            <img 
-                                                src={evaluationIcon} 
-                                                alt="평가 아이콘" 
-                                                width={25} 
-                                                height={25} 
-                                                onClick={openEvaluationModal}/>
-                                            <p className="text-center text-[calc(0.3rem)] mt-1 mr-0 font-pretendardBlack text-white">평가하기</p>
-                                    </div>
-                                )}
-                                {showEvaluationModal && (
-                                    <EvaluationModal players={playHistoryData[0][0].players} onClose={closeEvaluationModal} />
-                                )}
-                            </div>
-                        </div>
-                    </Modal>
-                )}
+                
             </div>
         </div>
     );

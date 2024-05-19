@@ -23,8 +23,8 @@ async function getPlayScheduleList(userId, success, fail) {
     await server.get(`${url}/${userId}/group`).then(success).catch(fail);
 }
 
-async function getNotice(userId, success, fail) {
-    await server.get(`${url}/notice/${userId}`).then(success).catch(fail);
+async function getNotice(success, fail) {
+    await server.get(`${url}/notice`).then(success).catch(fail);
 }
 
 async function setRating(data, success, fail) {
