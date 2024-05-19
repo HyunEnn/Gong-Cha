@@ -30,7 +30,7 @@ const regions = [
 
 function TeamList() {
     const [teamListData, setTeamListData] = useState([]);
-    const [detailKey, setDetailKey] = useState({ key: '' });
+    const [detailKey, setDetailKey] = useState(0);
     const [showDetailModal, setShowDetailModal] = useState(false);
     const [selectedRegion, setSelectedRegion] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
@@ -45,6 +45,7 @@ function TeamList() {
         // axios for db connection
         getTeamList(
             (success) => {
+                console.log("><><><><><><><><<><");
                 console.log(success.data.data);
                 if (success.data.data.content.length !== 0) {
                     console.log(success.data.data.content.length);
@@ -64,7 +65,7 @@ function TeamList() {
     }, []);
 
     const handleTeamInfoClick = (key) => {
-        setDetailKey({ key });
+        setDetailKey(key);
         setShowDetailModal(true);
     };
 
@@ -298,7 +299,7 @@ function TeamList() {
                         </div>
                         <div className="absolute flex flex-col justify-start left-[calc(1.13125rem)] top-[calc(15.5rem)] w-[calc(20.2rem)] rounded bg-slate-200">
                             {teamListData.map((data) => (
-                                    <div key={uuidv4()} className="border-b-[calc(0.05rem)] border-white transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handleTeamInfoClick(data.key)}>
+                                    <div key={uuidv4()} className="border-b-[calc(0.05rem)] border-white transform transition duration-100 ease-in-out active:bg-gray-200 active:scale-90" onClick={() => handleTeamInfoClick(data.id)}>
                                         <div className="absolute mt-2 ml-4 text-[calc(.6rem)]">
                                             <p className="font-pretendardBlack">{data.startTime}:00</p>
                                             <p className='ml-2'>~</p>
@@ -306,12 +307,10 @@ function TeamList() {
                                         </div>
                                         <div className="mt-2 ml-[calc(5rem)] mb-3">
                                             {/* <p>{data.writer.name} FC</p> */}
-                                            <p>테스트 FC</p>
+                                            <p>{data.captainName} FC</p>
                                             <p className="mt-1 text-[calc(.5rem)]">
                                                 {data.region} {data.district}
                                                 &nbsp;&nbsp;{data.difficulty}
-                                                {/* &nbsp;&nbsp;현재 {data.players.length}명 */}
-                                                &nbsp;&nbsp;현재 5명
                                             </p>
                                             {/* 친선전: ENUM
                                                 location: 부산시
@@ -344,7 +343,7 @@ function TeamList() {
                                             &times;
                                         </button>
                                         <div className="absolute w-full mt-10">
-                                            <TeamInfo teamId2={10000}></TeamInfo>
+                                            <TeamInfo teamId={detailKey}></TeamInfo>
                                             <div className="absolute flex flex-col items-center justify-center w-full mt-5">
                                                 <button
                                                     className="w-4/5 bg-blue-500 text-white rounded-md font-bold mb-4"
