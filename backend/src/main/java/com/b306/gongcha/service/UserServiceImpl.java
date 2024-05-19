@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService{
     public List<NoticeBoxResponse> getNotices(HttpServletRequest request) {
 
         User user = jwtUtil.getUserFromAccessToken(request);
-        List<Notice> notice = noticeRepository.findAllByFromUserId(user.getId());
+        List<Notice> notice = noticeRepository.findAllByToUserId(user.getId());
         return NoticeBoxResponse.fromEntity(notice);
     }
 
