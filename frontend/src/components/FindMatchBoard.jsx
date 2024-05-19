@@ -4,12 +4,12 @@ import { useFindMatchBoardStore } from '@/stores/findMatchBoardStore';
 
 import ManchesterCity from '@/assets/examples/manchester-city.svg';
 import TottenhamHotspur from '@/assets/examples/tottenham-hotspur.svg';
-
-import { getMatchingList } from '@/apis/api/match';
+import { Split } from 'lucide-react';
 
 function FindMatchBoard() {
     const navigate = useNavigate();
-    const { dummyFindMatchList } = useFindMatchBoardStore();
+    const { dummyFindMatchList, SelectedDateMatchingBoardList, setSelectedDateMatchingBoardList } =
+        useFindMatchBoardStore();
 
     // 데이터 목록과 로딩 상태를 관리합니다.
     const [items, setItems] = useState([]);
@@ -19,15 +19,12 @@ function FindMatchBoard() {
     const observer = useRef();
 
     useEffect(() => {
-        getMatchingList(
-            (success) => {
-                console.log('매칭 게시판 전체 조회 성공', success);
-            },
-            (fail) => {
-                console.log('매칭 게시판 전체 조회 실패', fail);
-            }
-        );
-    }, []);
+        // 데이터 초기화
+        setItems([]);
+        setStartIndex(0);
+
+        fetchMoreItems();
+    }, [SelectedDateMatchingBoardList]);
 
     const lastItemRef = useCallback(
         (node) => {
@@ -47,26 +44,21 @@ function FindMatchBoard() {
 
     // 데이터를 불러오는 함수
     const fetchMoreItems = () => {
-        if (startIndex >= dummyFindMatchList.length) return; // 모든 데이터를 이미 불러왔다면 더 이상 진행하지 않음
+        if (startIndex >= SelectedDateMatchingBoardList.length) return; // 모든 데이터를 이미 불러왔다면 더 이상 진행하지 않음
         setLoading(true);
         // 예시: 임의의 데이터를 더 불러온다고 가정합니다.
         setTimeout(() => {
-            const nextItems = dummyFindMatchList.slice(startIndex, startIndex + 10);
+            const nextItems = SelectedDateMatchingBoardList.slice(startIndex, startIndex + 10);
             setItems((prevItems) => [...prevItems, ...nextItems]);
             setStartIndex((prevStartIndex) => prevStartIndex + 10);
             setLoading(false);
         }, 1000);
     };
 
-    // 컴포넌트 마운트 시 초기 데이터 로드
-    useEffect(() => {
-        fetchMoreItems();
-    }, []);
-
-    const handleOpenFindMatchDetail = (value) => {
+    const handleOpenFindMatchDetail = (id) => {
         // console.log(value);
         // updateFindPlayerBoardStore로 게시글 설정
-        navigate(`/findmatch/detail/${value + 1}`);
+        navigate(`/findmatch/detail/${id}`);
     };
 
     const renderClubIcon = (iconName) => {
@@ -82,26 +74,28 @@ function FindMatchBoard() {
     return (
         <>
             {/* dummy를 real로 변경 필요 */}
+            {items.length === 0 && !loading && (
+                <p className="mt-10 text-center font-gmarketSansBold">No matches found</p>
+            )}
             {items.map((value, index) => (
                 <div
                     key={index}
                     ref={index === items.length - 1 ? lastItemRef : null}
                     className="grid grid-cols-4 gap-4 p-2 mt-4 border border-solid rounded-lg"
-                    onClick={() => handleOpenFindMatchDetail(index)}
+                    onClick={() => handleOpenFindMatchDetail(value.id)}
                 >
                     <div className="flex flex-row items-center justify-center pl-2 text-xl font-pretendardBold">
-                        {renderClubIcon(value.clubIcon)}
+                        <img src={value.teamPic} alt="팀 로고" />
                     </div>
                     <div className="flex flex-col justify-center col-span-2">
-                        <div className=" font-pretendardBold">
-                            {value.clubName}({value.averageStat})
-                        </div>
+                        <div className=" font-pretendardBold">{value.captainName}님의 팀</div>
                         <div className="text-xs font-pretendardRegular text-neutral-500">
-                            •{value.place}&nbsp;&nbsp;•{value.level}&nbsp;&nbsp;•{value.headCount}
+                            •{value.region} {value.district}&nbsp;&nbsp;•{value.difficulty}&nbsp;&nbsp;•
+                            {value.playerNum}vs{value.playerNum}
                         </div>
                     </div>
                     <div className="flex flex-col justify-center">
-                        <div className="text-lg font-pretendardBold">{value.time}</div>
+                        <div className="text-lg font-pretendardBold">{value.date.split(' ')[2]}</div>
                     </div>
                 </div>
             ))}

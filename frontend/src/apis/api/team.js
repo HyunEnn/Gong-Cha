@@ -2,7 +2,11 @@ import { serverAxios } from '@/apis/util/commons';
 
 const server = serverAxios();
 
-const url = 'http://localhost:8081/api/team';
+const url = '/team';
+
+async function getMyTeam(success, fail) {
+    await server.get(`${url}/myTeam`).then(success).catch(fail);
+}
 
 async function createTeam(data, success, fail) {
     await server.post(`${url}`, data).then(success).catch(fail);
@@ -52,17 +56,23 @@ async function getPlayerList(teamId, success, fail) {
     await server.get(`${url}/${teamId}/teammates`).then(success).catch(fail);
 }
 
-export { 
+async function getPlayerCardList(teamId, success, fail) {
+    await server.get(`${url}/${teamId}/teammates/cards`).then(success).catch(fail);
+}
+
+export {
     createTeam,
-    getTeamList, 
+    getTeamList,
     getTeamInfo,
     getMyTeamInfo,
     updateTeamInfo,
-    deleteTeamInfo, 
+    deleteTeamInfo,
     reqPlayerToTeam,
     getPlayerToTeamRequest,
     acceptPlayerToTeam,
     denyPlayerToTeamRequest,
     endTeamRecruit,
     getPlayerList,
+    getPlayerCardList,
+    getMyTeam,
 };

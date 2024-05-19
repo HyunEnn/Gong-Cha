@@ -5,13 +5,8 @@ const server = serverAxios();
 const url = '/matching/request';
 
 // 매칭 신청
-const postMatchingRequest = async (matchingId, versusTeamId, data) => {
-    return await server
-        .post(`${url}/${matchingId}/${versusTeamId}`, data)
-        .then((response) => response.data)
-        .catch((error) => {
-            throw new Error(`API request failed: ${error}`);
-        });
+const postMatchingRequest = async (matchingId, success, fail) => {
+    return await server.post(`${url}/${matchingId}`).then(success).catch(fail);
 };
 
 // 매칭 게시글 신청 목록

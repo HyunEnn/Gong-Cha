@@ -1,17 +1,25 @@
 import { useState, useEffect } from 'react';
-import { useCardStore } from '@/stores/cardStore';
+// import { useCardStore } from '@/stores/cardStore';
 import PlayerCardCarousel from '@/components/PlayerCardCarousel';
 
 function HoverPlayerCard({ cardInfo, index, position }) {
-    const { myCardData } = useCardStore();
+    // const { myCardData } = useCardStore();
+
     const [profileData, setProfileData] = useState({});
 
     useEffect(() => {
-        if (myCardData) {
-            console.log('myCardData 출력');
-            setProfileData(myCardData);
-        }
-    }, [myCardData]);
+        // console.log(cardInfo);
+
+        setProfileData({
+            name: cardInfo.userName,
+            profileImage: cardInfo.profileImage,
+            SHO: cardInfo.shooting,
+            PAS: cardInfo.pass,
+            DRI: cardInfo.dribble,
+            PAC: cardInfo.speed,
+            MAN: cardInfo.manner,
+        });
+    }, []);
     return (
         <div
             className="absolute inset-0 z-50 bg-transparent"
@@ -19,9 +27,7 @@ function HoverPlayerCard({ cardInfo, index, position }) {
         >
             <div className="relative w-40 mx-auto bg-transparent aspect-square h-52 rounded-xl">
                 {/* index로 axios get 클럽 소속 요청 */}
-                {/* <p>{index}</p>
-                <p>{cardInfo.userId}</p>
-                <p>{cardInfo.phoneNumber}</p> */}
+                {/* <p>{index}</p> */}
                 <PlayerCardCarousel player={profileData} />
             </div>
         </div>
