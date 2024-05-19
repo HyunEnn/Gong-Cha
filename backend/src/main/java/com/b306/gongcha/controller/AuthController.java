@@ -58,6 +58,24 @@ public class AuthController {
                 .build(), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "유저 아이디로 유저 정보 조회",
+            description = "유저 아이디로 유저 정보를 조회합니다"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "유저 아이디로 유저 정보 조회 성공하였습니다."
+    )
+    @GetMapping("/userInfo/{id}")
+    public ResponseEntity<CommonResponse> getUserInfo(@PathVariable("id") Long userId) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("유저 정보 조회 성공")
+                .data(oauth2TokenService.getUserInfoById(userId))
+                .build(), HttpStatus.OK);
+    }
+
+
     @PostMapping("/phone")
     public ResponseEntity<CommonResponse> sendAuthCode(
             HttpServletRequest httpServletRequest,
