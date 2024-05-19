@@ -36,7 +36,7 @@ function App() {
         setLocalToken(token);
     }, [token]);
     useEffect(() => {
-        if(localToken) {
+        if (localToken) {
             // toast('device token', {
             //     description: localToken,
             //     className: 'toaster',
@@ -53,8 +53,7 @@ function App() {
                 (success) => {
                     console.log(success.data.message);
                 },
-                (fail) => {
-                }
+                (fail) => {}
             );
         }
     }, [localToken]);
@@ -64,12 +63,12 @@ function App() {
             const body = payload.notification.body;
             setLocalPayload(payload);
             toast(title, {
-            description: body,
-            className: 'toaster',
-            action: {
-                label: "확인",
-                onClick: () => console.log("이벤트 확인"),
-            },
+                description: body,
+                className: 'toaster',
+                action: {
+                    label: '확인',
+                    onClick: () => console.log('이벤트 확인'),
+                },
             });
         }
     }, [payload]);
@@ -83,7 +82,7 @@ function App() {
         // },
         {
             path: '/',
-            element: <Navigate to="/main" />,
+            element: <Navigate to="/login" />,
         },
         {
             path: '/testdiv',
