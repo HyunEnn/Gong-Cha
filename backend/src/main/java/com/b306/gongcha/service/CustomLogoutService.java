@@ -89,8 +89,10 @@ public class CustomLogoutService extends GenericFilterBean {
         // Refresh 를 redis 에서 제거
         refreshRepository.deleteById(userId);
 
-        User user = jwtUtil.getUserFromAccessToken(request);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         user.deleteToken();
+        userRepository.save(user);
 
         //Refresh 토큰 Cookie 값 0
         Cookie cookie = new Cookie("refresh", null);
