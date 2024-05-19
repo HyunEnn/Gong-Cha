@@ -61,7 +61,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 //        response.addCookie(createCookie("Authorization", access));
         response.addCookie(createCookie("refresh", refresh));
         response.setStatus(HttpStatus.OK.value());
-        response.sendRedirect("http://k10b306.p.ssafy.io:5173/kakao/callback");
+        response.sendRedirect("https://gongcha.site/kakao/callback");
 
 //        Map<String, Object> map = new LinkedHashMap<>();
 //        map.put("code", HttpStatus.OK);
