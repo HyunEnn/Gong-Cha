@@ -201,9 +201,6 @@ public class MatchingService {
                 break;
             }
         }
-        if(teamId == 0L) {
-            throw new CustomException(ErrorCode.NOT_FOUND_TEAM);
-        }
 
         List<MatchingAskResponse> matchingAskResponseList = new ArrayList<>();
         List<MatchingAsk> matchingAskList = matchingAskRepository.findByMatchingTeamIdAndPermitIsTrue(teamId);
