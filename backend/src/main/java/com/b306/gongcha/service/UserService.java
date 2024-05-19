@@ -15,5 +15,8 @@ public interface UserService {
     void updateUserName(HttpServletRequest request, UserNameRequest dto);
 
     void duplicateName(HttpServletRequest request, UserNameRequest dto);
-    ProfileResponse getProfile(HttpServletRequest request);
+
+    ProfileResponse getMyProfile(HttpServletRequest request);
+
+    ProfileResponse getUserProfile(Long userId);
 }
