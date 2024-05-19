@@ -55,7 +55,7 @@ public class MatchingService {
             throw new CustomException(ErrorCode.NO_AUTHORITY_MANAGER);
         }
     }
-    
+
     // 매칭 게시판 작성
     @Transactional
     public void createMatching(HttpServletRequest httpServletRequest, MatchingRequest matchingRequest) {
@@ -129,7 +129,7 @@ public class MatchingService {
         }
 
     }
-    
+
     // 게시판 작성한 팀이 받은 신청 목록 조회
     @Transactional(readOnly = true)
     public List<MatchingAskResponse> getAllMatchingAsks(Long matchingTeamId) {
@@ -149,6 +149,33 @@ public class MatchingService {
         Long teamId = getTeamId(userId);
         List<MatchingAskResponse> matchingAskResponseList = new ArrayList<>();
         List<MatchingAsk> matchingAskList = matchingAskRepository.findByMatchingTeamIdAndPermitIsFalse(teamId);
+        matchingAskList.forEach(ma -> matchingAskResponseList.add(MatchingAskResponse.fromEntity(ma)));
+        return matchingAskResponseList;
+    }
+
+    // 신청 승인된 매칭 목록 조회
+    @Transactional(readOnly = true)
+    public List<MatchingAskResponse> getAcceptedMatchingList(HttpServletRequest httpServletRequest) {
+
+        User user = jwtUtil.getUserFromAccessToken(httpServletRequest);
+        Long userId = user.getId();
+
+        // 유저 id로 매칭완료 상태인 팀 id 가져오기
+        List<UserTeam> userTeamList = userTeamRepository.findAllByUserId(userId);
+        Long teamId = 0L;
+        for(UserTeam u : userTeamList) {
+            // 매칭완료 상태인 팀 1개만 찾기
+            if(u.getTeam().getStatus() == Status.valueOf("매칭완료")) {
+                teamId = u.getTeam().getId();
+                break;
+            }
+        }
+        if(teamId == 0L) {
+            throw new CustomException(ErrorCode.NOT_FOUND_TEAM);
+        }
+
+        List<MatchingAskResponse> matchingAskResponseList = new ArrayList<>();
+        List<MatchingAsk> matchingAskList = matchingAskRepository.findByMatchingTeamIdAndPermitIsTrue(teamId);
         matchingAskList.forEach(ma -> matchingAskResponseList.add(MatchingAskResponse.fromEntity(ma)));
         return matchingAskResponseList;
     }
