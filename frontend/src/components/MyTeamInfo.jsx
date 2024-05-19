@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import emptyGhostIcon from '@/assets/icons/emptyGhost.svg';
 import Modal from '@/components/Modal';
 import TeamInfo from '@/components/TeamInfo';
-import { getMyTeamInfo, createTeam, deleteTeamInfo } from '@/apis/api/team';
+import { getMyTeam, createTeam, deleteTeamInfo } from '@/apis/api/team';
 import { getAPIforAuthUserInfo } from '@/apis/api/user';
 
 const regions = [
@@ -61,7 +61,7 @@ function MyTeamInfo() {
 
     useEffect(() => {
         // axios for db connection
-        getMyTeamInfo(
+        getMyTeam(
             (success) => {
                 if (success.data.data.content.length > 0) {
                     setMyTeamInfoData({
