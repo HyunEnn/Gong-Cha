@@ -92,6 +92,9 @@ public class MatchingService {
             Long teamId = mr.getMatchingTeamId();
             List<UserTeam> userTeamList = userTeamRepository.findAllByTeamIdAndPermitIsTrue(teamId);
             mr.updatePlayerNum(userTeamList.size());
+
+            // 팀 로고 가져오기
+            mr.updateTeamPic(mr.getTeamPic());
         }
 
         return matchingResponses;
@@ -113,6 +116,9 @@ public class MatchingService {
         Long teamId = matchingResponse.getMatchingTeamId();
         List<UserTeam> userTeamList = userTeamRepository.findAllByTeamIdAndPermitIsTrue(teamId);
         matchingResponse.updatePlayerNum(userTeamList.size());
+
+        // 팀 로고 가져오기
+        matchingResponse.updateTeamPic(matchingResponse.getTeamPic());
 
         return matchingResponse;
     }
