@@ -30,8 +30,8 @@ public class MatchingController {
             description = "팀장이 매칭을 생성함."
     )
     @ApiResponse(
-        responseCode = "200",
-        description = "매칭이 정상적으로 생성되었습니다."
+            responseCode = "200",
+            description = "매칭이 정상적으로 생성되었습니다."
     )
     @PostMapping("/create")
     public ResponseEntity<CommonResponse> createClub(HttpServletRequest httpServletRequest, @RequestBody MatchingRequest matchingRequest) {
@@ -261,6 +261,23 @@ public class MatchingController {
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("플레이한 경기 내역 조회")
                 .data(matchingService.getMatchingRecords(httpServletRequest))
+                .build(), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "승인된 매칭 목록 조회",
+            description = "유저가 승인된 매칭 목록 조회"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "승인된 매칭 목록 조회 성공"
+    )
+    @GetMapping("/matchList")
+    public ResponseEntity<CommonResponse> getAcceptedMatchingList(HttpServletRequest httpServletRequest) {
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("승인된 매칭 목록 조회")
+                .data(matchingService.getAcceptedMatchingList(httpServletRequest))
                 .build(), HttpStatus.OK);
     }
 
