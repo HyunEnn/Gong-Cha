@@ -11,8 +11,6 @@ import defaultClubLogo from '@/assets/icons/clubFC.svg';
 import ManchesterCity from '@/assets/examples/manchester-city.svg';
 import HoverPlayerCard from '@/components/HoverPlayerCard';
 
-import {} from '@/apis/api/club';
-
 function MyClub() {
     const {
         dummyClubList,
@@ -181,14 +179,16 @@ function MyClub() {
                             <div className="grid grid-cols-3">
                                 <div className="flex items-center justify-center">
                                     <img
-                                        src={value.playerImg}
+                                        src={value.profileImage}
                                         alt="선수 이미지"
                                         style={{ width: '4rem', height: '4rem', objectFit: 'contain' }}
                                     />
                                 </div>
                                 <div className="flex flex-col items-start justify-center">
                                     <p className="text-lg font-gmarketSansBold">{value.userName}</p>
-                                    <p className="text-xs font-gmarketSansRegular">010-1234-5678</p>
+                                    <p className="text-xs font-gmarketSansRegular">
+                                        {value.phone ? value.phone : '핸드폰 등록이 되어있지 않습니다'}
+                                    </p>
                                 </div>
                                 <div className="flex flex-col items-center justify-around text-center">
                                     <div>
@@ -207,7 +207,9 @@ function MyClub() {
                                         <p className="text-[calc(0.5rem)] text-gray-500 font-pretendardRegular">
                                             선수 가치
                                         </p>
-                                        <p className="text-[calc(0.7rem)] font-gmarketSansBold">90</p>
+                                        <p className="text-[calc(0.7rem)] font-gmarketSansBold">
+                                            {(value.shooting + value.pass + value.dribble + value.speed) / 4}
+                                        </p>
                                     </div>
                                 </div>
                             </div>

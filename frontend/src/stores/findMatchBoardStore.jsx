@@ -28,8 +28,17 @@ export const useFindMatchBoardStore = create((set) => ({
     MatchingBoardCreateRequest: {
         date: '',
         region: '',
-        districts: '',
+        district: '',
         info: '',
         difficulty: '',
     },
+    MatchingBoardListResponse: [],
+    setMatchingBoardListResponse: (data) => set({ MatchingBoardListResponse: data }),
+    SelectedDateMatchingBoardList: [],
+    setSelectedDateMatchingBoardList: (data) => {
+        console.log('Setting SelectedDateMatchingBoardList:', data);
+        set({ SelectedDateMatchingBoardList: data });
+    },
+    MatchBoardDetailResponse: {},
+    setMatchBoardDetailResponse: (data) => set({ MatchBoardDetailResponse: data }),
 }));
