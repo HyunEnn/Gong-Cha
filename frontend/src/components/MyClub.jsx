@@ -208,7 +208,10 @@ function MyClub() {
                                             선수 가치
                                         </p>
                                         <p className="text-[calc(0.7rem)] font-gmarketSansBold">
-                                            {(value.shooting + value.pass + value.dribble + value.speed) / 4}
+                                            {parseInt(
+                                                (value.shooting + value.pass + value.dribble + value.speed) / 4,
+                                                10
+                                            )}
                                         </p>
                                     </div>
                                 </div>
