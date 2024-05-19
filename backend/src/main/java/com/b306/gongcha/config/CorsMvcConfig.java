@@ -16,6 +16,11 @@ public class CorsMvcConfig implements WebMvcConfigurer {
                                 "http://localhost:5173/kakao/callback",
                                 "http://k10b306.p.ssafy.io:5173",
                                 "http://k10b306.p.ssafy.io:8081",
-                                "https://gongcha.site");
+                                "https://gongcha.site")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .exposedHeaders("Authorization", "Set-Cookie")
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 }
