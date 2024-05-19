@@ -6,6 +6,7 @@ import com.b306.gongcha.entity.User;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
 import com.b306.gongcha.repository.RefreshTokenRepository;
+import com.b306.gongcha.repository.UserRepository;
 import com.b306.gongcha.util.JWTUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
@@ -22,6 +23,7 @@ public class Oauth2TokenService {
     private final JWTUtil jwtUtil;
     private final RefreshTokenRepository refreshTokenRepository;
     private final RefreshTokenService refreshTokenService;
+    private final UserRepository userRepository;
 
     public AccessResponse regenerateAccessToken(HttpServletRequest request, HttpServletResponse response) {
 
@@ -90,6 +92,15 @@ public class Oauth2TokenService {
 
         return UserInfoResponse.fromEntity(user);
     }
+
+    public UserInfoResponse getUserInfoById(Long userId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        return UserInfoResponse.fromEntity(user);
+    }
+
 
     private Cookie createCookie(String key, String value) {
 
