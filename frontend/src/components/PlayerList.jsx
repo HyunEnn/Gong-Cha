@@ -231,7 +231,6 @@ function PlayerList() {
                             console.log(fail);
                         }
                     );
-                    navigate(0);
                 },
             },
         });
