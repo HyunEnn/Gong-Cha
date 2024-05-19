@@ -28,6 +28,10 @@ public class Team extends BaseEntity {
     @Schema(description = "매칭 성격", allowableValues = { "친선", "내전"}, example = "내전")
     private MatchType matchType; // 매치 성격 - 내전/친선
 
+    @Column(name = "team_pic")
+    @Schema(description = "팀 로고")
+    private String teamPic;
+
     @Column(name = "start_time")
     @Schema(description = "희망 시작 시간", example = "9")
     private int startTime; // 희망 시간 시작
@@ -63,6 +67,7 @@ public class Team extends BaseEntity {
     public void updateTeam(TeamRequest teamRequest) {
 
         this.matchType = teamRequest.getMatchType();
+        this.teamPic = teamRequest.getTeamPic();
         this.startTime = teamRequest.getStartTime();
         this.endTime = teamRequest.getEndTime();
         this.region = teamRequest.getRegion();
@@ -81,6 +86,7 @@ public class Team extends BaseEntity {
         return TeamResponse.builder()
                 .id(id)
                 .matchType(matchType)
+                .teamPic(teamPic)
                 .region(region)
                 .district(district)
                 .startTime(startTime)
@@ -96,6 +102,7 @@ public class Team extends BaseEntity {
 
         return Team.builder()
                 .matchType(teamRequest.getMatchType())
+                .teamPic(teamRequest.getTeamPic())
                 .startTime(teamRequest.getStartTime())
                 .endTime(teamRequest.getEndTime())
                 .region(teamRequest.getRegion())

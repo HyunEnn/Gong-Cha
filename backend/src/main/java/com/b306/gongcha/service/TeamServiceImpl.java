@@ -58,7 +58,10 @@ public class TeamServiceImpl implements TeamService{
     public TeamResponse getTeam(Long teamId) {
 
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEAM));
-        return team.toTeamResponse();
+        TeamResponse teamResponse = team.toTeamResponse();
+        userTeamRepository.findByTeamIdAndRole(teamResponse.getId(), Role.valueOf("팀장"))
+                .ifPresent(userTeam -> teamResponse.updateCaptainName(userTeam.getUser().getName()));
+        return teamResponse;
     }
 
     // 승인된 팀원 목록 조회
