@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -80,7 +81,20 @@ public class MatchingService {
     public Page<MatchingResponse> getAllMatchings(Pageable pageable) {
 
         Page<Matching> matchings = matchingRepository.findAll(pageable);
-        return matchings.map(MatchingResponse::fromEntity);
+        Page<MatchingResponse> matchingResponses = matchings.map(MatchingResponse::fromEntity);
+
+        for(MatchingResponse mr : matchingResponses) {
+            // 팀 이름(팀장 이름) 가져오기
+            userTeamRepository.findByTeamIdAndRole(mr.getMatchingTeamId(), Role.valueOf("팀장"))
+                    .ifPresent(userTeam -> mr.updateCaptainName(userTeam.getUser().getName()));
+
+            // 팀 소속 인원 수 가져오기
+            Long teamId = mr.getMatchingTeamId();
+            List<UserTeam> userTeamList = userTeamRepository.findAllByTeamIdAndPermitIsTrue(teamId);
+            mr.updatePlayerNum(userTeamList.size());
+        }
+
+        return matchingResponses;
     }
 
     // 매칭 게시판 상세 조회
@@ -89,7 +103,18 @@ public class MatchingService {
 
         Matching matching = matchingRepository.findById(matchingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MATCHING));
-        return MatchingResponse.fromEntity(matching);
+        MatchingResponse matchingResponse = MatchingResponse.fromEntity(matching);
+
+        // 팀 이름(팀장 이름) 가져오기
+        userTeamRepository.findByTeamIdAndRole(matchingResponse.getMatchingTeamId(), Role.valueOf("팀장"))
+                .ifPresent(userTeam -> matchingResponse.updateCaptainName(userTeam.getUser().getName()));
+
+        // 팀 소속 인원 수 가져오기
+        Long teamId = matchingResponse.getMatchingTeamId();
+        List<UserTeam> userTeamList = userTeamRepository.findAllByTeamIdAndPermitIsTrue(teamId);
+        matchingResponse.updatePlayerNum(userTeamList.size());
+
+        return matchingResponse;
     }
 
     // 매칭 게시판 정보 수정

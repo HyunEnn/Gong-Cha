@@ -20,6 +20,12 @@ public class MatchingResponse {
     @Schema(description = "매칭 id", example = "1L")
     private Long id;
 
+    @Schema(description = "매칭 팀장 이름", example = "박하윤")
+    private String captainName;
+
+    @Schema(description = "매칭 팀 인원 수", example = "5")
+    private int playerNum;
+
     @Schema(description = "경기 시간", example = "2024-05-14 15:00")
     private String date; // 경기 시간
 
@@ -40,6 +46,16 @@ public class MatchingResponse {
 
     @Schema(description = "매칭 팀 id", example = "1L")
     private Long matchingTeamId;
+
+    public void updateCaptainName(String captainName) {
+
+        this.captainName = captainName;
+    }
+
+    public void updatePlayerNum(int playerNum) {
+
+        this.playerNum = playerNum;
+    }
 
     public static MatchingResponse fromEntity(Matching matching) {
 
