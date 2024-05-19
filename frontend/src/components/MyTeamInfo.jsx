@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import emptyGhostIcon from '@/assets/icons/emptyGhost.svg';
 import Modal from '@/components/Modal';
 import TeamInfo from '@/components/TeamInfo';
-import { getMyTeam, createTeam, deleteTeamInfo } from '@/apis/api/team';
+import { getMyTeamInfo, createTeam, deleteTeamInfo } from '@/apis/api/team';
 import { getAPIforAuthUserInfo } from '@/apis/api/user';
 
 const regions = [
@@ -61,7 +61,7 @@ function MyTeamInfo() {
 
     useEffect(() => {
         // axios for db connection
-        getMyTeam(
+        getMyTeamInfo(
             (success) => {
                 if (success.data.data.content.length > 0) {
                     setMyTeamInfoData({
@@ -314,16 +314,6 @@ function MyTeamInfo() {
                                         <option value="중급">중급</option>
                                         <option value="상급">상급</option>
                                     </select>
-                                </label>
-                                <label className="w-full">
-                                    <span className="text-gray-700">클럽원 리스트:</span>
-                                    <input
-                                        type="text"
-                                        name="userList"
-                                        value={teamInfo.userList.join(', ')}
-                                        onChange={e => handleChange({ ...e, target: { name: 'userList', value: e.target.value.split(', ').map(Number) } })}
-                                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                                    />
                                 </label>
                                 <button
                                     className="w-full mt-4 bg-green-500 text-white py-2 rounded-md font-bold hover:bg-green-600 transition-colors"
