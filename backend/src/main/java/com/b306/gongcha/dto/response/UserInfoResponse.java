@@ -11,6 +11,7 @@ public class UserInfoResponse {
     private Long userId;
     private String name;
     private String profileImage;
+    private int manner;
 
     public static UserInfoResponse fromEntity(User user) {
 
@@ -18,6 +19,7 @@ public class UserInfoResponse {
                 .userId(user.getId())
                 .name(user.getName())
                 .profileImage(user.getProfile())
+                .manner(user.getManner())
                 .build();
     }
 }
