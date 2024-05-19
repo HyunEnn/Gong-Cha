@@ -47,7 +47,7 @@ function FirebaseComponent() {
 
       try {
         const token = await getToken(messaging, {
-          vapidKey: import.meta.env.VITE_APP_VAPID_KEY,
+          vapidKey: 'BL5bGjPDt2MnX-POT3mQrKhqi_l4UE1oUXQr0FIhMVOgMpU6S4GKrvTP9hBxpcL4AxFr65GvC-9jUSJw8zUbFes',
         });
 
         if (token) {
