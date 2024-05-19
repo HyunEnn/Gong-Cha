@@ -18,6 +18,9 @@ public class TeamRequest {
     @Schema(description = "매칭 성격", allowableValues = { "친선", "내전"}, example = "내전")
     private MatchType matchType; // 매치 종류 - 내전, 친선전
 
+    @Schema(description = "팀 로고")
+    private String teamPic;
+
     @Schema(description = "광역시, 도", example = "대전")
     private String region; // 광역시, 도
 
@@ -46,6 +49,7 @@ public class TeamRequest {
 
         return Team.builder()
                 .matchType(matchType)
+                .teamPic(teamPic)
                 .startTime(startTime)
                 .endTime(endTime)
                 .dayOfWeek(dayOfWeek)

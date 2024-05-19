@@ -26,6 +26,9 @@ public class MatchingResponse {
     @Schema(description = "매칭 팀 인원 수", example = "5")
     private int playerNum;
 
+    @Schema(description = "매칭 팀 인원 수", example = "5")
+    private String teamPic;
+
     @Schema(description = "경기 시간", example = "2024-05-14 15:00")
     private String date; // 경기 시간
 
@@ -55,6 +58,11 @@ public class MatchingResponse {
     public void updatePlayerNum(int playerNum) {
 
         this.playerNum = playerNum;
+    }
+
+    public void updateTeamPic(String teamPic) {
+
+        this.teamPic = teamPic;
     }
 
     public static MatchingResponse fromEntity(Matching matching) {

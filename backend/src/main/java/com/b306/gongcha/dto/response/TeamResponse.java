@@ -22,6 +22,9 @@ public class TeamResponse {
     @Schema(description = "매치 성격", allowableValues = { "친선", "내전" }, example = "내전")
     private MatchType matchType;
 
+    @Schema(description = "팀 로고")
+    private String teamPic;
+
     @Schema(description = "광역시, 도", example = "대전")
     private String region;
 
@@ -53,6 +56,7 @@ public class TeamResponse {
         return TeamResponse.builder()
                 .id(team.getId())
                 .matchType(team.getMatchType())
+                .teamPic(team.getTeamPic())
                 .region(team.getRegion())
                 .district(team.getDistrict())
                 .startTime(team.getStartTime())
