@@ -119,10 +119,10 @@ public class MatchingController {
             responseCode = "200",
             description = "매칭을 정상적으로 신청하였습니다."
     )
-    @PostMapping("/request/{matchingId}/{versusTeamId}")
-    public ResponseEntity<CommonResponse> requestMatching(@PathVariable Long matchingId, @PathVariable Long versusTeamId) {
+    @PostMapping("/request/{matchingId}")
+    public ResponseEntity<CommonResponse> requestMatching(@PathVariable Long matchingId, HttpServletRequest httpServletRequest) {
 
-        matchingService.requestMatching(matchingId, versusTeamId);
+        matchingService.requestMatching(matchingId, httpServletRequest);
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("매칭 신청 완료")
                 .build(), HttpStatus.OK);

@@ -145,7 +145,11 @@ public class MatchingService {
 
     // 매칭 신청하기
     @Transactional
-    public void requestMatching(Long matchingId, Long versusTeamId) {
+    public void requestMatching(Long matchingId, HttpServletRequest httpServletRequest) {
+
+        User user = jwtUtil.getUserFromAccessToken(httpServletRequest);
+        Long userId = user.getId();
+        Long versusTeamId = getTeamId(userId);
 
         // 신청하는 팀의 존재 여부 확인
         if(teamRepository.findById(versusTeamId).isEmpty()) {
