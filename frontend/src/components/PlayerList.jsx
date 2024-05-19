@@ -1,11 +1,17 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useModalStore } from '@/store/useModalStore';
+import { useNavigate } from "react-router-dom";
 import ToggleButton from "@/components/ui/nameButton";
-import { Input } from "@/components/ui/input"
+import { Input } from "@/components/ui/input";
 import dummyPlayer from '@/data/dummyplayer';
 import { v4 as uuidv4 } from 'uuid';
 import defaultplayer from '@/assets/icons/defaultplayer.svg';
 import PlayerModal from '@/components/modals/PlayerModal';
+import { getTransfer } from '@/apis/api/playerList';
+import { getPlayerCard, getProfileImage2 } from '@/apis/api/mypage';
+import { getAPIforAuthUserInfo, getAPIforAuthUserInfoById } from '@/apis/api/user';
+import { toast } from 'sonner';
+import { pushAlarm } from '@/apis/api/token';
 import {
     CardForm,
     CardContent,
@@ -13,7 +19,7 @@ import {
     CardFooter,
     CardTitle,
     CardHeader,
-} from "@/components/CardForm"
+} from "@/components/CardForm";
 
 const regions = [
     { id: 1, region: '서울', districts: ['강남구', '송파구', '강서구', '마포구', '종로구', '중구', '용산구', '성동구', '광진구', '동대문구', '중랑구', '성북구', '강북구', '도봉구', '노원구', '은평구', '서대문구', '구로구', '금천구', '영등포구', '동작구', '관악구', '서초구', '강동구'] },
@@ -35,9 +41,9 @@ const regions = [
     { id: 17, region: '제주', districts: ['제주시', '서귀포시'] },
 ];
 
-
 function PlayerList() {
-    const [playerListData, setPlayerListData] = useState([]); 
+    const [playerListData, setPlayerListData] = useState([]);
+    const [playerList, setPlayerList] = useState([]);
     const [filter, setFilter] = useState("");
     const [selectedRegion, setSelectedRegion] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
@@ -49,30 +55,70 @@ function PlayerList() {
     const [checked, setChecked] = useState(false);
     const [showPlayerModal, setShowPlayerModal] = useState(false);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
+    const [myTeamSpec, setMyTeamSpec] = useState({
+        shooting: 0,
+        pass: 0,
+        dribble: 0,
+        speed: 0,
+    });
 
     useEffect(() => {
-        setPlayerListData(    // dummy data
-            dummyPlayer,
-        );
+        setPlayerListData(dummyPlayer); // dummy data
     }, []);
 
     useEffect(() => {
-        /* axios for db connection
-        getMyTeamInfo(
-            key,
+        // axios for db connection
+        getTransfer(
             (success) => {
-                setMyTeamInfoData({
-                    ...success,
+                const players = success.data.data.content;
+                const updatedPlayers = [...players];
+                
+                players.forEach((player, index) => {
+                    getPlayerCard(
+                        player.userId,
+                        (success) => {
+                            const cardInfo = success.data.data;
+                            updatedPlayers[index] = {
+                                ...updatedPlayers[index],
+                                shooting: cardInfo.shooting,
+                                pass: cardInfo.pass,
+                                dribble: cardInfo.dribble,
+                                speed: cardInfo.speed,
+                            };
+                            setMyTeamSpec((prevSpec) => ({
+                                shooting: prevSpec.shooting + cardInfo.shooting,
+                                pass: prevSpec.pass + cardInfo.pass,
+                                dribble: prevSpec.dribble + cardInfo.dribble,
+                                speed: prevSpec.speed + cardInfo.speed
+                            }));
+                            setPlayerList(updatedPlayers);
+                        },
+                        (fail) => {
+                            console.log(fail);
+                        }
+                    );
+                    getAPIforAuthUserInfoById(
+                        player.userId,
+                        (success) => {
+                            const manner = success.data.data.manner;
+                            const profileImage = success.data.data.profileImage;
+                            updatedPlayers[index] = {
+                                ...updatedPlayers[index],
+                                manner: manner,
+                                profileUrl: profileImage,
+                            };
+                            setPlayerList(updatedPlayers);
+                        },
+                        (fail) => {
+                            console.log(fail);
+                        }
+                    );
                 });
             },
             (fail) => {
-                
+                console.log(fail);
             }
         );
-        return () => {
-            
-        };
-        */
     }, []);
 
     const handlePlayerInfoClick = (key) => {
@@ -96,7 +142,6 @@ function PlayerList() {
         const newFilterState = filterState.map((state, index) => {
             return index === value ? !state : false;
         });
-    
         setFilterState(newFilterState);
     }
 
@@ -110,12 +155,10 @@ function PlayerList() {
     };
 
     const handleFilter2Change = (e) => {
-        const { name, checked } = e.target;
         filterToggle(1);
     };
 
     const handleFilter3Change = (e) => {
-        const { name, checked } = e.target;
         filterToggle(2);
     };
 
@@ -145,7 +188,6 @@ function PlayerList() {
     };
 
     const handleDayChange = (e, day) => {
-        console.log("ㅎㅇ");
         const { checked } = e.target;
         if (checked) {
             setPlayerInfo(prevState => ({
@@ -167,7 +209,33 @@ function PlayerList() {
             startTime: startTimeValue
         }));
     };
-    
+    const navigate = useNavigate();
+    const sendAlarm = (userId) => {
+        toast("팀원 합류 요청을 하였습니다!", {
+            description: "팀원에게 알람을 전송합니다.",
+            className: 'toaster',
+            action: {
+                label: "확인",
+                onClick: () => {
+                    console.log("이벤트 확인");
+                    pushAlarm(
+                        {
+                            userId: userId,
+                            title: "팀 합류 요청이 왔습니다!",
+                            body: "앱에서 자세한 내용을 확인해주세요~"
+                        },
+                        (success) => {
+                            console.log(success.data.data);
+                        },
+                        (fail) => {
+                            console.log(fail);
+                        }
+                    );
+                    navigate(0);
+                },
+            },
+        });
+    };
 
     const filteredPlayers = useMemo(() => {
         return playerListData.filter(playerListData => {
@@ -177,28 +245,40 @@ function PlayerList() {
         });
     }, [playerListData, filter]);
 
-    const renderPlayerItem = (player) => {
-        const totalStats = player.data.pass + player.data.shooting + player.data.dribble + player.data.speed;
-        const averageStats = totalStats / 4;
+    const renderPlayerItem = (players) => {
         return (
-        <div key={player.id} className="player-item" onClick={() => {
-            setSelectedPlayer(player);
-            setShowPlayerModal(true);
-                                    }}>
-                <div className="text-sm">{averageStats.toFixed(0)}</div>
-                <img  className='w-16 h-16' src={defaultplayer} alt="기본 선수 사진" />
-                <span className="mr-4">{player.data.user_id}</span>
-            </div>
+            <>
+                {players.map((player, index) => (
+                    <div key={index} className="player-item flex flex-row items-center mb-4 w-full">
+                        <img src={player.profileUrl} alt={`${player.userName} 프로필`} className="w-16 h-16 mr-4" />
+                        <div className="flex flex-col w-[calc(20rem)]">
+                            <div className="flex flex-row">
+                                <p className="mr-30 font-pretendardBlack">{player.shooting} {player.pass} {player.dribble} {player.speed}</p>
+                            </div>
+                            <div className="flex flex-row mt-2">
+                                <p className="mr-7 font-pretendardBold">{player.startTime}:00 ~ {player.endTime}:00</p>
+                                <p className="font-pretendardBold">{player.userName}</p>
+                                <button
+                                    onClick={() => sendAlarm(player.userId)}
+                                    className="absolute ml-[calc(11rem)] p-1 text-[calc(.4rem)] bg-blue-500 text-white rounded w-[calc(2.2rem)] h-5"
+                                >
+                                    알림 전송
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </>
         );
     };
 
     return (
         <>
-        {playerListData.length === 0 ? (
-            <div className="absolute flex justify-center left-1/2 top-[calc(15rem)] transform -translate-x-1/2 p-0 w-[calc(6rem)] h-[calc(6rem)]">
-                <img src={defaultplayer} alt="팀 목록이 없습니다" />
-                <p className="absolute top-[calc(7rem)] font-pretendardBlack text-[calc(0.4rem)] text-gray-500">팀 목록이 없어요</p>
-            </div>
+            {playerList.length === 0 ? (
+                <div className="absolute flex justify-center left-1/2 top-[calc(15rem)] transform -translate-x-1/2 p-0 w-[calc(6rem)] h-[calc(6rem)]">
+                    <img src={defaultplayer} alt="팀 목록이 없습니다" />
+                    <p className="absolute top-[calc(7rem)] font-pretendardBlack text-[calc(0.4rem)] text-gray-500">팀 목록이 없어요</p>
+                </div>
             ) : (
                 <div>
                     <div className="absolute flex flex-col justify-center left-[calc(1.13125rem)] top-[calc(10.5rem)] w-[calc(20.2rem)] h-[calc(4.375rem)]">
@@ -329,26 +409,14 @@ function PlayerList() {
                             >
                                 검색
                             </button>
-                            
                         </div>
                     </div>
-        <div className="player-list-container flex-col items-center absolute left-1/2 transform -translate-x-1/2 top-[30%] w-[85%] h-[calc(100rem)]">
-
-        <div className="flex-end">
-             <input 
-                type="text" 
-                placeholder="아이디를 입력하세요" 
-                value={filter} 
-                onChange={e => setFilter(e.target.value)} 
-                className="narrow-input"
-            /> 
-        </div>
-            {filteredPlayers.map(renderPlayerItem)}
-        </div>
-        <PlayerModal isOpen={showPlayerModal} onClose={() => setShowPlayerModal(false)} player={selectedPlayer} />
-    </div>
-                )
-            }
+                    <div className="player-list-container flex-col items-center absolute left-1/2 transform -translate-x-1/2 top-[30%] w-[85%] h-[calc(100rem)]">
+                        {playerList && renderPlayerItem(playerList)}
+                    </div>
+                    <PlayerModal isOpen={showPlayerModal} onClose={() => setShowPlayerModal(false)} player={selectedPlayer} />
+                </div>
+            )}
         </>
     );
 }

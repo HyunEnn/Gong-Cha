@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import lArrowIcon from '@/assets/icons/lArrow.svg';
+import PlayerList from '@/components/PlayerList';
 import MyTeamInfo from '@/components/MyTeamInfo';
 import TeamList from '@/components/TeamList';
 
@@ -61,6 +62,7 @@ function MarketBoardPage() {
                 </div>
             </div>
             {/* Render component based on activeTab */}
+            {activeTab === 'tab1' && <PlayerList />}
             {activeTab === 'tab2' && <MyTeamInfo />}
             {activeTab === 'tab3' && <TeamList />}
         </>
