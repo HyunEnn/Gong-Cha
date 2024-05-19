@@ -32,16 +32,12 @@ public class ClubService {
     private final JWTUtil jwtUtil;
     private final CardRepository cardRepository;
     private final ClubRepository clubRepository;
-    private final UserRepository userRepository;
 
     @Transactional
     public void createClub(HttpServletRequest httpServletRequest, ClubMakeRequest clubMakeRequest) {
 
         // 클럽 생성
         Club club = Club.fromRequest(clubMakeRequest);
-
-        log.info("club 이름 : {}", club.getName());
-        log.info("club 설명 : {}", club.getDescription());
 
         User user = jwtUtil.getUserFromAccessToken(httpServletRequest);
 

@@ -2,7 +2,6 @@ package com.b306.gongcha.dto.response;
 
 import com.b306.gongcha.entity.Card;
 import com.b306.gongcha.entity.Club;
-import com.b306.gongcha.entity.User;
 import com.b306.gongcha.entity.num.ClubRole;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
