@@ -8,6 +8,7 @@ import com.b306.gongcha.entity.User;
 import com.b306.gongcha.entity.num.ClubRole;
 import com.b306.gongcha.exception.CustomException;
 import com.b306.gongcha.exception.ErrorCode;
+import com.b306.gongcha.repository.CardRepository;
 import com.b306.gongcha.repository.ClubRepository;
 import com.b306.gongcha.repository.UserRepository;
 import com.b306.gongcha.util.JWTUtil;
@@ -29,18 +30,14 @@ public class ClubService {
 
     private final FileUploadService fileUploadService;
     private final JWTUtil jwtUtil;
-
+    private final CardRepository cardRepository;
     private final ClubRepository clubRepository;
-    private final UserRepository userRepository;
 
     @Transactional
     public void createClub(HttpServletRequest httpServletRequest, ClubMakeRequest clubMakeRequest) {
 
         // 클럽 생성
         Club club = Club.fromRequest(clubMakeRequest);
-
-        log.info("club 이름 : {}", club.getName());
-        log.info("club 설명 : {}", club.getDescription());
 
         User user = jwtUtil.getUserFromAccessToken(httpServletRequest);
 
@@ -103,7 +100,7 @@ public class ClubService {
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
 
-        return ClubUserResponse.from(club);
+        return ClubUserResponse.from(club, cardRepository);
     }
 
     public String updateLogo(HttpServletRequest request, Long clubId, MultipartFile file) {
