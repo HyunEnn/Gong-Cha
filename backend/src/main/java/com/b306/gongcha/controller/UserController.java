@@ -80,20 +80,20 @@ public class UserController {
     }
 
     @Operation(
-            summary = "프로필 사진 조회",
-            description = "유저 프로필 사진을 조회함."
+            summary = "내 프로필 사진 조회",
+            description = "내 프로필 사진을 조회함."
     )
     @ApiResponse(
             responseCode = "200",
-            description = "프로필 사진 조회에 성공했습니다."
+            description = "내 프로필 사진 조회에 성공했습니다."
     )
     @GetMapping("/profile")
-    public ResponseEntity<CommonResponse> getProfile(
+    public ResponseEntity<CommonResponse> getMyProfile(
             HttpServletRequest request){
 
         return new ResponseEntity<>(CommonResponse.builder()
-                .message("프로필 사진 조회 성공")
-                .data(userService.getProfile(request))
+                .message("내 프로필 사진 조회 성공")
+                .data(userService.getMyProfile(request))
                 .build(), HttpStatus.OK);
     }
 
@@ -113,6 +113,23 @@ public class UserController {
         return new ResponseEntity<>(CommonResponse.builder()
                 .message("프로필 사진 변경 성공")
                 .data(userService.updateProfile(file, request))
+                .build(), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "유저 프로필 사진 조회",
+            description = "유저 프로필 사진을 조회함."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "유저 프로필 사진 조회에 성공했습니다."
+    )
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<CommonResponse> getUserProfile(@PathVariable("id") Long userid){
+
+        return new ResponseEntity<>(CommonResponse.builder()
+                .message("유저 프로필 사진 조회 성공")
+                .data(userService.getUserProfile(userid))
                 .build(), HttpStatus.OK);
     }
 

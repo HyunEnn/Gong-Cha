@@ -29,9 +29,19 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    public ProfileResponse getProfile(HttpServletRequest request) {
+    public ProfileResponse getMyProfile(HttpServletRequest request) {
 
         User user = jwtUtil.getUserFromAccessToken(request);
+        return ProfileResponse.fromEntity(user.getProfile());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProfileResponse getUserProfile(Long userId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
         return ProfileResponse.fromEntity(user.getProfile());
     }
 
