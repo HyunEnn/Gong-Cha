@@ -15,13 +15,8 @@ const getMatchingList = async (success, fail) => {
 };
 
 // 매칭 상세 조회
-const getMatchingDetail = async (matchingId) => {
-    return await server
-        .get(`${url}/${matchingId}`)
-        .then((response) => response.data)
-        .catch((error) => {
-            throw new Error(`API request failed: ${error}`);
-        });
+const getMatchingDetail = async (matchingId, success, fail) => {
+    return await server.get(`${url}/${matchingId}`).then(success).catch(fail);
 };
 
 // 매칭 정보 수정
@@ -34,42 +29,9 @@ const patchMatching = async (matchingId, data) => {
         });
 };
 
-// 상대팀 팀원 정보 조회
-const getOpponentInfo = async (matchingId) => {
-    return await server
-        .get(`${url}/${matchingId}/versus/teammates`)
-        .then((response) => response.data)
-        .catch((error) => {
-            throw new Error(`API request failed: ${error}`);
-        });
+// 매칭 정보 삭제
+const deleteMatching = async (matchingId, success, fail) => {
+    return await server.delete(`${url}/${matchingId}`).then(success).catch(fail);
 };
 
-// 상대팀 팀원 카드 정보 조회
-const getOpponentCardInfo = async (matchingId) => {
-    return await server
-        .get(`${url}/${matchingId}/versus/teammates/cards`)
-        .then((response) => response.data)
-        .catch((error) => {
-            throw new Error(`API request failed: ${error}`);
-        });
-};
-
-// 팀 매칭 경기 종료
-const patchTeamMatchClose = async (matchingId) => {
-    return await server
-        .patch(`${url}/${matchingId}/close`)
-        .then((response) => response.data)
-        .catch((error) => {
-            throw new Error(`API request failed: ${error}`);
-        });
-};
-
-export {
-    postMatchingCreate,
-    getMatchingList,
-    getMatchingDetail,
-    patchMatching,
-    getOpponentInfo,
-    getOpponentCardInfo,
-    patchTeamMatchClose,
-};
+export { postMatchingCreate, getMatchingList, getMatchingDetail, patchMatching, deleteMatching };

@@ -28,16 +28,12 @@ function FindMatchInputPage() {
     const { regions } = useRegionStore();
     const { MatchingBoardCreateRequest } = useFindMatchBoardStore();
 
-    const [date, setDate] = useState();
+    const [date, setDate] = useState('');
     const [time, setTime] = useState(null);
     const [selectedRegion, setSelectedRegion] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
     const [text, setText] = useState('');
-
     const [level, setLevel] = useState('');
-    const [totalPeople, setTotalPeople] = useState('');
-    const [currentPeople, setCurrentPeople] = useState('');
-    const [writer, setWriter] = useState('');
 
     const handleGoBack = () => {
         navigate('/findmatch/board');
@@ -55,7 +51,7 @@ function FindMatchInputPage() {
     const handleCreateMatchBoard = () => {
         MatchingBoardCreateRequest.date = `${format(date, 'yyyy-MM-dd')} ${time.format('HH:mm')}`;
         MatchingBoardCreateRequest.region = selectedRegion;
-        MatchingBoardCreateRequest.districts = selectedDistrict;
+        MatchingBoardCreateRequest.district = selectedDistrict;
         MatchingBoardCreateRequest.info = text;
         MatchingBoardCreateRequest.difficulty = level;
         console.log(MatchingBoardCreateRequest);
@@ -63,11 +59,21 @@ function FindMatchInputPage() {
             MatchingBoardCreateRequest,
             (success) => {
                 console.log('매칭 게시판 생성 성공', success);
+                navigate('/findmatch/board');
             },
             (fail) => {
                 console.log('매칭 게시판 생성 실패', fail);
             }
         );
+    };
+
+    const handleResetMatchBoard = () => {
+        setDate('');
+        setTime(null);
+        setSelectedRegion('');
+        setSelectedDistrict('');
+        setText('');
+        setLevel('');
     };
 
     // useEffect(() => {
@@ -207,7 +213,7 @@ function FindMatchInputPage() {
                     등록
                 </Button>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Button variant="destructive" className="w-40" type="reset">
+                <Button variant="destructive" className="w-40" onClick={() => handleResetMatchBoard()}>
                     취소
                 </Button>
             </div>
