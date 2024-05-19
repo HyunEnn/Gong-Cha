@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getMessaging, getToken, onMessage, isSupported } from "firebase/messaging";
 import { testStore } from '@/stores/testStore';
 
-//Firebase Config values imported from .env file
+// Firebase Config values imported from .env file
 const firebaseConfig = {
   apiKey: "AIzaSyB1CovfjHcmoLB5zbY1cTODXOqxx_qHJsM",
   authDomain: "gongcha-bb1b7.firebaseapp.com",
@@ -15,7 +15,17 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+
+async function initializeFirebaseMessaging() {
+  const supported = await isSupported();
+  if (supported) {
+    const messaging = getMessaging(app);
+    return messaging;
+  } else {
+    console.warn("This browser doesn't support Firebase Messaging.");
+    return null;
+  }
+}
 
 function FirebaseComponent() {
   const { createToken, createPayload } = testStore();
@@ -32,24 +42,32 @@ function FirebaseComponent() {
 
       console.log("알림 권한이 허용됨");
 
-      const token = await getToken(messaging, {
-        vapidKey: import.meta.env.VITE_APP_VAPID_KEY,
-      });
+      const messaging = await initializeFirebaseMessaging();
+      if (!messaging) return;
 
-      if (token) {
-        console.log("token: ", token);
-        createToken(token);  // Zustand store의 액션을 호출
+      try {
+        const token = await getToken(messaging, {
+          vapidKey: import.meta.env.VITE_APP_VAPID_KEY,
+        });
+
+        if (token) {
+          console.log("token: ", token);
+          createToken(token);  // Zustand store의 액션을 호출
+        } else {
+          console.log("Can not get Token");
+        }
+
+        onMessage(messaging, (payload) => {
+          console.log("메시지가 도착했습니다.", payload);
+          createPayload(payload);
+        });
+      } catch (error) {
+        console.error("An error occurred while retrieving token. ", error);
       }
-      else console.log("Can not get Token");
-
-      onMessage(messaging, (payload) => {
-        console.log("메시지가 도착했습니다.", payload);
-        createPayload(payload);
-      });
     }
 
     requestPermission();
-  }, [createToken]);
+  }, [createToken, createPayload]);
 
   return null;
 }
