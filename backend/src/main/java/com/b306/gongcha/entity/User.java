@@ -87,4 +87,12 @@ public class User extends BaseEntity {
         club.getClubUser().remove(this);
         this.club = null;
     }
+
+    // 엔티티가 생성될 때 호출되는 함수
+    @PrePersist
+    protected void onPrePersist() {
+        if (this.manner == 0) {
+            this.manner = 50;
+        }
+    }
 }
