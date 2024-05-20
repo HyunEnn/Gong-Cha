@@ -5,7 +5,7 @@ import TeamInfo from '@/components/TeamInfo';
 import PlayerCard from '@/components/PlayerCard';
 import lArrowIcon from '@/assets/icons/lArrow.svg';
 import emptyGhostIcon from '@/assets/icons/emptyGhost.svg';
-import { myTeamInfoDummyData } from '@/data/dummyData'; // dummy data
+import { getMyTeamInfo } from '@/apis/api/team';
 
 function PlaySchedulePage() {
     const navigate = useNavigate();
@@ -16,28 +16,20 @@ function PlaySchedulePage() {
     const [translateY, setTranslateY] = useState(0);
 
     useEffect(() => {
-        setMyTeamInfoData(    // dummy data
-            myTeamInfoDummyData,
-        );
-    }, []);
-
-    useEffect(() => {
-        /* axios for db connection
+        // axios for db connection
         getMyTeamInfo(
-            key,
             (success) => {
-                setMyTeamInfoData({
-                    ...success,
-                });
+                if (success.data.data.content.length > 0) {
+                    setMyTeamInfoData({
+                        ...success.data.data.content[0],
+                    });
+                }
             },
             (fail) => {
-                
+                console.error(fail);
             }
         );
-        return () => {
-            
-        };
-        */
+        return () => {};
     }, []);
 
     const handleBackClick = () => {
@@ -116,7 +108,7 @@ function PlaySchedulePage() {
                             <p className="absolute top-[calc(7rem)] font-pretendardBlack text-[calc(0.4rem)] text-gray-500">나의 팀이 없어요</p>
                         </div>
                     ) : (
-                        <TeamInfo></TeamInfo>
+                        <TeamInfo teamId={myTeamInfoData.id}></TeamInfo>
                     )}
                     <div className="mb-[calc(10rem)]"></div>
                 </div>

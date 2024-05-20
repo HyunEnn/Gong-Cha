@@ -19,7 +19,7 @@ function PlayerCardCarousel({ player }) {
         originalConsoleError(...args);
     };
 
-    const value = parseInt((player.SHO + player.PAS + player.DRI + player.PAC + player.MAN) / 5);
+    const value = parseInt((player.SHO + player.PAS + player.DRI + player.PAC) / 4);
 
     useEffect(() => {
         const cardElement = document.getElementById('playerCard');

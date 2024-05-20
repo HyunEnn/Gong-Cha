@@ -13,6 +13,8 @@ import timeAnimation from '@/assets/lotties/timeAnimation';
 import placeAnimation from '@/assets/lotties/placeAnimation';
 import playerAnimation from '@/assets/lotties/playerAnimation';
 
+import { postClubCreate } from '@/apis/api/club';
+
 function ClubCreateModal({ isOpen, onClose }) {
     const { clubCreateRequest } = useClubStore();
     const { regions } = useRegionStore();
@@ -82,9 +84,18 @@ function ClubCreateModal({ isOpen, onClose }) {
     };
 
     const handleCreateClub = () => {
-        // 여기에 axios 클럽 생성 요청 보내기
         clubCreateRequest.skillLevel = clublevel;
         console.log(clubCreateRequest);
+        // 여기에 axios 클럽 생성 요청 보내기
+        postClubCreate(
+            clubCreateRequest,
+            (success) => {
+                console.log('클럽 생성 성공', success);
+            },
+            (fail) => {
+                console.log('클럽 생성 실패', fail);
+            }
+        );
         onClose();
     };
 

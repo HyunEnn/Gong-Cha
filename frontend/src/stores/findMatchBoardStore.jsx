@@ -25,4 +25,20 @@ export const useFindMatchBoardStore = create((set) => ({
             introduce: '안 다치게 조심히 안전하게 경기 즐겨요',
         },
     ],
+    MatchingBoardCreateRequest: {
+        date: '',
+        region: '',
+        district: '',
+        info: '',
+        difficulty: '',
+    },
+    MatchingBoardListResponse: [],
+    setMatchingBoardListResponse: (data) => set({ MatchingBoardListResponse: data }),
+    SelectedDateMatchingBoardList: [],
+    setSelectedDateMatchingBoardList: (data) => {
+        console.log('Setting SelectedDateMatchingBoardList:', data);
+        set({ SelectedDateMatchingBoardList: data });
+    },
+    MatchBoardDetailResponse: {},
+    setMatchBoardDetailResponse: (data) => set({ MatchBoardDetailResponse: data }),
 }));

@@ -4,45 +4,42 @@ import lArrowIcon from '@/assets/icons/lArrow.svg';
 import PlayerCard from '@/components/PlayerCard';
 import { getMyCard } from '@/apis/api/mypage';
 import { myPageDummyData } from '@/data/dummyData'; // dummy data
+import { getAPIforAuthUserInfo, getAPIforAuthUserInfoById } from '@/apis/api/user';
 
 function PlayerCardPage() {
     const key = 2;
     const navigate = useNavigate();
-    const [profileData, setProfileData] = useState({
-
-    });
-    // const [profileData, setProfileData] = useState({
-    //     userId: 0,
-    //     name: '정준수',
-    //     profileUrl: profileImage,
-    //     playNum: 5,
-    //     shooting: 95,
-    //     pass: 90,
-    //     dribble: 97,
-    //     speed: 98,
-    //     manner: 90,
-    // });
+    const [myPlayerCard, setMyPlayerCard] = useState();
 
     useEffect(() => {
-        setProfileData(    // dummy data
-            myPageDummyData,
+        getAPIforAuthUserInfo(
+            (success) => {
+                setMyPlayerCard((prevData) => ({
+                    ...prevData,
+                    ...success.data.data,
+                    profileUrl: success.data.data.profileImage,
+                }));
+            },
+            (fail) => {
+            }
+        )
+        getMyCard(
+            (success) => {
+                const cardInfo = success.data.data;
+                setMyPlayerCard((prevData) => ({
+                    ...prevData,
+                    ...cardInfo,
+                }));
+            },
+            (fail) => {
+                console.log(fail);
+            }
         );
-        // axios for db connection
-        // getMyCard(
-        //     key,
-        //     (success) => {
-        //         setProfileData({
-        //             ...profileData,
-        //         });
-        //     },
-        //     (fail) => {
-                
-        //     }
-        // );
-        // return () => {
-            
-        // };
     }, []);
+
+    useEffect(() => {
+        console.log(myPlayerCard);
+    }, [setMyPlayerCard]);
 
     const handleBackClick = () => {
         navigate(-1);
@@ -71,7 +68,7 @@ function PlayerCardPage() {
             <div className="absolute left-0 top-[calc(10.6875rem)] border-[calc(.01875rem)] w-[calc(22.5rem)] z-0"></div>
             <div className="absolute flex justify-center items-center top-0 left-[11.25rem] mt-[calc(11.6875rem)]">
                 {/* PlayerCard */}
-                {renderPlayerCard(profileData)}
+                {renderPlayerCard(myPlayerCard)}
             </div>
         </div>
     );
