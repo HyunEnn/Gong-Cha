@@ -46,10 +46,7 @@ public class SecurityConfig {
             @Override
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration configuration = new CorsConfiguration();
-                configuration.setAllowedOrigins(Arrays.asList("http://localhost:8081", "http://localhost:5173", "https://gongcha.site",
-                        "http://localhost:8081/api",
-                        "http://localhost:5173/kakao/callback",
-                        "http://k10b306.p.ssafy.io:8081", "http://k10b306.p.ssafy.io:5173"));
+                configuration.setAllowedOrigins(Arrays.asList("*"));
                 configuration.setAllowedMethods(Arrays.asList("*"));
                 configuration.setAllowCredentials(true);
                 configuration.setAllowedHeaders(Arrays.asList("*"));
@@ -88,15 +85,19 @@ public class SecurityConfig {
                 .successHandler(customSuccessHandler));
 
         //경로별 인가 작업
-        http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .requestMatchers("/kakao/callback").permitAll()
-                .requestMatchers("/auth/regenerate").permitAll()
-                .requestMatchers("/google/callback").permitAll()
-                .requestMatchers("/club/clubs").permitAll()
-                .requestMatchers("/my").permitAll()
-                .requestMatchers("/reissue").permitAll()
-                .anyRequest().authenticated());
+//        http.authorizeHttpRequests((auth) -> auth
+//                .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
+//                .requestMatchers("/kakao/callback").permitAll()
+//                .requestMatchers("/auth/regenerate").permitAll()
+//                .requestMatchers("/google/callback").permitAll()
+//                .requestMatchers("/club/clubs").permitAll()
+//                .requestMatchers("/my").permitAll()
+//                .requestMatchers("/reissue").permitAll()
+//                .anyRequest().authenticated());
+
+        http.authorizeHttpRequests((auth) -> auth.requestMatchers("/**").permitAll());
+
+
 
         //세션 설정 : STATELESS
         http.sessionManagement((session) -> session
