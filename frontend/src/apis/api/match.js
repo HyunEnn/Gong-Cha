@@ -45,5 +45,5 @@ export {
     getMatchingDetail, 
     patchMatching, 
     deleteMatching, 
-    getMatchingApproveList 
+    getMatchingApproveList
 };
