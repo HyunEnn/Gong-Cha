@@ -34,4 +34,16 @@ const deleteMatching = async (matchingId, success, fail) => {
     return await server.delete(`${url}/${matchingId}`).then(success).catch(fail);
 };
 
-export { postMatchingCreate, getMatchingList, getMatchingDetail, patchMatching, deleteMatching };
+// 승인된 매칭 목록 조회
+async function getMatchingApproveList(success, fail) {
+    await server.get(`${url}/matchList`).then(success).catch(fail);
+}
+
+export { 
+    postMatchingCreate, 
+    getMatchingList, 
+    getMatchingDetail, 
+    patchMatching, 
+    deleteMatching, 
+    getMatchingApproveList 
+};
