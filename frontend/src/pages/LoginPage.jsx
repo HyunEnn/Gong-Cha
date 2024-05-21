@@ -10,8 +10,9 @@ import teamAnimation from '@/assets/lotties/teamAnimation';
 
 function LoginPage() {
     const onKakakoLogin = async () => {
+        console.log("******");
+        console.log(VITE_AUTH_URL);
         window.location.href = `${VITE_AUTH_URL}/kakao`;
-        // 리다이렉트 나온 상태의 응답을 까면 된다
     };
 
     const onGoogleLogin = () => {
