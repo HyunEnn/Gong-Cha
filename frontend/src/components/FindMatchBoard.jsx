@@ -85,7 +85,8 @@ function FindMatchBoard() {
                     onClick={() => handleOpenFindMatchDetail(value.id)}
                 >
                     <div className="flex flex-row items-center justify-center pl-2 text-xl font-pretendardBold">
-                        <img src={value.teamPic} alt="팀 로고" />
+                        <img src={ManchesterCity} alt="" />
+                        {/* <img src={value.teamPic} alt="팀 로고" /> */}
                     </div>
                     <div className="flex flex-col justify-center col-span-2">
                         <div className=" font-pretendardBold">{value.captainName}님의 팀</div>

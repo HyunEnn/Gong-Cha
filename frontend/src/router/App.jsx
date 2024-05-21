@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import MyPageWithTransition from '@/components/MyPageWithTransition';
 import ErrorPage from '@/pages/ErrorPage';
-import TestDiv from '@/pages/TestDiv';
 import LoginPage from '@/pages/LoginPage';
 import BottomNav from '@/nav/BottomNav';
 import MainPage from '@/pages/MainPage';

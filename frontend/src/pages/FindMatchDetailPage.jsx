@@ -140,8 +140,8 @@ function FindMatchDetailPage() {
             </div>
             <div className="flex flex-col items-center justify-center">
                 {/* {renderClubIcon(detailBoard.clubIcon)} */}
-                <img src={MatchBoardDetailResponse.teamPic} alt="팀 로고" className="w-28 h-28" />
-                {/* <img src={ManchesterCity} className="w-28 h-28" /> */}
+                {/* <img src={MatchBoardDetailResponse.teamPic} alt="팀 로고" className="w-28 h-28" /> */}
+                <img src={ManchesterCity} className="w-28 h-28" />
                 <p className="mt-4 text-xl font-ygJalnan">
                     {MatchBoardDetailResponse.captainName}님의 팀{/* ({detailBoard.averageStat}) */}
                 </p>

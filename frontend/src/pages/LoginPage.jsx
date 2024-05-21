@@ -1,6 +1,6 @@
 import Lottie from 'react-lottie';
 
-const { VITE_BASE_URL, VITE_AUTH_URL } = import.meta.env;
+const { VITE_AUTH_URL } = import.meta.env;
 
 import logo from '@/assets/icons/logo.svg';
 import kakaologin from '@/assets/icons/kakaologin.svg';
@@ -10,37 +10,15 @@ import teamAnimation from '@/assets/lotties/teamAnimation';
 
 function LoginPage() {
     const onKakakoLogin = async () => {
+        console.log('******');
+        console.log(VITE_AUTH_URL);
         window.location.href = `${VITE_AUTH_URL}/kakao`;
-        // 리다이렉트 나온 상태의 응답을 까면 된다
     };
 
     const onGoogleLogin = () => {
         window.location.href = `${VITE_AUTH_URL}/google`;
     };
 
-    // const getData = () => {
-    //     fetch(`${VITE_AUTH_URL}/my`, {
-    //         method: 'GET',
-    //         credentials: 'include',
-    //     })
-    //         .then((res) => res.text())
-    //         .then((data) => {
-    //             console.log(data);
-    //         })
-    //         .catch((error) => alert(error));
-    // };
-    // getData();
-
-    // const logOutData = () => {
-    //     fetch('http://http://gongcha.site:8081/logout'),
-    //         {
-    //             method: 'POST',
-    //             credentials: 'include',
-    //             headers: {
-    //                 Authorization: `Bearer ${accessToken}`,
-    //             },
-    //         };
-    // };
     return (
         <div className="h-screen bg-grass-pattern">
             <div className="flex flex-col items-center justify-between">
