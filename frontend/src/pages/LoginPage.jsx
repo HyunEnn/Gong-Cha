@@ -10,12 +10,12 @@ import teamAnimation from '@/assets/lotties/teamAnimation';
 
 function LoginPage() {
     const onKakakoLogin = async () => {
-        window.location.href = `https://gongcha.site/api/oauth2/authorization/kakao`;
+        window.location.href = `${VITE_AUTH_URL}/kakao`;
         // 리다이렉트 나온 상태의 응답을 까면 된다
     };
 
     const onGoogleLogin = () => {
-        window.location.href = `https://gongcha.site/api/oauth2/authorization/google`;
+        window.location.href = `${VITE_AUTH_URL}/google`;
     };
 
     return (
