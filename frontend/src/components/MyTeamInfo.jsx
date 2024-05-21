@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import emptyGhostIcon from '@/assets/icons/emptyGhost.svg';
 import Modal from '@/components/Modal';
 import TeamInfo from '@/components/TeamInfo';
-import { myTeamInfoDummyData } from '@/data/dummyData'; // dummy data
+import { getMyTeamInfo, createTeam, deleteTeamInfo } from '@/apis/api/team';
+import { getAPIforAuthUserInfo } from '@/apis/api/user';
 
 const regions = [
     { id: 1, region: '서울', districts: ['강남구', '송파구', '강서구', '마포구', '종로구', '중구', '용산구', '성동구', '광진구', '동대문구', '중랑구', '성북구', '강북구', '도봉구', '노원구', '은평구', '서대문구', '구로구', '금천구', '영등포구', '동작구', '관악구', '서초구', '강동구'] },
@@ -31,31 +32,48 @@ function MyTeamInfo() {
     const [myTeamInfoData, setMyTeamInfoData] = useState([]);
     const [selectedRegion, setSelectedRegion] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
-    const [teamInfo, setTeamInfo] = useState({});
+    const [teamInfo, setTeamInfo] = useState({
+        matchType: '',
+        region: '',
+        district: '',
+        startTime: '',
+        endTime: '',
+        dayOfWeek: [],
+        difficulty: '',
+        userList: [],
+        writerId: null,
+    });
 
     useEffect(() => {
-        setMyTeamInfoData(    // dummy data
-            myTeamInfoDummyData,
+        // axios for db connection
+        getAPIforAuthUserInfo(
+            (success) => {
+                setTeamInfo((prevData) => ({
+                    ...prevData,
+                    writerId: success.data.data.userId,
+                }));
+            },
+            (fail) => {
+                console.log(fail);
+            }
         );
     }, []);
 
     useEffect(() => {
-        /* axios for db connection
+        // axios for db connection
         getMyTeamInfo(
-            key,
             (success) => {
-                setMyTeamInfoData({
-                    ...success,
-                });
+                if (success.data.data.content.length > 0) {
+                    setMyTeamInfoData({
+                        ...success.data.data.content[0],
+                    });
+                }
             },
             (fail) => {
-                
+                console.error(fail);
             }
         );
-        return () => {
-            
-        };
-        */
+        return () => {};
     }, []);
 
     const handleCreateButton = () => {
@@ -63,11 +81,32 @@ function MyTeamInfo() {
     };
 
     const handleLeftButton = () => {
+        // axios whatdagotta
+        deleteTeamInfo(
+            myTeamInfoData.id,
+            (success) => {
+            },
+            (fail) => {
+            }
+        );
         navigate(0);
     };
 
-    const handleCreateSubmit = () => {
+    const handleCreateSubmit = (e) => {
+        e.preventDefault();
         setShowModal(false);
+        console.log(teamInfo);
+        // axios for db connection
+        createTeam(
+            teamInfo,
+            (success) => {
+
+            },
+            (fail) => {
+                
+            }
+        );
+        navigate(0);
     };
 
     const closeModal = () => {
@@ -86,25 +125,17 @@ function MyTeamInfo() {
         }));
     };
 
-    const handleCheckboxChange = (e) => {
-        const { name, checked } = e.target;
-        setTeamInfo(prevState => ({
-            ...prevState,
-            [name]: checked
-        }));
-    };
-
     const handleDayChange = (e, day) => {
         const { checked } = e.target;
         if (checked) {
             setTeamInfo(prevState => ({
                 ...prevState,
-                day: [...prevState.day, day]
+                dayOfWeek: [...prevState.dayOfWeek, day]
             }));
         } else {
             setTeamInfo(prevState => ({
                 ...prevState,
-                day: prevState.day.filter(d => d !== day)
+                dayOfWeek: prevState.dayOfWeek.filter(d => d !== day)
             }));
         }
     };
@@ -114,7 +145,7 @@ function MyTeamInfo() {
         setSelectedDistrict('');
         setTeamInfo(prevState => ({
             ...prevState,
-            location: e.target.value
+            region: e.target.value
         }));
     };
 
@@ -122,7 +153,7 @@ function MyTeamInfo() {
         setSelectedDistrict(e.target.value);
         setTeamInfo(prevState => ({
             ...prevState,
-            location: `${selectedRegion} ${e.target.value}`
+            district: e.target.value
         }));
     };
 
@@ -132,20 +163,20 @@ function MyTeamInfo() {
             <div className="absolute flex flex-col">
                 <div className="absolute flex items-center justify-center top-[calc(11.5rem)] w-[calc(22.25rem)]">
                     {myTeamInfoData.length === 0 ? (
-                            <button
-                                className="relative left-[calc(8rem)] w-[calc(4rem)] h-[calc(2rem)] text-gray-700 rounded-full border-[calc(.1rem)] border-gray-100 font-bold text-[calc(.6rem)]"
-                                onClick={handleCreateButton}
-                            >
-                                팀 생성하기
-                            </button>
+                        <button
+                            className="relative left-[calc(8rem)] w-[calc(4rem)] h-[calc(2rem)] text-gray-700 rounded-full border-[calc(.1rem)] border-gray-100 font-bold text-[calc(.6rem)]"
+                            onClick={handleCreateButton}
+                        >
+                            팀 생성하기
+                        </button>
                     ) : (
                         <button
-                        className="relative left-[calc(8rem)] w-[calc(4rem)] h-[calc(2rem)] text-gray-700 rounded-full border-[calc(.1rem)] border-gray-100 font-bold text-[calc(.6rem)]"
-                        onClick={handleLeftButton}
+                            className="relative left-[calc(8rem)] w-[calc(4rem)] h-[calc(2rem)] text-gray-700 rounded-full border-[calc(.1rem)] border-gray-100 font-bold text-[calc(.6rem)]"
+                            onClick={handleLeftButton}
                         >
                             팀 나가기
                         </button>
-                        )}
+                    )}
                 </div>
             </div>
             <>
@@ -153,12 +184,12 @@ function MyTeamInfo() {
                 <div className="relative w-full left-[calc(1.13125rem)]">
                     <div className="absolute left-1/2 top-[calc(15rem)] w-[calc(20.25rem)] rounded bg-slate-50">
                         {myTeamInfoData.length === 0 ? (
-                            <div className="absolute flex justify-center top-[calc(10rem)] transform -translate-x-1/2 p-0 w-[calc(6rem)] h-[calc(6rem)]">
+                            <div className="absolute flex justify-center left-1/2 top-[calc(10rem)] transform -translate-x-1/2 p-0 w-[calc(6rem)] h-[calc(6rem)]">
                                 <img src={emptyGhostIcon} alt="나의 팀이 없습니다" />
                                 <p className="absolute top-[calc(7rem)] font-pretendardBlack text-[calc(0.4rem)] text-gray-500">나의 팀이 없어요</p>
                             </div>
                         ) : (
-                            <TeamInfo></TeamInfo>
+                            <TeamInfo teamId={myTeamInfoData.id}></TeamInfo>
                         )}
                         <div className="mb-[calc(10rem)]"></div>
                     </div>
@@ -182,23 +213,27 @@ function MyTeamInfo() {
                             </button>
 
                             {/* create submit */}
-                            <form className="flex flex-col items-start justify-start w-full p-4">
-                                <label>
-                                    친선전 여부
-                                    <input
-                                        type="checkbox"
-                                        name="isFriendly"
-                                        checked={teamInfo.isFriendly}
-                                        onChange={handleCheckboxChange}
-                                    />
-                                </label>
-                                <label>
-                                    시:
+                            <form className="flex flex-col items-start justify-start w-full p-6 bg-white shadow-lg rounded-lg space-y-4" onSubmit={handleCreateSubmit}>
+                                <label className="w-full">
+                                    <span className="text-gray-700">경기 유형:</span>
                                     <select
-                                        name="location"
+                                        name="matchType"
+                                        value={teamInfo.matchType}
+                                        onChange={handleChange}
+                                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                                    >
+                                        <option value="">선택</option>
+                                        <option value="친선">친선</option>
+                                        <option value="내전">내전</option>
+                                    </select>
+                                </label>
+                                <label className="w-full">
+                                    <span className="text-gray-700">시:</span>
+                                    <select
+                                        name="region"
                                         value={selectedRegion}
                                         onChange={handleRegionChange}
-                                        className="w-full"
+                                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                                     >
                                         <option value="">시 선택</option>
                                         {regions.map(region => (
@@ -208,13 +243,13 @@ function MyTeamInfo() {
                                         ))}
                                     </select>
                                 </label>
-                                <label>
-                                    군/구:
+                                <label className="w-full">
+                                    <span className="text-gray-700">군/구:</span>
                                     <select
                                         name="district"
                                         value={selectedDistrict}
                                         onChange={handleDistrictChange}
-                                        className="w-full"
+                                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                                     >
                                         <option value="">군/구 선택</option>
                                         {regions.find(region => region.region === selectedRegion)?.districts.map(district => (
@@ -224,52 +259,65 @@ function MyTeamInfo() {
                                         ))}
                                     </select>
                                 </label>
-                                <label>
-                                    시간:
-                                    <span>{teamInfo.time}시</span>
+                                <label className="w-full">
+                                    <span className="text-gray-700">시작 시간:</span>
+                                    <input
+                                        type="number"
+                                        name="startTime"
+                                        value={teamInfo.startTime}
+                                        onChange={handleChange}
+                                        min="0"
+                                        max="23"
+                                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                                    />
                                 </label>
-                                <label>
-                                    요일:
-                                    <div className="flex flex-wrap">
-                                        {['월', '화', '수', '목', '금', '토', '일'].map((day) => (
-                                            <label key={day} className="mr-4">
+                                <label className="w-full">
+                                    <span className="text-gray-700">종료 시간:</span>
+                                    <input
+                                        type="number"
+                                        name="endTime"
+                                        value={teamInfo.endTime}
+                                        onChange={handleChange}
+                                        min="0"
+                                        max="23"
+                                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                                    />
+                                </label>
+                                <label className="w-full">
+                                    <span className="text-gray-700">요일:</span>
+                                    <div className="flex flex-wrap mt-1">
+                                        {['월', '화', '수', '목', '금', '토', '일'].map(day => (
+                                            <label key={day} className="mr-4 mb-2">
                                                 <input
                                                     type="checkbox"
-                                                    name="day"
+                                                    name="dayOfWeek"
                                                     value={day}
-                                                    checked={teamInfo.day.includes(day)}
-                                                    onChange={(e) => handleDayChange(e, day)}
+                                                    checked={teamInfo.dayOfWeek.includes(day)}
+                                                    onChange={e => handleDayChange(e, day)}
+                                                    className="mr-2"
                                                 />
                                                 {day}
                                             </label>
                                         ))}
                                     </div>
                                 </label>
-                                <label>
-                                    경기 난이도:
+                                <label className="w-full">
+                                    <span className="text-gray-700">경기 난이도:</span>
                                     <select
                                         name="difficulty"
                                         value={teamInfo.difficulty}
                                         onChange={handleChange}
-                                        className="w-full"
+                                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                                     >
-                                        <option value="Beginner">초급</option>
-                                        <option value="Intermediate">중급</option>
-                                        <option value="Advanced">상급</option>
+                                        <option value="">난이도 선택</option>
+                                        <option value="초급">초급</option>
+                                        <option value="중급">중급</option>
+                                        <option value="상급">상급</option>
                                     </select>
                                 </label>
-                                <label>
-                                    클럽원 리스트:
-                                    <input
-                                        type="text"
-                                        name="clubMembers"
-                                        value={teamInfo.clubMembers.join(', ')}
-                                        onChange={handleChange}
-                                    />
-                                </label>
                                 <button
-                                    className="w-full mt-[calc(14rem)] bg-green-500 text-white py-2 rounded-md font-bold"
-                                    onClick={handleCreateSubmit}
+                                    className="w-full mt-4 bg-green-500 text-white py-2 rounded-md font-bold hover:bg-green-600 transition-colors"
+                                    type="submit"
                                 >
                                     생성하기
                                 </button>

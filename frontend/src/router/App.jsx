@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import MyPageWithTransition from '@/components/MyPageWithTransition';
 import ErrorPage from '@/pages/ErrorPage';
-import TestDiv from '@/pages/TestDiv';
 import LoginPage from '@/pages/LoginPage';
 import BottomNav from '@/nav/BottomNav';
 import MainPage from '@/pages/MainPage';
@@ -20,44 +19,60 @@ import AlarmPage from '@/pages/AlarmPage';
 import { Toaster } from '@/components/ui/sonner';
 import FirebaseComponent from '@/firebase/firebaseConfig';
 import { testStore } from '@/stores/testStore';
-import { toast } from "sonner"
+import { toast } from 'sonner';
+import { setToken } from '@/apis/api/token';
+import ProtectedRoute from '@/router/ProtectedRoute';
+import Redirection from '@/router/Redirection';
+const { VITE_AUTH_URL } = import.meta.env;
 
 function App() {
     const { token, payload } = testStore();
     const [localToken, setLocalToken] = useState(token);
     const [localPayload, setLocalPayload] = useState(payload);
-  
+
     useEffect(() => {
         const test = token;
         setLocalToken(token);
     }, [token]);
     useEffect(() => {
-        if(localToken) {
-            toast('device token', {
-                description: localToken,
-                className: 'toaster',
-                action: {
-                    label: "확인",
-                    onClick: () => console.log("이벤트 확인"),
+        if (localToken) {
+            // toast('device token', {
+            //     description: localToken,
+            //     className: 'toaster',
+            //     action: {
+            //         label: "확인",
+            //         onClick: () => console.log("이벤트 확인"),
+            //     },
+            // });
+            // axios for db connection
+            setToken(
+                {
+                    token: localToken,
                 },
-            });
+                (success) => {
+                    console.log(success.data.message);
+                },
+                (fail) => {}
+            );
         }
     }, [localToken]);
     useEffect(() => {
-        if(payload !== null) {
+        if (payload !== null) {
             const title = payload.notification.title;
             const body = payload.notification.body;
             setLocalPayload(payload);
             toast(title, {
-            description: body,
-            className: 'toaster',
-            action: {
-                label: "확인",
-                onClick: () => console.log("이벤트 확인"),
-            },
+                description: body,
+                className: 'toaster',
+                action: {
+                    label: '확인',
+                    onClick: () => console.log('이벤트 확인'),
+                },
             });
         }
-      }, [payload]);
+    }, [payload]);
+
+    const user = true;
 
     const router = createBrowserRouter([
         // {
@@ -66,17 +81,16 @@ function App() {
         // },
         {
             path: '/',
-            element: <Navigate to="/main" />,
-        },
-        {
-            path: '/testdiv',
-            element: <TestDiv />,
+            element: <Navigate to="/login" />,
         },
         {
             path: '/login',
             element: <LoginPage />,
         },
-
+        {
+            path: '/kakao/callback',
+            element: <Redirection />,
+        },
         {
             path: '/',
             element: <BottomNav />,
@@ -92,7 +106,11 @@ function App() {
                 },
                 {
                     path: '/mypage',
-                    element: <MyPageWithTransition />,
+                    element: (
+                        <ProtectedRoute user={user}>
+                            <MyPageWithTransition />
+                        </ProtectedRoute>
+                    ),
                     children: [
                         {
                             index: true,
@@ -154,7 +172,7 @@ function App() {
 
     return (
         <>
-            <FirebaseComponent/>
+            <FirebaseComponent />
             <Toaster />
             <RouterProvider router={router}></RouterProvider>
         </>

@@ -11,7 +11,6 @@ import lArrowIcon from '@/assets/icons/lArrow.svg';
 import { getNotice } from '@/apis/api/mypage';
 
 function AlarmPage() {
-  const key = 2;
   const [alarmList, setAlarmList] = useState([]);
   const [alarmDetail, setAlarmDetail] = useState({
     content: '',
@@ -20,26 +19,20 @@ function AlarmPage() {
     read: false,
     push: false,
   });
-  const [showManualModal1, setShowManualModal1] = useState(false);
-  const [showManualModal2, setShowManualModal2] = useState(false);
-  const [showManualModal3, setShowManualModal3] = useState(false);
+  const [showManualModal, setShowManualModal] = useState(null);
   const [dragged, setDragged] = useState(null);
   const [isTouch, setIsTouch] = useState(false);
   const dropzoneRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // api
     getNotice(
-      key,
       (success) => {
-        setAlarmList((prevData) => ({
-            ...prevData,
-            ...success.data.data,
-        }));
+        console.log(success.data.data);
+        setAlarmList(success.data.data);
       },
       (fail) => {
-          console.log(fail);
+        console.log(fail);
       }
     );
   }, []);
@@ -48,21 +41,12 @@ function AlarmPage() {
     navigate(-1);
   };
 
-  const handleManualClick = (state, key) => {
-    console.log('state: ' + state + ' key: ' + key);
-    if (state === 1) {
-      setShowManualModal1(true);
-    } else if (state === 2) {
-      setShowManualModal2(true);
-    } else {
-      setShowManualModal3(true);
-    }
+  const handleManualClick = (index) => {
+    setShowManualModal(index);
   };
 
   const closeModal = () => {
-    setShowManualModal1(false);
-    setShowManualModal2(false);
-    setShowManualModal3(false);
+    setShowManualModal(null);
   };
 
   const handleOutsideClick = () => {
@@ -91,7 +75,6 @@ function AlarmPage() {
       const target = document.elementFromPoint(touch.clientX, touch.clientY);
 
       if (target && target.classList.contains('dropzone')) {
-        console.log('엄');
         target.classList.remove('dragover');
       }
 
@@ -172,104 +155,52 @@ function AlarmPage() {
         <div className="absolute left-0 top-[calc(15rem)] border-[calc(.01875rem)] w-[calc(22.5rem)] z-0"></div>
       </>
       <>
-        <div className="absolute border-b-2 flex flex-col items-center justify-center left-0 top-[calc(18rem)] w-[calc(22.5rem)] h-[calc(2rem)] text-center bg-slate-100"
-          onClick={() => handleManualClick(1, 0)}
-        >
-          <div className="absolute left-[calc(.3rem)] rounded-full w-[calc(0.5rem)] h-[calc(0.5rem)] bg-yellow-500"></div>
-          <span className="font-pretendardBold transform transition duration-100 ease-in-out active:scale-95">가나다 님이 라마바 님에게 매칭 신청을 하였습니다!</span>
-        </div>
-        <div className="absolute border-b-2 flex flex-col items-center justify-center left-0 top-[calc(21rem)] w-[calc(22.5rem)] h-[calc(2rem)] text-center bg-slate-100"
-          onClick={() => handleManualClick(2, 0)}
-        >
-          <div className="absolute left-[calc(.3rem)] rounded-full w-[calc(0.5rem)] h-[calc(0.5rem)] bg-yellow-500"></div>
-          <span className="font-pretendardBold transform transition duration-100 ease-in-out active:scale-95">가나다 FC에서 합류 요청이 왔습니다!</span>
-        </div>
-        <div className="absolute border-b-2 flex flex-col items-center justify-center left-0 top-[calc(24rem)] w-[calc(22.5rem)] h-[calc(2rem)] text-center bg-slate-100"
-          onClick={() => handleManualClick(3, 0)}
-        >
-          <div className="absolute left-[calc(.3rem)] rounded-full w-[calc(0.5rem)] h-[calc(0.5rem)] bg-yellow-500"></div>
-          <span className="font-pretendardBold transform transition duration-100 ease-in-out active:scale-95">가나다 님이 당신의 팀에 합류 요청을 하였습니다!</span>
-        </div>
+        {alarmList.map((alarm, index) => (
+          <div key={index} className="absolute border-b-2 flex flex-col items-center justify-center left-0 w-[calc(22.5rem)] h-[calc(2rem)] text-center bg-slate-100"
+            style={{ top: `calc(${18 + 3 * index}rem)` }}
+            onClick={() => handleManualClick(index)}
+          >
+            <div className="absolute left-[calc(.3rem)] rounded-full w-[calc(0.5rem)] h-[calc(0.5rem)] bg-yellow-500"></div>
+            <span className="font-pretendardBold transform transition duration-100 ease-in-out active:scale-95">{alarm.content}</span>
+          </div>
+        ))}
       </>
-      <>
-        {/* 매칭 */}
-        {showManualModal1 && (
-          <Modal show={showManualModal1} onClose={closeModal}>
-            {/* Modal content */}
-            <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-10" onClick={handleOutsideClick}>
-              <div
-                className="animate-scale-in relative flex flex-col items-center justify-start bg-stone-100 w-[calc(20.5rem)] h-[calc(31.25rem)] rounded-xl overflow-x-hidden overflow-y-auto"
-                onClick={e => e.stopPropagation()}
+      {showManualModal !== null && (
+        <Modal show={showManualModal !== null} onClose={closeModal}>
+          {/* Modal content */}
+          <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-10" onClick={handleOutsideClick}>
+            <div
+              className="animate-scale-in relative flex flex-col items-center justify-start bg-stone-100 w-[calc(20.5rem)] h-[calc(31.25rem)] rounded-xl overflow-x-hidden overflow-y-auto"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* close button */}
+              <button
+                onClick={closeModal}
+                className="self-start mt-2 mb-2 ml-2 w-5 h-5 bg-[#FF5F51] rounded-full shadow-sm font-bold text-white flex items-center justify-center"
               >
-                {/* close button */}
-                <button
-                  onClick={closeModal}
-                  className="self-start mt-2 mb-2 ml-2 w-5 h-5 bg-[#FF5F51] rounded-full shadow-sm font-bold text-white flex items-center justify-center"
-                >
-                  &times;
-                </button>
-                <div>
-                  {/* content */}
-                  <span className="text-[calc(.9rem)] text-gray-500">{'정준수'} FC에서 매칭을 신청했어요!</span>
-                </div>
-                <div className="absolute left-3 top-[calc(10rem)] w-[10rem] h-[15.590rem] bg-red-500 clip-trapezoid-left leftappear">
-                </div>
-                <div className="absolute flex flex-col items-center justify-start top-[calc(15rem)] z-10">
-                  <Lottie className="animate-zoom-in-out w-[5rem] h-[5rem]" animationData={versusIcon} loop={false} autoplay={true} />
-                </div>
-                <div className="absolute right-3 top-[calc(10rem)] w-[10rem] h-[15.590rem] bg-blue-500 clip-trapezoid-right rightappear">
-                </div>
+                &times;
+              </button>
+              <div>
+                {/* content */}
+                <span className="text-[calc(.9rem)] text-gray-500">{alarmList[showManualModal].content}</span>
               </div>
-            </div>
-          </Modal>
-        )}
-        {/* 팀 -> 개인 */}
-        {showManualModal2 && (
-          <Modal show={showManualModal2} onClose={closeModal}>
-            {/* Modal content */}
-            <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-10" onClick={handleOutsideClick}>
-              <div
-                className="animate-scale-in relative flex flex-col items-center justify-start bg-stone-100 w-[calc(20.5rem)] h-[calc(31.25rem)] rounded-xl overflow-x-hidden overflow-y-auto"
-                onClick={e => e.stopPropagation()}
-              >
-                {/* close button */}
-                <button
-                  onClick={closeModal}
-                  className="self-start mt-2 mb-2 ml-2 w-5 h-5 bg-[#FF5F51] rounded-full shadow-sm font-bold text-white flex items-center justify-center"
-                >
-                  &times;
-                </button>
+              {showManualModal === 0 && (
+                <>
+                  <div className="absolute left-3 top-[calc(10rem)] w-[10rem] h-[15.590rem] bg-red-500 clip-trapezoid-left leftappear">
+                  </div>
+                  <div className="absolute flex flex-col items-center justify-start top-[calc(15rem)] z-10">
+                    <Lottie className="animate-zoom-in-out w-[5rem] h-[5rem]" animationData={versusIcon} loop={false} autoplay={true} />
+                  </div>
+                  <div className="absolute right-3 top-[calc(10rem)] w-[10rem] h-[15.590rem] bg-blue-500 clip-trapezoid-right rightappear">
+                  </div>
+                </>
+              )}
+              {showManualModal === 1 && (
                 <div>
-                  {/* content */}
-                  <span className="text-[calc(.9rem)] text-gray-500">{'정준수'} FC에서 당신을 원합니다!</span>
+                  <Lottie className="-mt-5 -ml-[calc(1rem)] w-[calc(15rem)] h-[calc(15rem)]" animationData={congratulationIcon} loop={true} autoplay={true} />
                 </div>
-                <div>
-                  네
-                </div>
-              </div>
-            </div>
-          </Modal>
-        )}
-        {/* 개인 -> 팀 */}
-        {showManualModal3 && (
-          <Modal show={showManualModal3} onClose={closeModal}>
-            {/* Modal content */}
-            <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-10" onClick={handleOutsideClick}>
-              <div
-                className="animate-scale-in relative flex flex-col items-center justify-start bg-stone-100 w-[calc(20.5rem)] h-[calc(31.25rem)] rounded-xl overflow-x-hidden overflow-y-auto"
-                onClick={e => e.stopPropagation()}
-              >
-                {/* close button */}
-                <button
-                  onClick={closeModal}
-                  className="self-start mt-2 mb-2 ml-2 w-5 h-5 bg-[#FF5F51] rounded-full shadow-sm font-bold text-white flex items-center justify-center"
-                >
-                  &times;
-                </button>
-                <div>
-                  {/* content */}
-                  <span className="text-[calc(.9rem)] text-gray-500">{'정준수'} 님이 팀에 합류하고 싶어해요!</span>
-                </div>
+              )}
+              {showManualModal === 2 && (
                 <div className="absolute left-3 top-[calc(10rem)] w-[8rem] h-[15.590rem] bg-red-500 
                   draggable"
                   draggable="true"
@@ -280,28 +211,11 @@ function AlarmPage() {
                   onTouchEnd={handleTouchEnd}
                 >
                 </div>
-                <div className="absolute flex flex-col items-center justify-start top-[calc(15rem)] z-10">
-                  <MdKeyboardDoubleArrowRight className="leftbounc w-[5rem] h-[5rem]" />
-                </div>
-                <div className="absolute right-3 top-[calc(10rem)] w-[8rem] h-[15.590rem] bg-blue-500
-                  dropzone"
-                  ref={dropzoneRef}
-                  onDragOver={handleDragOver}
-                  onDragEnter={handleDragEnter}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
-                  onTouchEnd={handleTouchDrop}
-                >
-                  <Lottie className="-mt-5 -ml-[calc(1rem)] w-[calc(15rem)] h-[calc(15rem)]" animationData={congratulationIcon} loop={true} autoplay={true} />
-                </div>
-                <div className="absolute flex items-center justify-center rounded-sm bottom-0 mb-5 w-[calc(15rem)] h-[calc(3rem)] bg-black/20">
-                  <FaRegTrashCan className="w-[calc(1.5rem)] h-[calc(1.5rem)] opacity-50" />
-                </div>
-              </div>
+              )}
             </div>
-          </Modal>
-        )}
-      </>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }

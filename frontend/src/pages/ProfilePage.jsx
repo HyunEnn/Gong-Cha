@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
-import { setProfileImage } from '@/apis/api/mypage';
-import imglyRemoveBackground from "@imgly/background-removal";
-import { toast } from "sonner"
+import { setProfileNickName } from '@/apis/api/mypage'
+import { setProfileImageAPI } from '@/apis/util/setProfileImage'
+import { removeBackground } from "@imgly/background-removal"; 
+import { toast } from "sonner";
 import {
     Drawer,
     DrawerClose,
@@ -12,15 +13,15 @@ import {
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
-} from "@/components/ui/drawer"
-import { Toaster } from "sonner"
+} from "@/components/ui/drawer";
+import { Toaster } from "sonner";
 import Modal from '@/components/Modal';
 import lArrowIcon from '@/assets/icons/lArrow.svg';
 import rArrowIcon from '@/assets/icons/rArrow.svg';
 import fileuploadIcon from '@/assets/icons/fileupload.svg';
 import Lottie from 'lottie-react';
 import pencilAnimation from '@/assets/lottie/pen';
-import { playHistoryDummyData } from '@/data/dummyData'; // dummy data
+import { getAPIforAuthUserInfo } from '@/apis/api/user';
 
 function ProfilePage() {
     const navigate = useNavigate();
@@ -33,22 +34,38 @@ function ProfilePage() {
     const [error, setError] = useState(null);
     const fileInputRef = useRef(null);
 
-    // useEffect(() => {
-    //     setPlayHistoryData(    // dummy data
-    //         playHistoryDummyData,
-    //     );
-    // }, []);
+    const [userId, setUserId] = useState(0);
+    const [profileData, setProfileData] = useState({
+        userId: 0,
+        nickname: '',
+        profileUrl: '',
+    });
+    useEffect(() => {
+        getAPIforAuthUserInfo(
+        (success) => {
+            setUserId(success.data.data.userId);
+            setProfileData((prevData) => ({
+                ...prevData,
+                name: success.data.data.name,
+            }));
+        },
+        (fail) => {
+            console.log(fail);
+        }
+        );
+    }, []);
 
-    const removeBackground = () => {
-      console.log("둔디기 시도");
-      imglyRemoveBackground(imageSrc)
-        .then((resultBlob) => {
-          setResultSrc(URL.createObjectURL(resultBlob));
-          /* [공사중] */
-          console.log("둔디기 완료");
-          console.log(URL.createObjectURL(resultBlob));
+    const removeBG = async () => {
+        console.log("배경 제거 시도");
+        try {
+            const resultBlob = await removeBackground(imageSrc);
+            setResultSrc(URL.createObjectURL(resultBlob));
+
+            console.log("배경 제거 완료");
+            setError(null);
+
             // axios for db connection
-            setProfileImage(
+            await setProfileImageAPI(
                 resultBlob,
                 (success) => {
                     console.log(success);
@@ -57,12 +74,10 @@ function ProfilePage() {
                     console.log(fail);
                 }
             );
-          setError(null);
-        })
-        .catch((err) => {
-          setError(err.message || 'Error removing background');
-          setResultSrc(null);
-        });
+        } catch (err) {
+            setError(err.message || 'Error removing background');
+            setResultSrc(null);
+        }
     };
 
     const handleBackClick = () => {
@@ -87,19 +102,31 @@ function ProfilePage() {
 
     const handleSubmitNickname = () => {
         setShowNicknameDrawer(false);
-        // console.log("새로운 닉네임:", newNickname);
-        toast("닉네임이 변경 되었어요!", {
-            description: `변경된 닉네임: ${newNickname}`,
-            className: 'toaster',
-            action: {
-              label: "확인",
-              onClick: () => console.log("이벤트 확인"),
+        // axios for db connection
+        setProfileNickName(
+            userId,
+            (success) => {
+                console.log(success.data);
+                setProfileData({
+                    ...profileData,
+                });
+                toast("닉네임이 변경 되었어요!", {
+                    description: `변경된 닉네임: ${newNickname}`,
+                    className: 'toaster',
+                    action: {
+                      label: "확인",
+                      onClick: () => console.log("이벤트 확인"),
+                    },
+                });
             },
-        });
+            (fail) => {
+                
+            }
+        );
     };
 
     const handleSubmitProfileImage = () => {
-        removeBackground();
+        removeBG();
         setShowProfileImageDrawer(false);
         toast("프로필 이미지가 업로드 되었어요!", {
             description: "이미지 반영까지는 대략 30초 소요됩니다",
@@ -112,14 +139,9 @@ function ProfilePage() {
     };
 
     const handleFileChange = (e) => {
-        const file = e.target.files[0]
+        const file = e.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                console.log("파일 읽기 완료:", e.target.result);
-                setImageSrc(e.target.result);
-            };
-            reader.readAsDataURL(file);
+            setImageSrc(file);
         }
     };
 
@@ -152,13 +174,11 @@ function ProfilePage() {
             <>
                 {showManualModal && (
                     <Modal show={showManualModal} onClose={closeModal}>
-                        {/* Modal content */}
                         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-10" onClick={handleOutsideClick}>
                             <div
                                 className="animate-scale-in relative flex flex-col items-center justify-start bg-stone-100 w-[calc(20.5rem)] h-[calc(31.25rem)] rounded-xl overflow-x-hidden overflow-y-auto" 
                                 onClick={e => e.stopPropagation()}
                             >
-                                {/* close button */}
                                 <button
                                     onClick={closeModal} 
                                     className="self-start mt-2 mb-2 ml-2 w-5 h-5 bg-[#FF5F51] rounded-full shadow-sm font-bold text-white flex items-center justify-center"
@@ -166,10 +186,11 @@ function ProfilePage() {
                                     &times;
                                 </button>
                                 <div>
-                                    [공사중]
+                                    [사진 변경 팁]
                                 </div>
-                                <div>
-                                    프로필 변경 팁 안내
+                                <div className="absolute flex flex-col items-center justify-center mt-[80%]">
+                                    <span className='-mt-[20%]'>🏃</span>
+                                    <span>상반신이 모두 나오도록 찍어보세요</span>
                                 </div>
                             </div>
                         </div>

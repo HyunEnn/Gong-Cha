@@ -4,10 +4,19 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import svgr from '@svgr/rollup';
+import { resolve } from 'path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+    build: {
+        rollupOptions: {
+          input: {
+            main: resolve(__dirname, 'index.html'),
+            firebaseServiceWorker: resolve(__dirname, 'public/firebase-messaging-sw.js')
+          }
+        }
+    },
     plugins: [
         react(),
         svgr(),
@@ -54,5 +63,9 @@ export default defineConfig({
         alias: {
             '@': path.resolve(__dirname, './src'),
         },
+    },
+    server: {
+        host: true,
+        port: 5173,
     },
 });

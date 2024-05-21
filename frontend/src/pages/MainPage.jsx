@@ -26,6 +26,8 @@ import pastRecord from '@/assets/images/mainpage/pastRecord.png';
 import myPlayerCard from '@/assets/images/mainpage/myPlayerCard.png';
 import alarmAnimation from '@/assets/lotties/alarmAnimation';
 
+const { VITE_AUTH_URL } = import.meta.env;
+
 function MainTestPage() {
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -52,6 +54,7 @@ function MainTestPage() {
     const handleAlarmClick = () => {
         navigate('/alarm');
     };
+
     return (
         <div className="w-full">
             <FullpageContainer
@@ -68,14 +71,14 @@ function MainTestPage() {
                             onClick={() => handleMoveMarket()}
                         >
                             <img src={playerContract} alt="이적 시장 사진" className="rounded-lg w-60 h-60" />
-                            <p className="mt-4 text-base text-center w-60 font-gmarketSansRegular">
+                            <div className="mt-4 text-base text-center w-60 font-gmarketSansRegular">
                                 근처에서 활동하는 풋살 선수들을 둘러보고 동료로 만드세요!
-                            </p>
+                            </div>
                             <div className="flex flex-row justify-around mt-2 text-black transition duration-100 ease-in-out transform bg-white rounded-lg w-60 active:bg-gray-300 active:scale-90 active:rounded-lg">
                                 <div className="my-auto">
                                     <img className="w-6 h-6" src={playerMarket} alt="이적 시장" />
                                 </div>
-                                <p className="mt-2 text-lg font-gmarketSansBold">이적시장</p>
+                                <div className="mt-2 text-lg font-gmarketSansBold">이적시장</div>
                                 <img className="right-0 inline" src={rArrowIcon} alt="오른쪽 화살표" />
                             </div>
                         </div>
@@ -101,15 +104,15 @@ function MainTestPage() {
                             width={250}
                             height={250}
                         />
-                        <p className="text-base text-center w-60 font-gmarketSansRegular">
+                        <div className="text-base text-center w-60 font-gmarketSansRegular">
                             풋살 경기할 상대방 팀을 찾고
                             <br /> 연락을 취해보세요!
-                        </p>
+                        </div>
                         <div className="flex flex-row justify-between transition duration-100 ease-in-out transform w-60 active:bg-gray-300 active:scale-90 active:rounded-lg">
                             <div className="my-auto">
                                 <img className="w-6 h-6" src={matchingVS} alt="매칭 해요" />
                             </div>
-                            <p className="mt-2 text-lg font-gmarketSansBold">매칭해요</p>
+                            <div className="mt-2 text-lg font-gmarketSansBold">매칭해요</div>
                             <img className="right-0 inline" src={rArrowIcon} alt="오른쪽 화살표" />
                         </div>
                         <div className="flex justify-center mt-16 animate-bounce">
@@ -134,15 +137,15 @@ function MainTestPage() {
                             width={250}
                             height={250}
                         />
-                        <p className="w-64 mt-2 text-base text-center font-gmarketSansRegular">
+                        <div className="w-64 mt-2 text-base text-center font-gmarketSansRegular">
                             보다 전문적으로 풋살을 즐기고
                             <br /> 싶다면 클럽을 만들거나 가입하세요!
-                        </p>
+                        </div>
                         <div className="flex flex-row justify-around mt-4 text-black transition duration-100 ease-in-out transform bg-white rounded-lg w-60 active:bg-gray-300 active:scale-90 active:rounded-lg">
                             <div className="my-auto">
                                 <img className="w-6 h-6" src={clubFC} alt="클럽" />
                             </div>
-                            <p className="mt-2 text-lg font-gmarketSansBold">클럽</p>
+                            <div className="mt-2 text-lg font-gmarketSansBold">클럽</div>
                             <img className="right-0 inline" src={rArrowIcon} alt="오른쪽 화살표" />
                         </div>
                         <div className="flex justify-center mt-16 animate-bounce">
@@ -156,19 +159,19 @@ function MainTestPage() {
                         onClick={() => handlePlayScheduleClick()}
                     >
                         <img src={makingTeam} alt="현재 진행중인 팀" className="rounded-lg w-60 h-60" />
-                        <p className="mt-4 text-base text-center w-60 font-gmarketSansRegular">
+                        <div className="mt-4 text-base text-center w-60 font-gmarketSansRegular">
                             현재 만들어진 팀을 살펴보세요
                             <br />
-                            <p className="text-sm">
+                            <div className="text-sm">
                                 최소 4명에서 최대 7명까지 <br />
                                 팀을 꾸릴 수 있어요
-                            </p>
-                        </p>
+                            </div>
+                        </div>
                         <div className="flex flex-row justify-around mt-2 text-black transition duration-100 ease-in-out transform bg-white rounded-lg w-60 active:bg-gray-300 active:scale-90 active:rounded-lg">
                             <div className="my-auto">
                                 <img className="w-6 h-6" src={playScheduleIcon} alt="현재 진행중인 팀" />
                             </div>
-                            <p className="mt-2 text-lg font-gmarketSansBold">현재 진행중인 팀</p>
+                            <div className="mt-2 text-lg font-gmarketSansBold">현재 진행중인 팀</div>
                             <img className="right-0 inline" src={rArrowIcon} alt="오른쪽 화살표" />
                         </div>
                         <div className="flex justify-center mt-16 animate-bounce">
@@ -182,14 +185,14 @@ function MainTestPage() {
                         onClick={() => handlePlayHistoryClick()}
                     >
                         <img src={pastRecord} alt="경기 내역" className="rounded-lg w-60 h-60" />
-                        <p className="mt-4 text-base text-center w-60 font-gmarketSansRegular">
+                        <div className="mt-4 text-base text-center w-60 font-gmarketSansRegular">
                             지난 경기 내역을 볼 수 있어요
-                        </p>
+                        </div>
                         <div className="flex flex-row justify-around mt-2 text-black transition duration-100 ease-in-out transform bg-white rounded-lg w-60 active:bg-gray-300 active:scale-90 active:rounded-lg">
                             <div className="my-auto">
                                 <img className="w-6 h-6" src={playHistoryIcon} alt="경기 내역" />
                             </div>
-                            <p className="mt-2 text-lg font-gmarketSansBold">경기 내역</p>
+                            <div className="mt-2 text-lg font-gmarketSansBold">경기 내역</div>
                             <img className="right-0 inline" src={rArrowIcon} alt="오른쪽 화살표" />
                         </div>
                         <div className="flex justify-center mt-16 animate-bounce">
@@ -204,10 +207,10 @@ function MainTestPage() {
                             onClick={() => handlePlayerCardClick()}
                         >
                             <img src={myPlayerCard} alt="내 선수카드" className="rounded-lg w-60 h-60" />
-                            <p className="mt-4 text-base text-center w-60 font-gmarketSansRegular">
+                            <div className="mt-4 text-base text-center w-60 font-gmarketSansRegular">
                                 나의 선수카드를 확인하고 <br />
                                 자신의 능력치를 확인할 수 있어요
-                            </p>
+                            </div>
                             <div className="flex flex-row justify-around mt-2 text-black transition duration-100 ease-in-out transform bg-white rounded-lg w-60 active:bg-gray-300 active:scale-90 active:rounded-lg">
                                 <div className="my-auto">
                                     <Lottie
@@ -223,7 +226,7 @@ function MainTestPage() {
                                         height={32}
                                     />
                                 </div>
-                                <p className="mt-2 text-lg font-gmarketSansBold">내 선수카드</p>
+                                <div className="mt-2 text-lg font-gmarketSansBold">내 선수카드</div>
                                 <img className="right-0 inline" src={rArrowIcon} alt="오른쪽 화살표" />
                             </div>
                             <div className="flex justify-center mt-16 animate-bounce">
@@ -250,14 +253,14 @@ function MainTestPage() {
                                 width={250}
                                 height={250}
                             />
-                            <p className="mt-4 text-base text-center w-60 font-gmarketSansRegular">
+                            <div className="mt-4 text-base text-center w-60 font-gmarketSansRegular">
                                 나에게 온 알림들을 확인 해보세요
-                            </p>
+                            </div>
                             <div className="flex flex-row justify-around mt-2 text-black transition duration-100 ease-in-out transform bg-white rounded-lg w-60 active:bg-gray-300 active:scale-90 active:rounded-lg">
                                 <div className="my-auto">
                                     <img className="w-6 h-6" src={alarmIcon} alt="알람 아이콘" />
                                 </div>
-                                <p className="mt-2 text-lg font-gmarketSansBold">알림함</p>
+                                <div className="mt-2 text-lg font-gmarketSansBold">알림함</div>
                                 <img className="right-0 inline" src={rArrowIcon} alt="오른쪽 화살표" />
                             </div>
                         </div>

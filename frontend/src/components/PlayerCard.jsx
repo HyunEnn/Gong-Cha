@@ -10,7 +10,7 @@ function PlayerCard({ player, className }) {
 
     const [shine, setShine] = useState(false);
 
-    const value = parseInt((player.SHO + player.PAS + player.DRI + player.PAC + player.MAN) / 5) || 0;
+    const value = parseInt((player.shooting + player.pass + player.dribble + player.pass + player.manner) / 5) || 0;
 
     React.useEffect(() => {
         setShine(true);
@@ -38,25 +38,25 @@ function PlayerCard({ player, className }) {
                 <div className="absolute flex flex-col items-center justify-center w-full h-full">
                     <img
                         className="absolute left-20 bottom-[10.5rem] mx-auto max-w-[10rem] max-h-[10rem]"
-                        src={player.profileImage}
-                        alt={player.name}
+                        src={player.profileUrl}
+                        alt={player.userName}
                     />
-                    <h3 className="absolute mt-20 text-center text-white font-pretendardBlack">{player.name}</h3>
+                    <h3 className="absolute mt-20 text-center text-white font-pretendardBlack">{player.userName}</h3>
 
                     <div className="absolute flex flex-col justify-center top-[63%]">
                         <div className="flex">
-                            <p className="text-center text-white font-pretendardBlack">{player.SHO} SHO</p>
-                            <p className="ml-4 text-center text-white font-pretendardBlack">{player.PAS} PAS</p>
+                            <p className="text-center text-white font-pretendardBlack">{player.shooting} SHO</p>
+                            <p className="ml-4 text-center text-white font-pretendardBlack">{player.pass} PAS</p>
                         </div>
                         <div className="flex">
-                            <p className="text-center text-white font-pretendardBlack">{player.DRI} DRI</p>
-                            <p className="ml-auto text-center text-white font-pretendardBlack">{player.PAC} SPD</p>
+                            <p className="text-center text-white font-pretendardBlack">{player.dribble} DRI</p>
+                            <p className="ml-auto text-center text-white font-pretendardBlack">{player.speed} SPD</p>
                         </div>
                     </div>
 
                     <p className="absolute text-3xl text-white left-8 top-16 font-pretendardBlack">{value}</p>
                     <p className="absolute text-white left-8 top-26 font-pretendardBlack">
-                        {player.MAN}
+                        {player.manner}
                         <br></br> MAN
                     </p>
                 </div>

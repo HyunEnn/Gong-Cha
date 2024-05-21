@@ -1,19 +1,18 @@
 import { serverAxios } from '@/apis/util/commons';
 
 const server = serverAxios();
+const url = '/users';
 
-const url = 'http://k10b306.p.ssafy.io:8081/api/users';
-
-async function setProfileNickName(userId, success, fail) {
-    await server.get(`${url}/profile/${userId}`).then(success).catch(fail);
+async function setProfileNickName(data, success, fail) {
+    await server.patch(`${url}/nickname`, data).then(success).catch(fail);
 }
 
-async function getProfileImage(userId, success, fail) {
-    await server.get(`${url}/profile/${userId}`).then(success).catch(fail);
+async function getProfileImage(success, fail) {
+    await server.get(`${url}/profile`).then(success).catch(fail);
 }
 
-async function setProfileImage(img, success, fail) {
-    await server.patch(`${url}/profile`, img).then(success).catch(fail);
+async function getProfileImage2(userId, success, fail) {
+    await server.get(`${url}/profile/${userId}`).then(success).catch(fail);
 }
 
 async function getManner(userId, success, fail) {
@@ -24,8 +23,8 @@ async function getPlayScheduleList(userId, success, fail) {
     await server.get(`${url}/${userId}/group`).then(success).catch(fail);
 }
 
-async function getNotice(userId, success, fail) {
-    await server.get(`${url}/notice/${userId}`).then(success).catch(fail);
+async function getNotice(success, fail) {
+    await server.get(`${url}/notice`).then(success).catch(fail);
 }
 
 async function setRating(data, success, fail) {
@@ -33,7 +32,7 @@ async function setRating(data, success, fail) {
 }
 
 async function getMyCard(success, fail) {
-    await server.patch(`${url}/card`).then(success).catch(fail);
+    await server.get(`${url}/card`).then(success).catch(fail);
 }
 
 async function getPlayerCard(userId, success, fail) {
@@ -48,10 +47,10 @@ async function setEvaluation(data, success, fail) {
     await server.put(`${url}/card`, data).then(success).catch(fail);
 }
 
-export { 
+export {
     setProfileNickName,
     getProfileImage,
-    setProfileImage,
+    getProfileImage2,
     getManner,
     getPlayScheduleList,
     getNotice,
