@@ -10,8 +10,6 @@ import teamAnimation from '@/assets/lotties/teamAnimation';
 
 function LoginPage() {
     const onKakakoLogin = async () => {
-        console.log('******');
-        console.log(VITE_AUTH_URL);
         window.location.href = `${VITE_AUTH_URL}/kakao`;
     };
 

@@ -2,17 +2,26 @@ import { useEffect } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage, isSupported } from 'firebase/messaging';
 import { testStore } from '@/stores/testStore';
+const {
+    VITE_APP_VAPID_KEY,
+    VITE_APP_API_KEY,
+    VITE_APP_AUTH_DOMAIN,
+    VITE_APP_PROJECT_ID,
+    VITE_APP_STORAGE_BUCKET,
+    VITE_APP_MESSAGING_SENDER_ID,
+    VITE_APP_APP_ID,
+    VITE_APP_MEASUREMENT_ID,
+} = import.meta.env;
 
 // Firebase Config values imported from .env file
-// working *
 const firebaseConfig = {
-    apiKey: '',
-    authDomain: '',
-    projectId: '',
-    storageBucket: '',
-    messagingSenderId: '',
-    appId: '',
-    measurementId: '',
+    apiKey: VITE_APP_API_KEY,
+    authDomain: VITE_APP_AUTH_DOMAIN,
+    projectId: VITE_APP_PROJECT_ID,
+    storageBucket: VITE_APP_STORAGE_BUCKET,
+    messagingSenderId: VITE_APP_MESSAGING_SENDER_ID,
+    appId: VITE_APP_APP_ID,
+    measurementId: VITE_APP_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
@@ -48,12 +57,12 @@ function FirebaseComponent() {
 
             try {
                 const token = await getToken(messaging, {
-                    vapidKey: 'BL5bGjPDt2MnX-POT3mQrKhqi_l4UE1oUXQr0FIhMVOgMpU6S4GKrvTP9hBxpcL4AxFr65GvC-9jUSJw8zUbFes',
+                    vapidKey: VITE_APP_VAPID_KEY,
                 });
 
                 if (token) {
                     console.log('token: ', token);
-                    createToken(token); // Zustand store의 액션을 호출
+                    createToken(token);
                 } else {
                     console.log('Can not get Token');
                 }

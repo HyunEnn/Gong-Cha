@@ -84,10 +84,6 @@ function App() {
             element: <Navigate to="/login" />,
         },
         {
-            path: '/testdiv',
-            element: <TestDiv />,
-        },
-        {
             path: '/login',
             element: <LoginPage />,
         },
