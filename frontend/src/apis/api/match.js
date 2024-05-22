@@ -39,11 +39,11 @@ async function getMatchingApproveList(success, fail) {
     await server.get(`${url}/matchList`).then(success).catch(fail);
 }
 
-export { 
-    postMatchingCreate, 
-    getMatchingList, 
-    getMatchingDetail, 
-    patchMatching, 
-    deleteMatching, 
-    getMatchingApproveList
+export {
+    postMatchingCreate,
+    getMatchingList,
+    getMatchingDetail,
+    patchMatching,
+    deleteMatching,
+    getMatchingApproveList,
 };

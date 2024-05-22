@@ -1,4 +1,8 @@
-frontend/.env.development
-frontend/public/firebase-messaging-sw.js
-frontend/src/firebase/firebaseConfig.js
-frontend/.env.development
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
