@@ -27,6 +27,9 @@ module.exports = {
             },
         },
         extend: {
+            backgroundImage: {
+                'grass-pattern': "url('@/assets/images/grassBG.svg')",
+            },
             colors: {
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
@@ -91,10 +94,17 @@ module.exports = {
                     400: 'hsl(var(--brand400))',
                     500: 'hsl(var(--brand500))',
                 },
+                animation: {
+                    bounce: 'bounce 1s infinite', // 'bounce'는 @keyframes의 이름, 1s는 지속 시간, infinite는 무한 반복을 의미
+                },
             },
             fontFamily: {
                 pretendardRegular: ['Pretendard-Regular'], // Adds a new `font-display` class
                 pretendardBold: ['Pretendard-Bold'],
+                ygJalnan: ['yg-jalnan'],
+                pretendardBlack: ['Pretendard-Black', 'sans-serif'],
+                gmarketSansRegular: ['GmarketSansMedium'],
+                gmarketSansBold: ['GmarketSansBold'],
             },
             borderRadius: {
                 lg: 'var(--radius)',
@@ -115,6 +125,19 @@ module.exports = {
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out',
             },
+            scale: {
+                92: '.92',
+                98: '.98',
+            },
+            // // 확장 설정
+            // utilities: {
+            //     '.snap-y': {
+            //         scrollSnapType: 'y mandatory  ',
+            //     },
+            //     '.snap-start': {
+            //         scrollSnapAlign: 'start',
+            //     },
+            // },
         },
     },
 };

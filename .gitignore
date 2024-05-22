@@ -1,1 +1,4 @@
-.idea
+frontend/.env.development
+frontend/public/firebase-messaging-sw.js
+frontend/src/firebase/firebaseConfig.js
+frontend/.env.development
