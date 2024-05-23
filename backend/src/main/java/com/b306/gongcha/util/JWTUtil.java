@@ -97,6 +97,7 @@ public class JWTUtil {
     }
 
     public boolean validateToken(String token) {
+        log.info("token 값 : {}", token);
         if (token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
