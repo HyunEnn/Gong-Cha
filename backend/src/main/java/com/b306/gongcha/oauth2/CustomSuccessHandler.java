@@ -54,21 +54,12 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         System.out.println("토큰 첫 저장 userInfo = " + byUserInfo);
         refreshTokenService.addRefreshToken(byUserInfo.getId(), refresh);
 
-        response.setHeader("Authorization", access);
+//        response.setHeader("Authorization", access);
 //        response.addCookie(createCookie("Authorization", access));
         response.addCookie(createCookie("refresh", refresh));
         response.setStatus(HttpStatus.OK.value());
         response.sendRedirect("https://gongcha.site/kakao/callback");
 
-//        Map<String, Object> map = new LinkedHashMap<>();
-//        map.put("code", HttpStatus.OK);
-//        map.put("message", "login success");
-//        map.put("accessToken", access);
-//        map.put("refreshToken", refresh);
-//        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-//        response.setStatus(HttpStatus.OK.value());
-//        response.getWriter().write(new ObjectMapper().writeValueAsString(map));
-//        response.sendRedirect("http://localhost:5173/main");
     }
 
     private Cookie createCookie(String key, String value) {
