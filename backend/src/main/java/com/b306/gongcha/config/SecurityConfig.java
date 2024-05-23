@@ -67,7 +67,8 @@ public class SecurityConfig {
         // JWT Filter 안거칠 API
         List<AntPathRequestMatcher> excludedPaths = List.of(
                 new AntPathRequestMatcher("/auth/regenerate"),
-                new AntPathRequestMatcher("/club/clubs")
+                new AntPathRequestMatcher("/club/clubs"),
+                new AntPathRequestMatcher("/notification/token")
         );
 
         //HTTP Basic 인증 방식 disable
