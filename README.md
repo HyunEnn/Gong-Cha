@@ -77,13 +77,13 @@
 
 ## ERD
 
-![공차 erd](/etc/assets/공차%20수정%20ERD.png)
+![공차 erd](/etc/assets/공차%20수정%20ERD.png){: width="50%"}
 
 <br/><br/>
 
 ## 시스템 아키텍쳐
 
-![공차 아키텍쳐](/etc/assets/공차%20아키텍쳐.png)
+![공차 아키텍쳐](/etc/assets/공차%20아키텍쳐.png){: width="50%"}
 
 -   jenkins와 docker-compose를 활용해 배포를 했습니다.<br/><br/>
 -   리버스 프록시, 로드 밸런싱, ssl 보안을 위해 Nginx를 사용했습니다.<br/><br/>
@@ -94,9 +94,9 @@
 
 ## API 설계
 
-![api1](/etc/assets/공차API1.PNG)
-![api2](/etc/assets/공차API2.PNG)
-![api3](/etc/assets/공차API3.PNG)
+![api1](/etc/assets/공차API1.PNG){: width="50%"}
+![api2](/etc/assets/공차API2.PNG){: width="50%"}
+![api3](/etc/assets/공차API3.PNG){: width="50%"}
 
 <br/><br/>
 
@@ -131,17 +131,17 @@
 
 ### 매칭게시글
 
-![매칭 게시글 조회](/etc/assets/매칭게시판조회.PNG){: width="20%"}
+![매칭 게시글 조회](/etc/assets/매칭게시판조회.PNG){: width="30%"}
 
 > **설명**
 > 매칭 게시글을 조회합니다
 
-<img src="/etc/assets/매칭게시글등록.PNG" alt="매칭 게시글 등록" width="20%">
+![매칭 게시글 등록](/etc/assets/매칭게시글등록.PNG){: width="30%"}
 
 > **설명**
 > 매칭 게시글을 등록합니다
 
-![매칭 게시글 상세조회](/etc/assets/매칭게시판상세조회.PNG){: width="50%"}
+![매칭 게시글 상세조회](/etc/assets/매칭게시판상세조회.PNG){: width="30%"}
 
 > **설명**
 > 매칭하려는 팀의 정보와 해당 팀의 선수카드들을 볼 수 있습니다
@@ -150,31 +150,31 @@
 
 ### 나의 팀 보기
 
-![나의팀보기](/etc/assets/나의팀보기.PNG){: width="50%"}
+![나의팀보기](/etc/assets/나의팀보기.PNG){: width="30%"}
 
 ### 나의 팀 전력보기
 
-![나의팀전력보기](/etc/assets/나의팀전력보기.PNG){: width="50%"}
+![나의팀전력보기](/etc/assets/나의팀전력보기.PNG){: width="30%"}
 
 ### 나의 팀 카드보기
 
-![나의팀카드보기](/etc/assets/나의팀카드보기.PNG){: width="50%"}
+![나의팀카드보기](/etc/assets/나의팀카드보기.PNG){: width="30%"}
 
 ### 내 경기내역 보기
 
-![내경기내역](/etc/assets/내경기내역.PNG){: width="50%"}
+![내경기내역](/etc/assets/내경기내역.PNG){: width="30%"}
 
 ### 내 카드 보기
 
-![내카드보기](/etc/assets/내카드보기.PNG){: width="50%"}
+![내카드보기](/etc/assets/내카드보기.PNG){: width="30%"}
 
 ### 신고하기
 
-![신고하기](/etc/assets/신고하기.PNG){: width="50%"}
+![신고하기](/etc/assets/신고하기.PNG){: width="30%"}
 
 ### 평가하기
 
-![평가하기](/etc/assets/평가하기.PNG){: width="50%"}
+![평가하기](/etc/assets/평가하기.PNG){: width="30%"}
 
 <br/><br/><br/>
 
