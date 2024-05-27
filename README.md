@@ -83,7 +83,7 @@
 
 ## 시스템 아키텍쳐
 
-![공차 아키텍쳐](/etc/assets/공차%20아키텍쳐.png){: width="50%"}
+![공차 아키텍쳐](/etc/assets/공차%20아키텍쳐.png)
 
 -   jenkins와 docker-compose를 활용해 배포를 했습니다.<br/><br/>
 -   리버스 프록시, 로드 밸런싱, ssl 보안을 위해 Nginx를 사용했습니다.<br/><br/>
