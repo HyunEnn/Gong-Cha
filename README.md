@@ -216,8 +216,8 @@
 
 ## ✨ 팀 소개 ✨
 
-|   **Name**   |      정준수      |        우찬명        |  오치승  |       김현준        | 정인상  | 박하윤  |
-| :----------: | :--------------: | :------------------: | :------: | :-----------------: | :-----: | :-----: |
-| **Position** | Team <br> Leader | Frontend <br> Leader | Frontend | Backend <br> Leader | Backend | Backend |
+|   **Name**   |      정준수      |        우찬명        |          김현준        | 정인상  | 박하윤  |
+| :----------: | :--------------: | :------------------: |   :-----------------: | :-----: | :-----: |
+| **Position** | Team <br> Leader | Frontend <br> Leader |   Backend <br> Leader | Backend | Backend |
 
 <br>
